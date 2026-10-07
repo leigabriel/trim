@@ -1,16 +1,19 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import Hero from '../components/hero/Hero';
+import Nav from '../components/layout/Nav';
+import { IonContent, IonPage } from '@ionic/react';
 
-const Home: React.FC = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Home</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent />
-    </IonPage>
-  );
-};
+interface HomeProps {
+  isEntered: boolean;
+}
+
+// Landing page: navigation over the hero.
+const Home: React.FC<HomeProps> = ({ isEntered }) => (
+  <IonPage>
+    <IonContent>
+      <Nav />
+      <Hero isEntered={isEntered} />
+    </IonContent>
+  </IonPage>
+);
 
 export default Home;

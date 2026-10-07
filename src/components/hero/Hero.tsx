@@ -1,0 +1,27 @@
+import HeroLede from './HeroLede';
+import ToolModel from './ToolModel';
+import './Hero.css';
+
+interface HeroProps {
+  isEntered: boolean;
+}
+
+// Flat brand field, lede centred, wordmark bottom left, tagline bottom right.
+const Hero: React.FC<HeroProps> = ({ isEntered }) => (
+  <section className={`trim-hero${isEntered ? ' trim-hero--entered' : ''}`} aria-labelledby="trim-hero-title">
+    <ToolModel isEntered={isEntered} />
+
+    <HeroLede isEntered={isEntered} />
+
+    <h1 className="trim-hero__title" id="trim-hero-title">
+      <span className="trim-hero__wordmark">Trim</span>
+
+      <span className="trim-hero__tagline">
+        <span className="trim-hero__tagline-line">Your best</span>
+        <span className="trim-hero__tagline-line">haircut</span>
+      </span>
+    </h1>
+  </section>
+);
+
+export default Hero;
