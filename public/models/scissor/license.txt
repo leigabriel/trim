@@ -1,0 +1,11 @@
+Model Information:
+* title:	Barber's scissors
+* source:	https://sketchfab.com/3d-models/barbers-scissors-8b9086eed6a048f8967044fa92a65c4a
+* author:	DUCK_ (https://sketchfab.com/DUCK_THE_KILLER)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Barber's scissors" (https://sketchfab.com/3d-models/barbers-scissors-8b9086eed6a048f8967044fa92a65c4a) by DUCK_ (https://sketchfab.com/DUCK_THE_KILLER) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
