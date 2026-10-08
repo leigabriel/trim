@@ -16,7 +16,6 @@
   font-size: clamp(2rem, 5vw, 4.5rem);
   font-weight: 400;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .trim-styles__grid {

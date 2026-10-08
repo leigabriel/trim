@@ -6,7 +6,7 @@ import './Styles.css';
 const Styles: React.FC = () => (
   <section className="trim-styles" id="styles" aria-labelledby="trim-styles-title">
     <h2 className="trim-styles__title" id="trim-styles-title">
-      Styles
+      Style Categories
     </h2>
 
     <ul className="trim-styles__grid">

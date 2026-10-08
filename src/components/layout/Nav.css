@@ -1,6 +1,6 @@
-/* Overlays the hero so no background band separates the two. */
+/* Fixed so it spans every home section, not just the hero. */
 .trim-nav {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -13,6 +13,15 @@
   padding: 1rem var(--trim-gutter);
   background-color: transparent;
   color: var(--trim-black);
+  transition: opacity 280ms ease, transform 280ms ease, visibility 280ms;
+}
+
+/* Scrolled past the hero. visibility keeps it out of the tab order too. */
+.trim-nav--hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  pointer-events: none;
 }
 
 /* Brand and links share the black wipe on hover. */
@@ -87,6 +96,24 @@
 }
 
 .trim-nav__link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Login is a real button, so it needs the UA chrome stripped. */
+.trim-nav__link--button {
+  padding: 0.12em 0.28em;
+  border: 0;
+  background: none;
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.375rem, 2.2vw, 2rem);
+  font-weight: 400;
+  line-height: 1;
+  color: inherit;
+  cursor: pointer;
+}
+
+.trim-nav__link--button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }

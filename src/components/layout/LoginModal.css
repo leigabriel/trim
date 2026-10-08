@@ -1,0 +1,132 @@
+/* Full screen black sheet, matching the login reference. */
+.trim-login {
+  --width: 100%;
+  --height: 100%;
+  --border-radius: 0;
+  --background: var(--trim-black);
+}
+
+.trim-login::part(content) {
+  background-color: var(--trim-black);
+}
+
+.trim-login__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(1.25rem, 4vw, 3rem);
+  overflow-y: auto;
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+}
+
+.trim-login__mark {
+  width: clamp(120px, 26vw, 260px);
+  height: auto;
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+.trim-login__close {
+  position: absolute;
+  top: clamp(1.25rem, 4vw, 3rem);
+  right: clamp(1.25rem, 4vw, 3rem);
+  padding: 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--trim-white);
+  /* font-family: var(--trim-font-display); */
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1;
+  cursor: pointer;
+  transition: color 200ms ease, transform 200ms ease;
+}
+
+.trim-login__close:hover {
+  color: var(--trim-orange);
+  transform: scale(1.08);
+}
+
+.trim-login__close:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.trim-login__body {
+  margin-top: auto;
+}
+
+.trim-login__eyebrow {
+  margin: 0 0 clamp(0.5rem, 1.5vw, 1rem);
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.25rem, 2.4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--trim-white);
+}
+
+.trim-login__title {
+  margin: 0 0 clamp(1.75rem, 5vw, 3.5rem);
+  font-family: var(--trim-font-display);
+  font-size: clamp(2.25rem, 7.5vw, 6.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  color: var(--trim-white);
+}
+
+.trim-login__google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.2vw, 0.9rem);
+  width: 100%;
+  padding: clamp(0.75rem, 1.8vw, 1.25rem);
+  border: 0;
+  border-radius: 0;
+  background-color: var(--trim-orange);
+  color: var(--trim-white);
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.25rem, 3vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Icon scales with the display font so it stays optically matched. */
+.trim-login__google-icon {
+  flex: 0 0 auto;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.trim-login__google:hover {
+  background-color: var(--trim-white);
+  color: var(--trim-black);
+}
+
+.trim-login__google:focus-visible {
+  outline: 2px solid var(--trim-white);
+  outline-offset: 3px;
+}
+
+.trim-login__legal {
+  margin: clamp(1.5rem, 4vw, 3rem) 0 0;
+  font-family: var(--trim-font-sans);
+  font-size: clamp(0.875rem, 1.5vw, 1.25rem);
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--trim-white);
+}
+
+.trim-login__legal strong {
+  font-weight: 700;
+}
+
+@media (max-width: 48rem) {
+  .trim-login__legal {
+    text-align: left;
+  }
+}
