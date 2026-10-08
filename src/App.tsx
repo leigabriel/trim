@@ -37,15 +37,47 @@ import './theme/variables.css';
 
 setupIonicReact();
 
+// The model assets exceed the localStorage quota, so this only records that
+// they have been fetched once. The HTTP cache handles the bytes.
+const MODEL_CACHE_KEY = 'trim.models.ready';
+
 const App: React.FC = () => {
   const [isEntered, setIsEntered] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [isModelReady, setIsModelReady] = useState(false);
+  const [isWarm] = useState(() => {
+    try {
+      return window.localStorage.getItem(MODEL_CACHE_KEY) !== null;
+    } catch {
+      return false;
+    }
+  });
+
+  const handleReady = () => {
+    setProgress(1);
+    setIsModelReady(true);
+  };
 
   return (
     <IonApp>
-      <IntroOverlay onDone={() => setIsEntered(true)} />
+      <IntroOverlay
+        progress={progress}
+        isModelReady={isModelReady}
+        isWarm={isWarm}
+        onDone={() => setIsEntered(true)}
+      />
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route path="/home" element={<Home isEntered={isEntered} />} />
+          <Route
+            path="/home"
+            element={
+              <Home
+                isEntered={isEntered}
+                onProgress={setProgress}
+                onModelsReady={handleReady}
+              />
+            }
+          />
           <Route path="/" element={<Navigate to="/home" replace />} />
         </IonRouterOutlet>
       </IonReactRouter>
