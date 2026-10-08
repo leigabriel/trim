@@ -178,7 +178,7 @@ export const validateUsername = (input: string): UsernameResult => {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `npx vitest run src/auth/username.test.ts`
-Expected: PASS, 7 tests in this file (8 across the suite, counting the pre-existing App test).
+Expected: PASS, 11 tests in this file (12 across the suite, counting the pre-existing App test).
 
 - [ ] **Step 5: Commit**
 
@@ -514,7 +514,7 @@ Expected: PASS, 3 tests.
 - [ ] **Step 6: Verify nothing regressed**
 
 Run: `npx vitest run && npm run build`
-Expected: 11 tests pass, build exit 0.
+Expected: 15 tests pass, build exit 0.
 
 - [ ] **Step 7: Commit**
 
@@ -1384,7 +1384,7 @@ route element rather than wrapping it inside `IonContent`.
 - [ ] **Step 3: Verify the full suite and build**
 
 Run: `npx vitest run && npm run lint && npm run build`
-Expected: 11 tests pass, lint exit 0, build exit 0.
+Expected: 15 tests pass, lint exit 0, build exit 0.
 
 - [ ] **Step 4: Commit**
 
@@ -1444,7 +1444,7 @@ human in their own dashboards, and that the service role key must never be place
 - [ ] **Step 3: Verify nothing regressed**
 
 Run: `npx vitest run`
-Expected: 11 tests pass.
+Expected: 15 tests pass.
 
 - [ ] **Step 4: Commit**
 
