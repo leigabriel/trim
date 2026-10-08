@@ -1,0 +1,34 @@
+/* Right column on wide viewports, stacked under the copy on phones.
+   Deliberately large: the keychain is the visual anchor of the page. */
+.trim-about-chain {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  max-width: 26rem;
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  pointer-events: none;
+}
+
+.trim-about-chain canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* As a grid cell it must not stretch to the row height, or the canvas grows
+   past its square and the camera fit goes wrong. */
+@media (min-width: 64rem) {
+  .trim-about-chain {
+    justify-self: end;
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: 0;
+  }
+}
+
+@media (min-width: 96rem) {
+  .trim-about-chain {
+    max-width: 46rem;
+  }
+}

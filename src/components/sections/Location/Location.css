@@ -1,0 +1,160 @@
+.trim-location {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.trim-location__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+
+.trim-location__title {
+  margin: 0;
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.5rem, 3.5vw, 3rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--trim-orange);
+}
+
+.trim-location__address {
+  margin: 0;
+  font-family: var(--trim-font-sans);
+  font-size: clamp(0.8125rem, 1.2vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+/* Square section box with a 1px orange grid. Border only, no rounding. */
+.trim-location__frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--trim-orange);
+  overflow: hidden;
+}
+
+.trim-location__map {
+  width: 100%;
+  height: 100%;
+  background-color: #101010;
+}
+
+/* Inverted tiles so the map sits on the black page rather than glowing white. */
+.trim-location__map .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) grayscale(1) brightness(0.92) contrast(0.9);
+}
+
+.trim-location__map .leaflet-control-attribution,
+.trim-location__map .leaflet-control-zoom a {
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+  border-color: var(--trim-orange);
+}
+
+.trim-location__map .leaflet-control-zoom a:hover {
+  background-color: var(--trim-orange);
+  color: var(--trim-white);
+}
+
+/* Marker dot, replacing the default pin so nothing depends on the vendored
+   marker PNGs resolving. Sized to stay a comfortable touch target. */
+.trim-location__pin {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.trim-location__pin span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--trim-orange);
+  border: 2px solid var(--trim-black);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--trim-orange);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.trim-location__pin:hover span,
+.trim-location__pin:focus-visible span {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px var(--trim-orange);
+}
+
+/* Details card, positioned in script onto the marker's container point.
+   transform-origin is the bottom left so it opens out of the dot. */
+.trim-location__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  width: min(17rem, calc(100% - 2rem));
+  padding: clamp(0.875rem, 1.5vw, 1.25rem);
+  border-radius: 0;
+  background-color: var(--trim-orange);
+  color: var(--trim-black);
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(1.25rem, calc(-100% - 1.25rem)) scale(0.96);
+  transform-origin: bottom left;
+  transition: opacity 200ms ease, transform 200ms ease, visibility 200ms;
+}
+
+.trim-location__card--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(1.25rem, calc(-100% - 1.25rem)) scale(1);
+}
+
+.trim-location__card-name {
+  margin: 0;
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.875rem);
+  line-height: 1;
+}
+
+.trim-location__card-branch {
+  margin: 0.35rem 0 0;
+  font-family: var(--trim-font-sans);
+  font-size: clamp(0.625rem, 1vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.trim-location__card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: clamp(0.625rem, 1.2vw, 1rem) 0 0;
+  padding: clamp(0.625rem, 1.2vw, 1rem) 0 0;
+  border-top: 1px solid currentColor;
+  font-family: var(--trim-font-sans);
+  font-size: clamp(0.6875rem, 1.1vw, 0.875rem);
+  line-height: 1.4;
+  list-style: none;
+}
+
+/* Near the right edge the card would run off, so flip it to the marker's left.
+   Touch gets the same placement, and the card opens on tap only. */
+@media (max-width: 48rem) {
+  .trim-location__card {
+    width: min(15rem, calc(100% - 1.5rem));
+    transform: translate(-100%, calc(-100% - 1rem)) scale(0.96);
+    transform-origin: bottom left;
+  }
+
+  .trim-location__card--open {
+    transform: translate(-100%, calc(-100% - 1rem)) scale(1);
+  }
+}

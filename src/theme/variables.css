@@ -1,12 +1,6 @@
 @import './fonts.css';
 @import './cursor.css';
 
-/* The 3D canvas is created by JS, so the grab cursor has to be attached to the
-   host element instead of the canvas selector used in cursor.css. */
-.trim-tools {
-  cursor: var(--cursor-grab);
-}
-
 /* Palette sampled from reference/hero-section.png. Trim is a fixed light identity, so Ionic palettes stay light. */
 
 :root {

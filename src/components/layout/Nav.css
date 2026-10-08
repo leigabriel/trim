@@ -1,4 +1,4 @@
-/* Fixed so it spans every home section, not just the hero. */
+/* Always fixed to the top of the viewport: never hides on scroll. */
 .trim-nav {
   position: fixed;
   top: 0;
@@ -12,16 +12,17 @@
   min-height: var(--trim-nav-height);
   padding: 1rem var(--trim-gutter);
   background-color: transparent;
-  color: var(--trim-black);
-  transition: opacity 280ms ease, transform 280ms ease, visibility 280ms;
+  transition: color 220ms ease;
 }
 
-/* Scrolled past the hero. visibility keeps it out of the tab order too. */
-.trim-nav--hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-100%);
-  pointer-events: none;
+/* Over the orange hero. */
+.trim-nav--dark {
+  color: var(--trim-black);
+}
+
+/* Over a black page. */
+.trim-nav--light {
+  color: var(--trim-white);
 }
 
 /* Brand and links share the black wipe on hover. */
@@ -58,6 +59,20 @@
 .trim-nav__brand:focus-visible::before,
 .trim-nav__link:focus-visible::before {
   transform: scaleY(1);
+}
+
+/* On a black page the wipe is invisible against the background, so it inverts:
+   orange fill with white text. */
+.trim-nav--light .trim-nav__brand::before,
+.trim-nav--light .trim-nav__link::before {
+  background-color: var(--trim-orange);
+}
+
+.trim-nav--light .trim-nav__brand:hover,
+.trim-nav--light .trim-nav__link:hover,
+.trim-nav--light .trim-nav__brand:focus-visible,
+.trim-nav--light .trim-nav__link:focus-visible {
+  color: var(--trim-white);
 }
 
 .trim-nav__brand {
@@ -175,7 +190,8 @@
     right: 0;
     display: none;
     padding: 0 var(--trim-gutter);
-    background-color: var(--trim-white);
+    background-color: var(--trim-black);
+    color: var(--trim-white);
   }
 
   .trim-nav--open .trim-nav__menu {
@@ -191,5 +207,30 @@
 
   .trim-nav__link {
     font-size: 1.75rem;
+  }
+
+  /* Hamburger icon only, no background block. Colour follows the tone: black over
+     the orange hero, white over the black about page. */
+  .trim-nav--dark .trim-nav__toggle {
+    background: none;
+    color: var(--trim-black);
+  }
+
+  .trim-nav--light .trim-nav__toggle {
+    background: none;
+    color: var(--trim-white);
+  }
+
+  /* Orange wipe would disappear into the black panel, so it stays black-on-white. */
+  .trim-nav--light .trim-nav__menu .trim-nav__brand::before,
+  .trim-nav--light .trim-nav__menu .trim-nav__link::before {
+    background-color: var(--trim-white);
+  }
+
+  .trim-nav--light .trim-nav__menu .trim-nav__brand:hover,
+  .trim-nav--light .trim-nav__menu .trim-nav__link:hover,
+  .trim-nav--light .trim-nav__menu .trim-nav__brand:focus-visible,
+  .trim-nav--light .trim-nav__menu .trim-nav__link:focus-visible {
+    color: var(--trim-black);
   }
 }

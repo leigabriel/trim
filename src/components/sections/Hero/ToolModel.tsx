@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
+import { watchVisibility } from '../../../lib/threeStage';
 import './ToolModel.css';
 
 const TOOLS_URL = '/models/barber-tools/Barber_Tool.gltf';
@@ -237,10 +238,17 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered, onProgress, onReady })
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('keydown', handleKeyDown);
 
+    // Ionic keeps previous pages in the DOM, so without this the hero keeps
+    // rendering at full rate while another route is open.
+    let isVisible = true;
+    const stopWatching = watchVisibility(mount, (visible) => {
+      isVisible = visible;
+    });
+
     let frame2 = 0;
     const tick = () => {
       frame2 = requestAnimationFrame(tick);
-      if (document.hidden) return;
+      if (document.hidden || !isVisible) return;
       const now = performance.now();
 
       if (tools.length > 0) {
@@ -282,6 +290,7 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered, onProgress, onReady })
       cancelAnimationFrame(frame2);
       revealRef.current = null;
       observer.disconnect();
+      stopWatching();
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('keydown', handleKeyDown);
       pivot.traverse((node) => {

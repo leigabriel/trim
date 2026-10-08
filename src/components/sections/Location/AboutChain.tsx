@@ -3,17 +3,21 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import { afterPaint, createStage, disposeNode, watchVisibility } from '../../../lib/threeStage';
-import './Keychain.css';
+import './AboutChain.css';
 
-const MODEL_URL = '/models/keychain/footerchain.glb';
+const MODEL_URL = '/models/keychain/aboutchain.glb';
+// The clip in this file is named Mocha_Spin_360, not Mocha_Spin: it is the same
+// authored animation the footer keychain uses.
 const ANIMATION_NAME = 'Mocha_Spin_360';
 const NARROW = 768;
 
 /**
- * Decorative keychain backdrop for the footer. Plays the authored
- * Mocha_Spin_360 clip and adds a slow pointer-driven turn on top.
+ * Decorative keychain in the right column of the about page. Plays the
+ * authored Mocha_Spin clip and adds a slow pointer turn on top. The stage is
+ * built after the first paint so arriving on this page never blocks on an 8MB
+ * model, and rendering stops whenever the section scrolls away.
  */
-const Keychain: React.FC = () => {
+const AboutChain: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,8 +31,9 @@ const Keychain: React.FC = () => {
 
     const pointer = new THREE.Vector2();
 
-    // Deferred: the footer sits below three full sections, so nothing is gained
-    // by paying the renderer setup cost during the initial mount.
+    // Building the renderer, the PMREM environment and the compiled materials
+    // blocks for seconds. Deferring past the first paint keeps the route
+    // transition responsive; the model simply appears a beat later.
     const cancelBuild = afterPaint(() => {
       if (!isAlive) return;
 
@@ -47,15 +52,11 @@ const Keychain: React.FC = () => {
 
       const fit = () => {
         if (size.lengthSq() === 0) return;
-        // On wide screens the copy sits in the left half, so shift the chain
-        // into the empty right side instead of letting it run through the labels.
-        pivot.position.x = mount.clientWidth < NARROW ? 0 : size.x * 0.22;
-
         const isNarrow = mount.clientWidth < NARROW;
         const halfFov = Math.tan((camera.fov * Math.PI) / 360);
         const forHeight = size.y / 2 / halfFov;
         const forWidth = size.x / 2 / (halfFov * camera.aspect);
-        camera.position.z = Math.max(forHeight, forWidth) / (isNarrow ? 0.6 : 0.78);
+        camera.position.z = Math.max(forHeight, forWidth) / (isNarrow ? 0.8 : 1);
         camera.lookAt(0, 0, 0);
       };
 
@@ -79,8 +80,8 @@ const Keychain: React.FC = () => {
         const root = gltf.scene;
         pivot.add(root);
 
-        // Centre on the bounding box. Scaling the model instead would break the
-        // normals on the thin acrylic tags.
+        // Centre on the bounding box rather than scaling the model, which would
+        // break the normals on the thin acrylic tags.
         root.updateWorldMatrix(true, true);
         box.setFromObject(root);
         box.getSize(size);
@@ -100,9 +101,9 @@ const Keychain: React.FC = () => {
 
         mixer.update(clock.getDelta());
 
-        // Slow drift on top of the authored spin, not a replacement for it.
-        pivot.rotation.y = pointer.x * 0.35 + clock.elapsedTime * 0.02;
-        pivot.rotation.x = -pointer.x * 0.06;
+        // Slow turn layered over the authored spin, not a replacement for it.
+        pivot.rotation.y = pointer.x * 0.3;
+        pivot.rotation.x = -pointer.x * 0.05;
 
         renderer.render(scene, camera);
       };
@@ -135,7 +136,7 @@ const Keychain: React.FC = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="trim-keychain" aria-hidden="true" />;
+  return <div ref={mountRef} className="trim-about-chain" aria-hidden="true" />;
 };
 
-export default Keychain;
+export default AboutChain;

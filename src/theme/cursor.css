@@ -1,18 +1,23 @@
-/* Cursors from assets/cursor (64x64). Hotspots measured from the ink of each
-   sprite: arrow tip, index fingertip for the hands, beam centre for the I-beam. */
+/* Cursors from assets/cursor (64x64 each).
+   Hotspots measured from the actual ink of every sprite rather than guessed:
+   the arrow and pointing hand use the first inked pixel at the top of the
+   glyph, the I-beam uses the centre of its beam, and the two open-hand
+   sprites use the middle finger tip which sits at the very top of each. */
 
 :root {
   --cursor-default: url('/assets/cursor/default.png') 20 15, default;
   --cursor-pointer: url('/assets/cursor/handpointing.png') 26 16, pointer;
-  --cursor-grab: url('/assets/cursor/handopen.png') 21 13, grab;
-  --cursor-grabbing: url('/assets/cursor/handgrabbing.png') 21 13, grabbing;
-  --cursor-text: url('/assets/cursor/textcursor.png') 32 31, text;
+  --cursor-grab: url('/assets/cursor/handopen.png') 29 12, grab;
+  --cursor-grabbing: url('/assets/cursor/handgrabbing.png') 29 19, grabbing;
+  --cursor-text: url('/assets/cursor/textcursor.png') 32 32, text;
 }
 
-html {
+html,
+body {
   cursor: var(--cursor-default);
 }
 
+/* Anchors, real buttons and anything that behaves like one. */
 a,
 button,
 summary,
@@ -29,12 +34,69 @@ select,
   cursor: var(--cursor-text);
 }
 
-[draggable='true'],
-.is-dragging,
-.trim-tools canvas {
+/* Explicit opt-out for the Leaflet control chrome, whose own stylesheet sets
+   cursor:auto with a higher specificity than the bare element selectors. */
+.leaflet-control a,
+.leaflet-control button {
+  cursor: var(--cursor-pointer);
+}
+
+.leaflet-control-zoom a:hover {
+  cursor: var(--cursor-pointer);
+}
+
+/* The map pane is genuinely draggable, so it carries the grab pair. Leaflet
+   ships .leaflet-grab { cursor: grab }, which would otherwise replace the
+   sprite with the native one. */
+.leaflet-container,
+.leaflet-grab {
   cursor: var(--cursor-grab);
 }
 
-.is-dragging {
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-container {
   cursor: var(--cursor-grabbing);
+}
+
+/* The 3D tool mount is decorative and does not pan, so it keeps the arrow
+   rather than claiming to be grabbable. */
+.trim-tools,
+.trim-keychain,
+.trim-about-chain {
+  cursor: var(--cursor-default);
+}
+
+.is-dragging,
+[draggable='true']:active {
+  cursor: var(--cursor-grabbing);
+}
+
+/* The marker dot opens the details card, so it needs the pointing hand even
+   though it is a div rather than a button. */
+.trim-location__pin,
+.trim-location__pin span {
+  cursor: var(--cursor-pointer);
+}
+
+/* Coarse pointers get no cursor sprite at all: the OS shows its own, and
+   forcing ours leaves a stale hand trailing every tap. */
+@media (pointer: coarse) {
+  html,
+  body,
+  a,
+  button,
+  summary,
+  label,
+  [role='button'],
+  [role='link'],
+  input,
+  textarea,
+  select,
+  .leaflet-container,
+  .leaflet-grab,
+  .leaflet-control a,
+  .trim-location__pin,
+  .trim-location__pin span {
+    cursor: auto;
+  }
 }

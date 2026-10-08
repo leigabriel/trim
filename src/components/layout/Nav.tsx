@@ -1,19 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import LoginModal from './LoginModal';
 import './Nav.css';
 
-const NAV_LINKS = [{ label: 'about', href: '#about' }];
+/** `tone` adapts the nav to the page behind it: the orange hero needs dark
+ *  text, the black about page needs light text. */
+interface NavProps {
+  tone?: 'dark' | 'light';
+}
 
 /**
- * Site nav. Fixed to the viewport so it survives every home section, but it
- * only reads while the hero is on screen: once you scroll from hero to styles
- * it slides away, and it returns when the hero comes back.
+ * Site nav. Always fixed to the top of the viewport across every page, and no
+ * longer hides on scroll. The single page link is derived from the current
+ * route, so it always points at the other page rather than at itself.
  */
-const Nav: React.FC = () => {
+const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
+  const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
   // Escape closes the panel and returns focus to the toggle.
@@ -30,25 +35,6 @@ const Nav: React.FC = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isMenuOpen]);
 
-  // Hides only once the hero has fully left the viewport, so the nav still
-  // covers the hero to about hand-off.
-  useEffect(() => {
-    const hero = document.querySelector('.trim-hero');
-    if (!hero) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isPast = entry.boundingClientRect.bottom <= 0;
-        setIsHidden(isPast);
-        if (isPast) setIsMenuOpen(false);
-      },
-      { threshold: 0 },
-    );
-    observer.observe(hero);
-
-    return () => observer.disconnect();
-  }, []);
-
   const closeMenu = () => setIsMenuOpen(false);
 
   const openLogin = () => {
@@ -56,12 +42,18 @@ const Nav: React.FC = () => {
     setIsLoginOpen(true);
   };
 
+  // One link only, pointing at the page you are not already on.
+  const isAbout = pathname.startsWith('/about');
+  const pageLink = isAbout ? { to: '/home', label: 'home' } : { to: '/about', label: 'about' };
+
   return (
     <>
-      <header className={`trim-nav${isMenuOpen ? ' trim-nav--open' : ''}${isHidden ? ' trim-nav--hidden' : ''}`}>
-        <a className="trim-nav__brand" href="/home" aria-label="Trim, home">
+      <header
+        className={`trim-nav trim-nav--${tone}${isMenuOpen ? ' trim-nav--open' : ''}`}
+      >
+        <Link className="trim-nav__brand" to="/home" aria-label="Trim, home" onClick={closeMenu}>
           <span aria-hidden="true">T</span>
-        </a>
+        </Link>
 
         <button
           ref={toggleRef}
@@ -81,13 +73,11 @@ const Nav: React.FC = () => {
 
         <nav className="trim-nav__menu" id="trim-nav-menu" aria-label="Main">
           <ul className="trim-nav__links">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a className="trim-nav__link" href={link.href} onClick={closeMenu}>
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            <li>
+              <Link className="trim-nav__link" to={pageLink.to} onClick={closeMenu}>
+                {pageLink.label}
+              </Link>
+            </li>
             <li>
               <button className="trim-nav__link trim-nav__link--button" type="button" onClick={openLogin}>
                 login

@@ -3,6 +3,7 @@ import { Navigate, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import IntroOverlay from './components/layout/IntroOverlay';
+import About from './pages/About';
 import Home from './pages/Home';
 
 /* Core CSS required for Ionic components to work properly */
@@ -41,7 +42,16 @@ setupIonicReact();
 // they have been fetched once. The HTTP cache handles the bytes.
 const MODEL_CACHE_KEY = 'trim.models.ready';
 
-const App: React.FC = () => {
+const HomeRoute: React.FC<{
+  isEntered: boolean;
+  onProgress: (ratio: number) => void;
+  onModelsReady: () => void;
+}> = ({ isEntered, onProgress, onModelsReady }) => (
+  <Home isEntered={isEntered} onProgress={onProgress} onModelsReady={onModelsReady} />
+);
+
+/** Owns the loading state, which only the home page has anything to load. */
+const HomeWithLoader: React.FC = () => {
   const [isEntered, setIsEntered] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isModelReady, setIsModelReady] = useState(false);
@@ -59,30 +69,36 @@ const App: React.FC = () => {
   };
 
   return (
-    <IonApp>
+    <>
       <IntroOverlay
         progress={progress}
         isModelReady={isModelReady}
         isWarm={isWarm}
         onDone={() => setIsEntered(true)}
       />
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route
-            path="/home"
-            element={
-              <Home
-                isEntered={isEntered}
-                onProgress={setProgress}
-                onModelsReady={handleReady}
-              />
-            }
-          />
-          <Route path="/" element={<Navigate to="/home" replace />} />
-        </IonRouterOutlet>
-      </IonReactRouter>
-    </IonApp>
+
+      <HomeRoute
+        isEntered={isEntered}
+        onProgress={setProgress}
+        onModelsReady={handleReady}
+      />
+    </>
   );
 };
+
+const App: React.FC = () => (
+  <IonApp>
+    <IonReactRouter>
+      <IonRouterOutlet>
+        {/* The intro overlay lives inside the home route: it waits on the hero
+            models, and on any other page nothing would ever flip them, so it
+            sat over the content until its own timeout fired. */}
+        <Route path="/home" element={<HomeWithLoader />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/" element={<Navigate to="/home" replace />} />
+      </IonRouterOutlet>
+    </IonReactRouter>
+  </IonApp>
+);
 
 export default App;
