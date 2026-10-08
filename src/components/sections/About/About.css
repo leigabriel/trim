@@ -1,0 +1,72 @@
+/* Pinned behind the hero and the styles grid. */
+.trim-about {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  display: grid;
+  align-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: var(--trim-gutter);
+  overflow: hidden;
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+}
+
+/* T.png carries real alpha, so it can be blurred and faded freely. */
+.trim-about__mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  min-width: 100%;
+  height: auto;
+  opacity: 0.9;
+  filter: blur(26px);
+  /* Scale is animated by GSAP; keep only the centring here. */
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Motion is driven by Ionic animations; hidden here so nothing flashes
+   before the first play(). */
+.trim-about__eyebrow,
+.trim-about__copy {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.trim-about__eyebrow {
+  grid-row: 1;
+  justify-self: center;
+  margin: 0 0 clamp(1.5rem, 3.5vw, 3rem);
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.125rem, 1.8vw, 2rem);
+  font-weight: 400;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.trim-about__copy {
+  grid-row: 2;
+  justify-self: center;
+  width: min(100%, 30ch);
+  margin: 0;
+  font-family: var(--trim-font-sans);
+  font-size: clamp(1.5rem, 3.6vw, 3.75rem);
+  font-weight: 400;
+  line-height: 1.16;
+  text-align: center;
+  text-wrap: balance;
+}
+
+@media (max-width: 48rem) {
+  .trim-about__copy {
+    width: min(100%, 24ch);
+    text-align: left;
+  }
+}
