@@ -20,6 +20,12 @@
   --trim-nav-height: clamp(5rem, 9vw, 7rem);
 }
 
+/* Full-page black shell behind the auth guard's loading branch. */
+.trim-guard {
+  min-height: 100%;
+  background-color: var(--trim-black);
+}
+
 /* Ionic ships no visually-hidden utility. */
 .trim-visually-hidden {
   position: absolute;

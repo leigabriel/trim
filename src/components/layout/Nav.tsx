@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { useAuth } from '../../auth/AuthProvider';
 import LoginModal from './LoginModal';
 import './Nav.css';
 
@@ -16,6 +17,7 @@ interface NavProps {
  * route, so it always points at the other page rather than at itself.
  */
 const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
+  const { session, profile } = useAuth();
   const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -78,11 +80,34 @@ const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
                 {pageLink.label}
               </Link>
             </li>
-            <li>
-              <button className="trim-nav__link trim-nav__link--button" type="button" onClick={openLogin}>
-                login
-              </button>
-            </li>
+            {session ? (
+              <li>
+                <Link
+                  className="trim-nav__avatar"
+                  to="/dashboard"
+                  aria-label={`Dashboard, signed in as ${profile?.username ?? profile?.displayName ?? 'your account'}`}
+                  onClick={closeMenu}
+                >
+                  {profile?.avatarUrl ? (
+                    <img src={profile.avatarUrl} alt="" />
+                  ) : (
+                    <span aria-hidden="true">
+                      {(profile?.username ?? '?').charAt(0).toUpperCase()}
+                    </span>
+                  )}
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <button
+                  className="trim-nav__link trim-nav__link--button"
+                  type="button"
+                  onClick={openLogin}
+                >
+                  login
+                </button>
+              </li>
+            )}
           </ul>
         </nav>
       </header>

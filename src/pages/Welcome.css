@@ -1,0 +1,80 @@
+.trim-welcome {
+  display: grid;
+  place-content: center;
+  min-height: 100%;
+  padding: var(--trim-gutter);
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+}
+
+.trim-welcome__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: min(100%, 28rem);
+}
+
+.trim-welcome__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--trim-font-brand);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 1.05;
+  color: var(--trim-orange);
+}
+
+.trim-welcome__label {
+  font-family: var(--trim-font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.trim-welcome__input {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--trim-white);
+  background: none;
+  color: var(--trim-white);
+  font-family: var(--trim-font-sans);
+  font-size: 1.125rem;
+}
+
+.trim-welcome__input:focus-visible {
+  outline: 2px solid var(--trim-orange);
+  outline-offset: 2px;
+}
+
+.trim-welcome__input:disabled {
+  opacity: 0.6;
+}
+
+.trim-welcome__error {
+  margin: 0;
+  font-family: var(--trim-font-sans);
+  font-size: 0.875rem;
+  color: var(--trim-orange);
+}
+
+.trim-welcome__submit {
+  margin-top: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  border: 0;
+  background-color: var(--trim-orange);
+  color: var(--trim-white);
+  font-family: var(--trim-font-display);
+  font-size: 1.75rem;
+  cursor: pointer;
+}
+
+.trim-welcome__submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.trim-welcome__hint {
+  margin: 0;
+  font-family: var(--trim-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  opacity: 0.6;
+}

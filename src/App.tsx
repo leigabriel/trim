@@ -2,9 +2,14 @@ import { useState } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { AuthProvider } from './auth/AuthProvider';
+import { RequireAuth } from './auth/RequireAuth';
 import IntroOverlay from './components/layout/IntroOverlay';
 import About from './pages/About';
+import AuthCallback from './pages/AuthCallback';
+import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
+import Welcome from './pages/Welcome';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -89,14 +94,30 @@ const HomeWithLoader: React.FC = () => {
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        {/* The intro overlay lives inside the home route: it waits on the hero
-            models, and on any other page nothing would ever flip them, so it
-            sat over the content until its own timeout fired. */}
-        <Route path="/home" element={<HomeWithLoader />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-      </IonRouterOutlet>
+      {/* Inside IonReactRouter, not outside: AuthProvider calls useNavigate,
+          which needs a Router ancestor. */}
+      <AuthProvider>
+        <IonRouterOutlet>
+          {/* The intro overlay lives inside the home route: it waits on the hero
+              models, and on any other page nothing would ever flip them, so it
+              sat over the content until its own timeout fired. */}
+          <Route path="/home" element={<HomeWithLoader />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/welcome" element={<Welcome />} />
+          {/* Dashboard is an IonPage and RequireAuth is not, so the guard sits
+              outside it here rather than wrapping it inside its IonContent. */}
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth requireUsername>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+        </IonRouterOutlet>
+      </AuthProvider>
     </IonReactRouter>
   </IonApp>
 );

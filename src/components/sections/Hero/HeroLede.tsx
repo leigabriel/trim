@@ -10,7 +10,7 @@ const WORDS = [
   'Mindoro',
   '-',
   'based',
-  'barbershops',
+  'barbershop',
   'specializing',
   'in',
   'the',
