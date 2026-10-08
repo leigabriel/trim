@@ -14,5 +14,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
+    env: {
+      VITE_SUPABASE_URL: 'https://stub.supabase.co',
+      VITE_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_stub',
+    }
   }
 })
