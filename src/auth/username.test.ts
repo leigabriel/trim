@@ -1,5 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { normaliseUsername, validateUsername } from './username';
+import { USERNAME_PATTERN, normaliseUsername, validateUsername } from './username';
+
+describe('USERNAME_PATTERN', () => {
+  // Pinned because normaliseUsername lowercases first, so a widened class or an
+  // `i` flag is invisible through validateUsername alone.
+  it('is exactly ^[a-z0-9_]{3,24}$ with no flags', () => {
+    expect(USERNAME_PATTERN.source).toBe('^[a-z0-9_]{3,24}$');
+    expect(USERNAME_PATTERN.flags).toBe('');
+  });
+
+  it('does not match uppercase or non-ASCII input', () => {
+    expect(USERNAME_PATTERN.test('ABC')).toBe(false);
+    expect(USERNAME_PATTERN.test('gabriel')).toBe(true);
+  });
+
+  it('admits underscores and digits', () => {
+    expect(USERNAME_PATTERN.test('ab_c9')).toBe(true);
+  });
+});
 
 describe('normaliseUsername', () => {
   it('lowercases and trims', () => {
@@ -17,18 +35,25 @@ describe('validateUsername', () => {
     expect(validateUsername('a'.repeat(24)).ok).toBe(true);
   });
 
+  // Guards a character class that drops `_` or `0-9`; the other cases are pure letters.
+  it('accepts underscores and digits', () => {
+    expect(validateUsername('ab_c9')).toEqual({ ok: true, value: 'ab_c9' });
+  });
+
   it('rejects one below the minimum length', () => {
-    expect(validateUsername('ab').ok).toBe(false);
+    expect(validateUsername('ab')).toEqual({ ok: false, error: 'Use at least 3 characters.' });
   });
 
   it('rejects one above the maximum length', () => {
-    expect(validateUsername('a'.repeat(25)).ok).toBe(false);
+    expect(validateUsername('a'.repeat(25))).toEqual({ ok: false, error: 'Use at most 24 characters.' });
   });
 
   it('rejects characters outside the rule', () => {
-    expect(validateUsername('has space').ok).toBe(false);
-    expect(validateUsername('has-dash').ok).toBe(false);
-    expect(validateUsername('has.dot').ok).toBe(false);
+    const invalid = { ok: false, error: 'Use lowercase letters, numbers and underscores only.' };
+
+    expect(validateUsername('has space')).toEqual(invalid);
+    expect(validateUsername('has-dash')).toEqual(invalid);
+    expect(validateUsername('has.dot')).toEqual(invalid);
   });
 
   it('rejects empty input with a specific message', () => {
