@@ -9,7 +9,7 @@ describe('USERNAME_PATTERN', () => {
     expect(USERNAME_PATTERN.flags).toBe('');
   });
 
-  it('does not match uppercase or non-ASCII input', () => {
+  it('does not match uppercase input', () => {
     expect(USERNAME_PATTERN.test('ABC')).toBe(false);
     expect(USERNAME_PATTERN.test('gabriel')).toBe(true);
   });
@@ -36,7 +36,7 @@ describe('validateUsername', () => {
   });
 
   // Guards a character class that drops `_` or `0-9`; the other cases are pure letters.
-  it('accepts underscores and digits', () => {
+  it('accepts underscores and digits and returns them as the value', () => {
     expect(validateUsername('ab_c9')).toEqual({ ok: true, value: 'ab_c9' });
   });
 
