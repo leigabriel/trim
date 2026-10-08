@@ -1,5 +1,6 @@
 import Nav from '../components/layout/Nav';
 import About from '../components/sections/About/About';
+import Footer from '../components/sections/Footer/Footer';
 import Hero from '../components/sections/Hero/Hero';
 import Styles from '../components/sections/Styles/Styles';
 import { IonContent, IonPage } from '@ionic/react';
@@ -10,8 +11,9 @@ interface HomeProps {
   onModelsReady: () => void;
 }
 
-// About is the pinned back layer. The hero overlaps it with a negative margin
-// so it reads as sitting in front while scrolling, then styles takes over.
+// About is a pinned back layer that the hero overlaps with a negative margin so
+// it reads as sitting in front while scrolling. Styles and the footer follow in
+// normal flow.
 const Home: React.FC<HomeProps> = ({ isEntered, onProgress, onModelsReady }) => (
   <IonPage>
     <IonContent>
@@ -19,6 +21,7 @@ const Home: React.FC<HomeProps> = ({ isEntered, onProgress, onModelsReady }) => 
       <About />
       <Hero isEntered={isEntered} onProgress={onProgress} onReady={onModelsReady} />
       <Styles />
+      <Footer />
     </IonContent>
   </IonPage>
 );

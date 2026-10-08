@@ -61,6 +61,13 @@
 }
 
 @media (max-width: 48rem) {
+  /* A full-height backdrop crops the clip to a sliver on a portrait phone, so
+     the section takes the video's own 16:9 shape instead of the viewport's. */
+  /* .trim-about {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  } */
+
   .trim-about__copy {
     width: min(100%, 24ch);
     font-size: clamp(1.125rem, 5.4vw, 1.75rem);

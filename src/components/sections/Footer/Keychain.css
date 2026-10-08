@@ -1,0 +1,13 @@
+/* Backdrop layer: sits behind the footer copy, never intercepts the pointer. */
+.trim-keychain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.trim-keychain canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

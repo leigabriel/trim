@@ -1,4 +1,4 @@
-/* Slides over the pinned about layer. */
+/* Slides over the pinned about and footer layers. */
 .trim-styles {
   position: relative;
   z-index: 2;
@@ -42,7 +42,7 @@
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 1.2;
   object-fit: cover;
   border-radius: 0;
 }
@@ -55,19 +55,11 @@
   text-align: left;
 }
 
-@media (max-width: 60rem) {
-  .trim-styles__grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 48rem) {
-  .trim-styles {
-    margin-top: 50svh;
-  }
-
-  .trim-styles__grid {
-    gap: 0.75rem;
+/* Tablet and phone keep three columns: the design calls for a 3x3 grid, so the
+   cells scale down rather than dropping to a single column. */
+@media (max-width: 64rem) {
+  .trim-styles__title {
+    font-size: clamp(1.75rem, 4.5vw, 3rem);
   }
 
   .trim-styles__cell {
@@ -76,12 +68,36 @@
   }
 
   .trim-styles__label {
-    font-size: 0.75rem;
+    font-size: clamp(0.6875rem, 1.5vw, 0.875rem);
+  }
+}
+
+@media (max-width: 48rem) {
+  .trim-styles {
+    margin-top: 50svh;
+    margin-bottom: 50svh;
+  }
+
+  .trim-styles__grid {
+    gap: 0.5rem;
+  }
+
+  .trim-styles__title {
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+  }
+
+  .trim-styles__label {
+    font-size: clamp(0.625rem, 2.4vw, 0.8125rem);
   }
 }
 
 @media (max-width: 26rem) {
   .trim-styles__grid {
-    grid-template-columns: 1fr;
+    gap: 0.375rem;
+  }
+
+  .trim-styles__cell {
+    gap: 0.375rem;
+    padding: 0.375rem;
   }
 }
