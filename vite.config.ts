@@ -17,6 +17,6 @@ export default defineConfig({
     env: {
       VITE_SUPABASE_URL: 'https://stub.supabase.co',
       VITE_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_stub',
-    }
+    },
   }
 })

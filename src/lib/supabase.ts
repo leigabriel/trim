@@ -1,11 +1,19 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-const url = import.meta.env.VITE_SUPABASE_URL
-const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+const url = import.meta.env.VITE_SUPABASE_URL;
+const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
-if (!url || !key) {
-  // Fails loudly in development rather than throwing on a network call later.
-  console.warn('Supabase env vars missing. Copy .env.example to .env and fill it in.')
+// createClient validates its own arguments and throws a generic
+// "supabaseUrl is required", so check here and say which var is missing.
+const missing = [
+  ...(!url ? ['VITE_SUPABASE_URL'] : []),
+  ...(!key ? ['VITE_SUPABASE_PUBLISHABLE_KEY'] : []),
+];
+
+if (missing.length > 0) {
+  throw new Error(
+    `Missing ${missing.join(' and ')}. Copy .env.example to .env and fill it in.`,
+  );
 }
 
-export const supabase = createClient(url ?? '', key ?? '')
+export const supabase = createClient(url, key);
