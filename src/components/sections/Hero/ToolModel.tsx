@@ -6,7 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import './ToolModel.css';
 
 const TOOLS_URL = '/models/barber-tools/Barber_Tool.gltf';
-const HOLD_MS = 3000;
+const HOLD_MS = 2000;
 // Sequential on purpose: two models in the same spot both write depth and
 // z-fight, which is what made the swap look broken.
 const FADE_MS = 620;
@@ -30,13 +30,19 @@ const SCISSOR_BOOST = 1.45;
 
 interface ToolModelProps {
   isEntered: boolean;
+  onProgress?: (ratio: number) => void;
+  onReady?: () => void;
 }
 
-const ToolModel: React.FC<ToolModelProps> = ({ isEntered }) => {
+const ToolModel: React.FC<ToolModelProps> = ({ isEntered, onProgress, onReady }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   // Lets the effect below reveal the tool once the hero is on screen.
   const revealRef = useRef<(() => void) | null>(null);
   const revealedRef = useRef(isEntered);
+  // Held in a ref so the mount effect does not re-run when a parent
+  // re-renders with new callback identities.
+  const callbacks = useRef({ onProgress, onReady });
+  callbacks.current = { onProgress, onReady };
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -118,7 +124,12 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered }) => {
     const observer = new ResizeObserver(resize);
     observer.observe(mount);
 
-    new GLTFLoader().load(TOOLS_URL, (gltf) => {
+    const manager = new THREE.LoadingManager();
+    manager.onProgress = (_url, loaded, total) => {
+      callbacks.current.onProgress?.(total > 0 ? Math.min(1, loaded / total) : 0);
+    };
+
+    new GLTFLoader(manager).load(TOOLS_URL, (gltf) => {
       gltf.scene.updateWorldMatrix(true, true);
 
       const meshes: THREE.Mesh[] = [];
@@ -185,8 +196,33 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered }) => {
 
       active = 0;
       from = 0;
-      applyOpacity(tools[0], revealedRef.current ? 1 : 0);
       resize();
+
+      // Warm every tool before anything is shown. compile() walks the scene and
+      // skips invisible objects, so each root has to be visible during the pass,
+      // otherwise the programs, geometry and the 2048px maps are all uploaded on
+      // the first frame the user actually sees, which is what shattered the model.
+      tools.forEach((tool) => {
+        tool.root.visible = true;
+        tool.materials.forEach((material) => {
+          material.opacity = 1;
+        });
+      });
+      renderer.compile(scene, camera);
+      renderer.render(scene, camera);
+
+      // Only the leading tool is shown, and only once the hero is on screen.
+      tools.forEach((tool, index) => {
+        applyOpacity(tool, index === 0 && revealedRef.current ? 1 : 0);
+      });
+
+      if (revealedRef.current) {
+        holdStart = performance.now();
+        phaseStart = holdStart;
+      }
+
+      callbacks.current.onProgress?.(1);
+      callbacks.current.onReady?.();
     });
 
     const handlePointerMove = (event: PointerEvent) => {
