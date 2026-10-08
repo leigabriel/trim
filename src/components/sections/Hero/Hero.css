@@ -1,5 +1,10 @@
 .trim-hero {
   position: relative;
+  /* Sits above the sticky about layer and scrolls up over it. */
+  z-index: 1;
+  /* Pulled back over the about layer so it reads as the front plane while the
+     black section is already pinned behind it. */
+  margin-top: -100svh;
   display: flex;
   align-items: flex-end;
   min-height: 100vh;
