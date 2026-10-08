@@ -19,15 +19,11 @@ const WORDS = [
   'styles',
 ];
 
-// Line-by-line reveal for the centred lede.
-const HeroLede: React.FC<HeroLedeProps> = ({ isEntered }) => {
-  const ref = useRef<HTMLParagraphElement>(null);
-
+// Builds the word markup once; the reveal is a separate effect.
+const useLedeMarkup = (ref: React.RefObject<HTMLParagraphElement | null>) => {
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const frag = document.createDocumentFragment();
     WORDS.forEach((word, index) => {
@@ -42,21 +38,38 @@ const HeroLede: React.FC<HeroLedeProps> = ({ isEntered }) => {
       if (index < WORDS.length - 1) frag.appendChild(document.createTextNode(' '));
     });
     node.replaceChildren(frag);
+  }, [ref]);
+};
 
-    if (!isEntered || reduced) return;
+// Word-by-word reveal for the centred lede.
+const HeroLede: React.FC<HeroLedeProps> = ({ isEntered }) => {
+  const ref = useRef<HTMLParagraphElement>(null);
 
-    const targets = node.querySelectorAll('.trim-hero__lede-word');
+  useLedeMarkup(ref);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || !isEntered) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const words = node.querySelectorAll<HTMLElement>('.trim-hero__lede-word');
+    if (words.length === 0) return;
+
+    // force3D keeps every word on its own compositor layer, so the animation
+    // never triggers layout or paint on the surrounding hero.
     const context = gsap.context(() => {
       gsap.fromTo(
-        targets,
-        { yPercent: 110, opacity: 0 },
+        words,
+        { yPercent: 118, opacity: 0 },
         {
           yPercent: 0,
           opacity: 1,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.07,
-          delay: 0.15,
+          duration: 0.62,
+          ease: 'power2.out',
+          stagger: 0.045,
+          overwrite: true,
+          force3D: true,
+          onComplete: () => gsap.set(words, { clearProps: 'willChange,transform' }),
         },
       );
     }, node);

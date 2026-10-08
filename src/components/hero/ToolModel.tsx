@@ -7,11 +7,15 @@ import './ToolModel.css';
 
 const TOOLS_URL = '/models/barber-tools/Barber_Tool.gltf';
 const HOLD_MS = 3000;
-const FADE_MS = 450;
+// Sequential on purpose: two models in the same spot both write depth and
+// z-fight, which is what made the swap look broken.
+const FADE_MS = 620;
 const FILL = 0.78;
 const MAX_TURN = 0.7;
 
-const ease = (t: number) => t * t * (3 - 2 * t);
+// Smootherstep: zero velocity at both ends, so the fade has no visible start
+// or stop tick.
+const ease = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
 
 interface Tool {
   root: THREE.Group;
@@ -66,21 +70,26 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered }) => {
     const pointer = new THREE.Vector2();
     const tools: Tool[] = [];
     let active = -1;
-    let opacity = 0;
     // Sequential fade, never two tools at once: overlapping transparent models
     // in the same spot write depth and z-fight.
     let phase: 'idle' | 'out' | 'in' = 'idle';
     let phaseStart = 0;
     let holdStart = 0;
+    // Tool currently fading out, so only two are written per frame.
+    let from = 0;
 
-    const paint = () => {
-      tools.forEach((tool, index) => {
-        const value = index === active ? opacity : 0;
-        tool.root.visible = value > 0.002;
-        tool.materials.forEach((material) => {
-          material.opacity = value;
-        });
+    // Only the two tools taking part in a swap are touched, rather than writing
+    // opacity on all seven every frame.
+    const applyOpacity = (tool: Tool | undefined, value: number) => {
+      if (!tool) return;
+      tool.root.visible = value > 0.002;
+      tool.materials.forEach((material) => {
+        material.opacity = value;
       });
+    };
+
+    const paint = (index: number, value: number) => {
+      applyOpacity(tools[index], value);
     };
 
     // Tools differ in size, so the camera has to reframe on every switch.
@@ -167,16 +176,16 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered }) => {
       if (lead > 0) tools.unshift(...tools.splice(lead, 1));
 
       revealRef.current = () => {
-        opacity = 1;
-        holdStart = performance.now();
-        paint();
+        const start = performance.now();
+        holdStart = start;
+        phase = 'in';
+        phaseStart = start;
+        from = active;
       };
 
       active = 0;
-      // Stay hidden until the hero has faded in, then the scissors appear at once.
-      opacity = revealedRef.current ? 1 : 0;
-      if (opacity === 1) holdStart = performance.now();
-      paint();
+      from = 0;
+      applyOpacity(tools[0], revealedRef.current ? 1 : 0);
       resize();
     });
 
@@ -203,25 +212,23 @@ const ToolModel: React.FC<ToolModelProps> = ({ isEntered }) => {
           if (now - holdStart > HOLD_MS) {
             phase = 'out';
             phaseStart = now;
+            from = active;
           }
         } else if (phase === 'out') {
           const t = Math.min(1, (now - phaseStart) / FADE_MS);
-          opacity = 1 - ease(t);
-          paint();
+          paint(from, 1 - ease(t));
           if (t >= 1) {
-            active = (active + 1) % tools.length;
-            opacity = 0;
+            applyOpacity(tools[from], 0);
+            active = (from + 1) % tools.length;
             phase = 'in';
             phaseStart = now;
             frame();
-            paint();
           }
         } else {
           const t = Math.min(1, (now - phaseStart) / FADE_MS);
-          opacity = ease(t);
-          paint();
+          paint(active, ease(t));
           if (t >= 1) {
-            opacity = 1;
+            paint(active, 1);
             phase = 'idle';
             holdStart = now;
           }
