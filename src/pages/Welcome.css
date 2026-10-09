@@ -1,17 +1,26 @@
+/* place-content: center on both axes, so the form sits in the middle of the
+   viewport rather than offset by its own line box. */
 .trim-welcome {
   display: grid;
   place-content: center;
+  justify-items: center;
   min-height: 100%;
-  padding: var(--trim-gutter);
+  padding: clamp(2rem, 8vh, 5rem) var(--trim-gutter);
   background-color: var(--trim-white);
   color: var(--trim-black);
+}
+
+/* Wider than a single-column form: at 28rem the field sat in a narrow column
+   with the title hard against the left gutter. */
+.trim-welcome__inner {
+  width: min(100%, 34rem);
+  margin: 0 auto;
 }
 
 .trim-welcome__form {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  width: min(100%, 28rem);
 }
 
 .trim-welcome__title {
@@ -20,6 +29,15 @@
   font-size: clamp(2rem, 6vw, 4rem);
   line-height: 1.05;
   color: var(--trim-orange);
+}
+
+.trim-welcome__lede {
+  margin: 0 0 0.75rem;
+  font-family: var(--trim-font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--trim-black);
+  opacity: 0.65;
 }
 
 .trim-welcome__label {

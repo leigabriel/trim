@@ -51,19 +51,35 @@
   gap: 0.5rem;
 }
 
+/* Confirmation tick. Decorative: the heading carries the meaning. */
+.trim-callback__tick {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 0.75rem;
+  border-radius: 50%;
+  background-color: var(--trim-orange);
+  color: var(--trim-black);
+}
+
 .trim-callback__title {
   margin: 0;
   font-family: var(--trim-font-display);
   font-size: clamp(2rem, 6vw, 4rem);
-  line-height: 1;
+  line-height: 1.05;
   color: var(--trim-orange);
+  text-wrap: balance;
 }
 
 .trim-callback__note {
-  margin: 0 0 0.75rem;
+  max-width: 46ch;
+  margin: 0.5rem 0 1rem;
   font-family: var(--trim-font-sans);
-  font-size: 1rem;
-  opacity: 0.7;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  opacity: 0.75;
+  text-wrap: pretty;
 }
 
 .trim-callback__actions {

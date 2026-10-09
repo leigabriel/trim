@@ -1,4 +1,4 @@
-import { MATCH_TREND } from './data';
+import { MATCH_TREND } from '../data';
 
 interface TrendChartProps {
   /** Plot height in px. Width is fluid. */

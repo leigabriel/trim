@@ -1,38 +1,3 @@
-.trim-location {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1rem, 2.5vw, 2rem);
-}
-
-.trim-location__head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.5rem 1.5rem;
-}
-
-.trim-location__title {
-  margin: 0;
-  font-family: var(--trim-font-display);
-  font-size: clamp(1.5rem, 3.5vw, 3rem);
-  font-weight: 400;
-  line-height: 1;
-  color: var(--trim-orange);
-}
-
-.trim-location__address {
-  margin: 0;
-  font-family: var(--trim-font-sans);
-  font-size: clamp(0.8125rem, 1.2vw, 1rem);
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  opacity: 0.7;
-}
-
-/* Square box, 1px black border, no rounding. */
 .trim-location__frame {
   position: relative;
   aspect-ratio: 1 / 1;

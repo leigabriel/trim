@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { IonModal } from '@ionic/react';
 
-import { useAuth } from '../../auth/AuthProvider';
-import GoogleIcon from './GoogleIcon';
+import { useAuth } from '../../../auth/AuthProvider';
+import GoogleIcon from '../icons/GoogleIcon';
 import LegalModal from './LegalModal';
 import type { LegalDoc } from './LegalModal';
 import './LoginModal.css';

@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { AuthProvider } from './auth/AuthProvider';
-import { RequireAuth } from './auth/RequireAuth';
-import IntroOverlay from './components/layout/IntroOverlay';
-import AuthCallback from './pages/AuthCallback';
-import Dashboard from './pages/dashboard/Dashboard';
-import Home from './pages/Home';
-import Welcome from './pages/Welcome';
+
+import { AuthProvider } from '../auth/AuthProvider';
+import { RequireAuth } from '../auth/RequireAuth';
+import IntroOverlay from '../components/layout/IntroOverlay';
+import CustomerDashboard from '../dashboards/customer-dashboard/CustomerDashboard';
+import AuthCallback from '../pages/AuthCallback';
+import Home from '../pages/Home';
+import Welcome from '../pages/Welcome';
 
 /* Required by Ionic components */
 import '@ionic/react/css/core.css';
@@ -27,13 +28,12 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Ionic dark palette: always, or class-based. */
-
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme */
-import './theme/variables.css';
+import '../theme/variables.css';
 
 setupIonicReact();
 
@@ -71,12 +71,13 @@ const App: React.FC = () => (
           <Route path="/home" element={<HomeWithLoader />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/welcome" element={<Welcome />} />
+
           {/* The guard wraps the IonPage rather than sitting inside its content. */}
           <Route
             path="/dashboard"
             element={
               <RequireAuth requireUsername>
-                <Dashboard />
+                <CustomerDashboard />
               </RequireAuth>
             }
           />

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { COORDS, SHOP } from './shop';
 import './Location.css';
 
 // Leaflet is vendored in public/assets/leaflet and loaded via a script tag,
@@ -8,21 +9,10 @@ import './Location.css';
 const LEAFLET_JS = '/assets/leaflet/dist/leaflet-global.js';
 const LEAFLET_CSS = '/assets/leaflet/dist/leaflet.css';
 
-// Calapan, Oriental Mindoro.
-const COORDS: [number, number] = [13.320023, 121.256381];
-
 // Card clearance from the frame edge and the marker dot.
 const GAP = 12;
 // Below this the card docks to the frame bottom.
 const NARROW = 768;
-
-const SHOP = {
-  name: 'Trim',
-  branch: 'Oriental Mindoro',
-  address: 'Naujan, Oriental Mindoro, Philippines',
-  hours: 'Mon to Sat, 8:00 AM to 5:00 PM',
-  phone: '+63 917 000 0000',
-};
 
 // Only the surface used here; the build ships no declarations.
 interface LeafletPoint {
@@ -99,7 +89,16 @@ const loadLeaflet = () =>
     document.head.appendChild(script);
   });
 
-const Location: React.FC = () => {
+interface LocationMapProps {
+  /** Extra class on the frame, so the footer and the modal can size it. */
+  className?: string;
+}
+
+/**
+ * The map itself, with no chrome beyond the marker card. Mounted inside the
+ * footer modal rather than inline, so it only builds once the modal opens.
+ */
+const LocationMap: React.FC<LocationMapProps> = ({ className }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -126,7 +125,7 @@ const Location: React.FC = () => {
         const map = new L.Map(mount, {
           center: COORDS,
           zoom: 14,
-          // Page scroll must win over map zoom, or the map swallows the scroll.
+          // Page scrolling must win over map zoom, or the map swallows the scroll.
           scrollWheelZoom: false,
           zoomControl: true,
           attributionControl: true,
@@ -151,7 +150,7 @@ const Location: React.FC = () => {
 
         // The card tracks the marker, so re-place it on every move and zoom.
         // Clamped in script rather than CSS: the marker sits mid-map, so a fixed
-        // offset runs off the edge on a narrow phone.
+        // offset runs off the edge on a narrow box.
         const place = () => {
           const card = cardRef.current;
           if (!card) return;
@@ -159,8 +158,8 @@ const Location: React.FC = () => {
           const point = map.latLngToContainerPoint(COORDS);
 
           if (mount.clientWidth <= NARROW) {
-            // Phone: a card floating above the marker is too wide, so it docks to
-            // the frame bottom. Set here because the inline styles would win.
+            // Phone: a card floating above the marker is too wide, so it docks
+            // to the frame bottom. Set here because inline styles would win.
             card.style.left = `${GAP}px`;
             card.style.top = `${Math.max(GAP, mount.clientHeight - card.offsetHeight - GAP)}px`;
             return;
@@ -208,7 +207,6 @@ const Location: React.FC = () => {
             isHoveredRef.current = false;
             sync();
           };
-          // On touch, stop the tap reaching the drag handlers.
           const toggle = (event: MouseEvent) => {
             if (!canHover) event.stopPropagation();
             setIsPinned((pinned) => !pinned);
@@ -246,41 +244,28 @@ const Location: React.FC = () => {
   }, []);
 
   return (
-    <section className="trim-location" aria-labelledby="trim-location-title">
-      <div className="trim-location__head">
-        <h2 className="trim-location__title" id="trim-location-title">
-          Location
-        </h2>
+    <div className={`trim-location__frame${className ? ` ${className}` : ''}`}>
+      <div
+        ref={mountRef}
+        className="trim-location__map"
+        role="region"
+        aria-label={`Map of ${SHOP.name} barbershop, ${SHOP.address}`}
+      />
 
-        <p className="trim-location__address">{SHOP.address}</p>
+      {/* Anchored to the marker, so positioned in script. Not a dialog: it takes
+          no focus and cannot be dismissed with Escape. */}
+      <div ref={cardRef} className="trim-location__card">
+        <p className="trim-location__card-name">{SHOP.name}</p>
+        <p className="trim-location__card-branch">{SHOP.branch}</p>
+
+        <ul className="trim-location__card-list">
+          <li>{SHOP.address}</li>
+          <li>{SHOP.hours}</li>
+          <li>{SHOP.phone}</li>
+        </ul>
       </div>
-
-      {/* Square section box, orange grid border, no rounding. */}
-      <div className="trim-location__frame">
-        <div
-          ref={mountRef}
-          className="trim-location__map"
-          role="region"
-          aria-label={`Map of ${SHOP.name} barbershop, ${SHOP.address}`}
-        />
-
-        {/* Anchored to the marker, so it is positioned in script rather than
-            laid out in flow. Not a dialog: it takes no focus, cannot be
-            dismissed with Escape, and is hidden from assistive tech while
-            closed, which is the opposite of what role="dialog" promises. */}
-        <div ref={cardRef} className="trim-location__card">
-          <p className="trim-location__card-name">{SHOP.name}</p>
-          <p className="trim-location__card-branch">{SHOP.branch}</p>
-
-          <ul className="trim-location__card-list">
-            <li>{SHOP.address}</li>
-            <li>{SHOP.hours}</li>
-            <li>{SHOP.phone}</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+    </div>
   );
 };
 
-export default Location;
+export default LocationMap;

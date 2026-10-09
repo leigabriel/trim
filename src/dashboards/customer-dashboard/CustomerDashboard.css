@@ -1,5 +1,5 @@
-/* App shell. The rail and header share one grey plane, so the white main
-   column reads as the working area. */
+/* Customer dashboard. The rail and header share one grey plane, so the white
+   main column reads as the working area. */
 
 .trim-dash {
   --dash-rail: 16rem;
@@ -28,17 +28,18 @@
   gap: clamp(0.75rem, 1.5vw, 1.25rem);
   flex: 0 0 auto;
   min-height: 3.5rem;
-  padding: 0 clamp(1rem, 2vw, 1.5rem);
+  padding: 0 clamp(0.875rem, 1.8vw, 1.35rem);
   border-bottom: 1px solid var(--dash-line);
   background-color: var(--dash-grey);
 }
 
+/* Tritopani script T in brand orange, echoing the public nav mark. */
 .trim-dash__logo {
-  font-size: 1.0625rem;
-  font-weight: 800;
-  letter-spacing: -0.015em;
-  color: var(--trim-black);
-  text-decoration: none;
+  font-family: var(--trim-font-brand);
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--trim-orange);
+  user-select: none;
 }
 
 .trim-dash__crumb {
@@ -56,26 +57,55 @@
   white-space: nowrap;
 }
 
-.trim-dash__home {
+.trim-dash__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
   flex: 0 0 auto;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--dash-line);
-  border-radius: 3px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--trim-black);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 150ms ease, color 150ms ease;
 }
 
-.trim-dash__home:hover,
-.trim-dash__home:focus-visible {
-  background-color: var(--trim-black);
-  color: var(--trim-white);
+/* Icon buttons. 2.5rem square keeps both a comfortable tap target and the
+   optical size of the 19px glyph inside. */
+.trim-dash__icon-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--trim-black);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 150ms ease;
+}
+
+.trim-dash__icon-btn:hover,
+.trim-dash__icon-btn:focus-visible {
+  background-color: rgb(0 0 0 / 8%);
   outline: none;
+}
+
+.trim-dash__icon-btn--on {
+  background-color: var(--trim-white);
+}
+
+.trim-dash__badge {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0 0.2rem;
+  border-radius: 999px;
+  background-color: var(--trim-orange);
+  color: var(--trim-white);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .trim-dash__rail-toggle {
@@ -108,6 +138,11 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Account has no feed, so the main column takes the whole remainder. */
+.trim-dash__grid--wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* Rail */
 
 .trim-dash__rail {
@@ -133,7 +168,6 @@
   list-style: none;
 }
 
-/* Nav link. Icon on the left, so the label carries the meaning. */
 .trim-dash__link {
   display: flex;
   align-items: center;
@@ -177,13 +211,8 @@
   opacity: 1;
 }
 
-.trim-dash__link-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
 .trim-dash__link-label {
+  min-width: 0;
   font-size: 0.9375rem;
   font-weight: 700;
   line-height: 1.3;
@@ -191,7 +220,8 @@
   color: var(--trim-black);
 }
 
-/* Identity at the foot of the rail. Doubles as the Account link. */
+/* Identity */
+
 .trim-dash__identity {
   flex: 0 0 auto;
   padding-top: 0.85rem;
@@ -258,8 +288,13 @@
   white-space: nowrap;
 }
 
-/* Addresses have no break opportunities, and truncating identified nobody. */
+/* Addresses have no break opportunities, and truncating identified nobody.
+   Clamped at two lines so a long address cannot push the rail taller than
+   its own column. */
 .trim-dash__identity-email {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   font-size: 0.75rem;
   line-height: 1.3;
   color: var(--trim-black);
@@ -291,16 +326,12 @@
   outline: none;
 }
 
-/* Middle feed */
+/* Activity feed */
 
 .trim-dash__feed {
   min-width: 0;
   overflow-y: auto;
   border-right: 1px solid var(--dash-line);
-}
-
-.trim-dash__feed[hidden] {
-  display: none;
 }
 
 .trim-dash__feed-title {
@@ -359,8 +390,16 @@
   background-color: var(--trim-white);
 }
 
+/* Account centres itself in the main column. The child uses margin:auto rather
+   than align-items:center, which would clip the top of a block taller than the
+   viewport instead of letting it scroll. */
+.trim-dash__main--centred {
+  display: flex;
+}
+
 .trim-section {
   max-width: 60rem;
+  margin: 0 auto;
   padding: var(--dash-pad) var(--dash-pad) 4rem;
 }
 
@@ -384,6 +423,134 @@
   line-height: 1.65;
   color: var(--trim-black);
   opacity: 0.7;
+}
+
+/* Notification panel */
+
+.trim-notify__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background-color: rgb(0 0 0 / 25%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms;
+}
+
+.trim-notify__scrim--on {
+  opacity: 1;
+  visibility: visible;
+}
+
+.trim-notify {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: min(24rem, 100%);
+  border-left: 1px solid var(--dash-line);
+  background-color: var(--trim-white);
+  box-shadow: -12px 0 32px rgb(0 0 0 / 10%);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1), visibility 260ms;
+}
+
+.trim-notify--open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.trim-notify__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex: 0 0 auto;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--dash-line);
+}
+
+.trim-notify__title {
+  margin: 0;
+  font-size: var(--dash-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.6;
+}
+
+.trim-notify__close {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  cursor: pointer;
+}
+
+.trim-notify__close:hover,
+.trim-notify__close:focus-visible {
+  background-color: rgb(0 0 0 / 8%);
+  outline: none;
+}
+
+.trim-notify__list {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.trim-notify__item {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--dash-line);
+}
+
+.trim-notify__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.3rem;
+}
+
+.trim-notify__item-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--trim-black);
+}
+
+.trim-notify__item-body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--trim-black);
+  opacity: 0.7;
+}
+
+.trim-notify__when {
+  flex: 0 0 auto;
+  font-size: var(--dash-label);
+  color: var(--trim-black);
+  opacity: 0.45;
+}
+
+/* Unread marker: a left bar plus the bold title, not colour alone. */
+.trim-notify__item--unread {
+  border-left: 3px solid var(--trim-orange);
+  padding-left: calc(1.1rem - 3px);
 }
 
 /* Cards */
@@ -548,6 +715,7 @@
 }
 
 /* Two cards side by side; single column left the pane half empty. */
+
 .trim-overview__bottom {
   display: grid;
   gap: 1.25rem;
@@ -733,6 +901,7 @@
 }
 
 /* Scale note. The mark is on the same scale as the bars. */
+
 .trim-card__scale {
   display: flex;
   align-items: center;
@@ -861,6 +1030,30 @@
   opacity: 0.7;
 }
 
+/* Result */
+
+.trim-result {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+}
+
+.trim-result strong {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--trim-black);
+}
+
+.trim-result__confidence {
+  font-size: var(--dash-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--trim-orange);
+}
+
 /* AI answers */
 
 .trim-answers {
@@ -898,28 +1091,6 @@
   opacity: 0.75;
 }
 
-.trim-result {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin: 0 0 0.75rem;
-}
-
-.trim-result strong {
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--trim-black);
-}
-
-.trim-result__confidence {
-  font-size: var(--dash-label);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--trim-orange);
-}
-
 /* Facts list */
 
 .trim-facts {
@@ -951,21 +1122,32 @@
   grid-column: 1 / -1;
 }
 
-/* Account has no feed, so its cards lay out in two columns. */
+/* Account */
+
+/* Account. A fixed, readable measure centred in the main column, rather than
+   stretched across whatever width is left over. */
+.trim-account-page {
+  width: min(100%, 44rem);
+  margin: auto;
+  padding: clamp(1.5rem, 4vh, 3rem) clamp(1.25rem, 2.2vw, 2rem);
+}
+
 .trim-account {
   display: grid;
   gap: 1.25rem;
-  align-items: start;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
 }
 
 .trim-account .trim-card {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 0;
 }
 
-.trim-card__action {
-  margin-top: 1.15rem;
-  padding: 0.55rem 1rem;
+.trim-account__signout {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.4rem;
   border: 1px solid var(--dash-line);
   border-radius: 3px;
   background: none;
@@ -979,8 +1161,8 @@
   transition: background-color 150ms ease, color 150ms ease;
 }
 
-.trim-card__action:hover,
-.trim-card__action:focus-visible {
+.trim-account__signout:hover,
+.trim-account__signout:focus-visible {
   background-color: var(--trim-black);
   color: var(--trim-white);
   outline: none;
@@ -1105,16 +1287,14 @@
 /* Breakpoints */
 
 /* Tablet: the rail becomes permanent. The feed waits for more width. */
+
 @media (min-width: 48rem) {
   .trim-dash__rail-toggle {
     display: none;
   }
 
-  .trim-dash__grid {
-    grid-template-columns: var(--dash-rail) minmax(0, 1fr);
-  }
-
-  .trim-dash__grid--no-feed {
+  .trim-dash__grid,
+  .trim-dash__grid--wide {
     grid-template-columns: var(--dash-rail) minmax(0, 1fr);
   }
 
@@ -1128,18 +1308,16 @@
     grid-template-columns: var(--dash-rail) var(--dash-feed) minmax(0, 1fr);
   }
 
-  /* The feed track is removed outright. Left in the template while hidden, it
-     collapsed the main pane. */
-  .trim-dash__grid--no-feed {
+  /* Repeated here, not just at 48rem. This rule sits later in the file with the
+     same specificity, so without it the three column template above wins and
+     Account gets an empty feed track back. */
+  .trim-dash__grid--wide {
     grid-template-columns: var(--dash-rail) minmax(0, 1fr);
-  }
-
-  .trim-dash__feed {
-    display: block;
   }
 }
 
 /* Phone: the rail is a dropdown, closed until toggled. */
+
 @media (max-width: 47.99rem) {
   .trim-dash__grid {
     position: relative;
@@ -1166,6 +1344,7 @@
 }
 
 /* Phones: the table stacks into rows. Five columns at 375px is unreadable. */
+
 @media (max-width: 40rem) {
   .trim-table thead {
     display: none;

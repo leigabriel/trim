@@ -35,40 +35,46 @@ const Welcome: React.FC = () => {
     <IonPage>
       <IonContent>
         <main className="trim-welcome">
-          <form className="trim-welcome__form" onSubmit={handleSubmit}>
-            <h1 className="trim-welcome__title">What should we call you?</h1>
+          <div className="trim-welcome__inner">
+            <form className="trim-welcome__form" onSubmit={handleSubmit}>
+              <h1 className="trim-welcome__title">What should we call you?</h1>
 
-            <label className="trim-welcome__label" htmlFor="trim-username">
-              Username
-            </label>
-
-            <input
-              id="trim-username"
-              className="trim-welcome__input"
-              value={value}
-              onChange={(event) => setValue(event.target.value)}
-              placeholder="yourname"
-              autoComplete="username"
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck={false}
-              disabled={isSaving}
-            />
-
-            {error && (
-              <p className="trim-welcome__error" role="alert">
-                {error}
+              <p className="trim-welcome__lede">
+                Pick a name for your Trim profile. You can change it later.
               </p>
-            )}
 
-            <button className="trim-welcome__submit" type="submit" disabled={isSaving}>
-              {isSaving ? 'Saving' : 'Continue'}
-            </button>
+              <label className="trim-welcome__label" htmlFor="trim-username">
+                Username
+              </label>
 
-            <p className="trim-welcome__hint">
-              3 to 24 characters. Lowercase letters, numbers and underscores.
-            </p>
-          </form>
+              <input
+                id="trim-username"
+                className="trim-welcome__input"
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
+                placeholder="yourname"
+                autoComplete="username"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                disabled={isSaving}
+              />
+
+              {error && (
+                <p className="trim-welcome__error" role="alert">
+                  {error}
+                </p>
+              )}
+
+              <button className="trim-welcome__submit" type="submit" disabled={isSaving}>
+                {isSaving ? 'Saving' : 'Continue'}
+              </button>
+
+              <p className="trim-welcome__hint">
+                3 to 24 characters. Lowercase letters, numbers and underscores.
+              </p>
+            </form>
+          </div>
         </main>
       </IonContent>
     </IonPage>

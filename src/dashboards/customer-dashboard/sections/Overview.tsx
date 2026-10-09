@@ -1,5 +1,5 @@
-import { SectionHead } from './Section';
-import { OVERVIEW_METRICS, SAVED_STYLES } from './data';
+import { OVERVIEW_METRICS, SAVED_STYLES } from '../data';
+import SectionHead from './SectionHead';
 import TrendChart from './TrendChart';
 
 /**

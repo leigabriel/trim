@@ -1,50 +1,13 @@
-import { useAuth } from '../../auth/AuthProvider';
+import { useAuth } from '../../../auth/AuthProvider';
 
 /**
- * Identity block at the foot of the rail, and the only route into Account.
- * The section is absent from the nav list above, because two entries for one
- * page was the confusing part.
+ * Account. Reads the Supabase session and profile.
+ *
+ * Centred and width-capped rather than filling the pane: this is a settings
+ * page, not a dashboard, and stretching four short cards across 1000px left
+ * them as a row of thin slivers.
  */
-export const AccountRail: React.FC<{
-  isCurrent: boolean;
-  onOpen: () => void;
-}> = ({ isCurrent, onOpen }) => {
-  const { session, profile, signOut } = useAuth();
-
-  const name = profile?.username ?? profile?.displayName ?? 'Guest';
-  const initial = name.charAt(0).toUpperCase();
-
-  return (
-    <div className={`trim-dash__identity${isCurrent ? ' trim-dash__identity--current' : ''}`}>
-      <button
-        className="trim-dash__identity-open"
-        type="button"
-        onClick={onOpen}
-        aria-current={isCurrent ? 'page' : undefined}
-      >
-        {profile?.avatarUrl ? (
-          <img className="trim-dash__identity-avatar" src={profile.avatarUrl} alt="" />
-        ) : (
-          <span className="trim-dash__identity-initial" aria-hidden="true">
-            {initial}
-          </span>
-        )}
-
-        <span className="trim-dash__identity-text">
-          <span className="trim-dash__identity-name">{name}</span>
-          <span className="trim-dash__identity-email">{session?.user.email}</span>
-        </span>
-      </button>
-
-      <button className="trim-dash__identity-out" type="button" onClick={signOut}>
-        Logout
-      </button>
-    </div>
-  );
-};
-
-/** Account panel. Reads the Supabase session and profile. */
-export const AccountDetail: React.FC = () => {
+const Account: React.FC = () => {
   const { session, profile, signOut } = useAuth();
 
   const created = session?.user.created_at
@@ -56,7 +19,7 @@ export const AccountDetail: React.FC = () => {
     : null;
 
   return (
-    <>
+    <div className="trim-account-page">
       <header className="trim-section__head">
         <h1 className="trim-section__title">Account</h1>
         <p className="trim-section__lede">
@@ -120,11 +83,14 @@ export const AccountDetail: React.FC = () => {
               <dd>Signed in</dd>
             </div>
           </dl>
-          <button className="trim-card__action" type="button" onClick={signOut}>
-            Log out of Trim
-          </button>
         </div>
       </div>
-    </>
+
+      <button className="trim-account__signout" type="button" onClick={signOut}>
+        Log out of Trim
+      </button>
+    </div>
   );
 };
+
+export default Account;

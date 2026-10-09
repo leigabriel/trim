@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import './IntroOverlay.css';
 
@@ -13,11 +14,19 @@ const DURATION_MS = 3000;
 /** Eased ramp, so the counter settles rather than ticking linearly. */
 const ease = (t: number) => 1 - (1 - t) ** 3;
 
+/**
+ * Full-screen intro.
+ *
+ * Portalled to document.body on purpose. Rendered inline it sat inside
+ * IonRouterOutlet, where the page wrapper carries a transform during route
+ * transitions. A transformed ancestor becomes the containing block for
+ * position:fixed, so the overlay was sized to the page box rather than the
+ * viewport, and the counter drifted away from the corner.
+ */
 const IntroOverlay: React.FC<IntroOverlayProps> = ({ onDone }) => {
   const [display, setDisplay] = useState(0);
-  // The overlay is fixed and covers the app, so it must unmount itself.
-  // Firing onDone is not enough: the parent only flips the hero's flag, and
-  // the overlay keeps painting over everything.
+  // The overlay covers the app, so it must unmount itself. Firing onDone is
+  // not enough: the parent only flips the hero's flag.
   const [isDone, setIsDone] = useState(false);
 
   // Refs, so a parent re-render does not restart the animation.
@@ -58,14 +67,23 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ onDone }) => {
 
   if (isDone) return null;
 
-  return (
-    <div className="trim-intro">
-      <img className="trim-intro__mark" src="/icon-intro.png" alt="" />
+  return createPortal(
+    <div className="trim-intro" role="status" aria-label="Loading Trim">
+      {/* The alpha variant. The original PNG has no alpha channel, so on this
+          black overlay it rendered as an opaque white square. */}
+      <img
+        className="trim-intro__mark"
+        src="/icon-intro-alpha.png"
+        alt=""
+        width={512}
+        height={512}
+      />
 
       <output className="trim-intro__number" aria-live="polite">
         {String(display).padStart(3, '0')}
       </output>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

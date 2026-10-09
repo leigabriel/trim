@@ -75,22 +75,37 @@ const AuthCallback: React.FC = () => {
 
                   {!error && isSignedIn && (
                       <div className="trim-callback__panel">
+                          <span className="trim-callback__tick" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+                                  <path
+                                      d="M5 13l4.5 4.5L19 7"
+                                      stroke="currentColor"
+                                      strokeWidth="2.25"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                  />
+                              </svg>
+                          </span>
+
                           <h1 className="trim-callback__title">
-                              You are signed in.
+                              You&apos;re signed in to Trim
                           </h1>
-                          {/* <p className="trim-callback__note">
-                              You are signed in.
-                          </p> */}
+
+                          <p className="trim-callback__note">
+                              Your Google account is connected. Next, choose a username for
+                              your profile, then Trim will start matching styles to your face
+                              shape.
+                          </p>
 
                           <div className="trim-callback__actions">
                               <button
                                   className="trim-callback__primary"
                                   type="button"
                                   onClick={() =>
-                                      navigate("/dashboard", { replace: true })
+                                      navigate("/welcome", { replace: true })
                                   }
                               >
-                                  Go to Dashboard
+                                  Continue
                               </button>
 
                               <button

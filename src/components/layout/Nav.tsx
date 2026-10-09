@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAuth } from '../../auth/AuthProvider';
-import LoginModal from './LoginModal';
+import LoginModal from './modals/LoginModal';
 import './Nav.css';
 
 /** `tone` matches the page behind the nav: dark text on the hero, light on black. */
@@ -11,71 +11,30 @@ interface NavProps {
 }
 
 /**
- * Site nav. Fixed to the top of the viewport and never hides on scroll. There
- * is no second page to link to, so the menu carries the account entry only.
+ * Site nav. Fixed to the top of the viewport and never hides on scroll.
+ *
+ * No hamburger. The account control is the only entry, and it sits in the bar
+ * at every width: an avatar when signed in, the login word when not. A panel
+ * holding one link was a second place to look for the same thing.
  */
 const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
   const { session, profile } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const toggleRef = useRef<HTMLButtonElement>(null);
 
-  // Escape closes the panel and restores focus to the toggle.
-  useEffect(() => {
-    if (!isMenuOpen) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      setIsMenuOpen(false);
-      toggleRef.current?.focus();
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isMenuOpen]);
-
-  const closeMenu = () => setIsMenuOpen(false);
-
-  const openLogin = () => {
-    closeMenu();
-    setIsLoginOpen(true);
-  };
+  const name = profile?.username ?? profile?.displayName ?? 'your account';
 
   return (
     <>
-      <header
-        className={`trim-nav trim-nav--${tone}${isMenuOpen ? ' trim-nav--open' : ''}`}
-      >
-        <Link className="trim-nav__brand" to="/home" aria-label="Trim, home" onClick={closeMenu}>
+      <header className={`trim-nav trim-nav--${tone}`}>
+        <Link className="trim-nav__brand" to="/home" aria-label="Trim, home">
           <span aria-hidden="true">T</span>
         </Link>
 
-        <button
-          ref={toggleRef}
-          className="trim-nav__toggle"
-          type="button"
-          aria-expanded={isMenuOpen}
-          aria-controls="trim-nav-menu"
-          onClick={() => setIsMenuOpen((open) => !open)}
-        >
-          <span className="trim-nav__toggle-icon" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-          <span className="trim-visually-hidden">{isMenuOpen ? 'Close menu' : 'Open menu'}</span>
-        </button>
-
-        <nav className="trim-nav__menu" id="trim-nav-menu" aria-label="Main">
+        <nav className="trim-nav__menu" aria-label="Main">
           <ul className="trim-nav__links">
             {session ? (
               <li>
-                <Link
-                  className="trim-nav__avatar"
-                  to="/dashboard"
-                  aria-label={`Dashboard, signed in as ${profile?.username ?? profile?.displayName ?? 'your account'}`}
-                  onClick={closeMenu}
-                >
+                <Link className="trim-nav__avatar" to="/dashboard" aria-label={`Dashboard, signed in as ${name}`}>
                   {profile?.avatarUrl ? (
                     <img src={profile.avatarUrl} alt="" />
                   ) : (
@@ -90,7 +49,7 @@ const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
                 <button
                   className="trim-nav__link trim-nav__link--button"
                   type="button"
-                  onClick={openLogin}
+                  onClick={() => setIsLoginOpen(true)}
                 >
                   login
                 </button>
