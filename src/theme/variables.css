@@ -1,7 +1,7 @@
 @import './fonts.css';
 @import './cursor.css';
 
-/* Palette sampled from reference/hero-section.png. Trim is a fixed light identity, so Ionic palettes stay light. */
+/* Sampled from reference/hero-section.png. Fixed light identity. */
 
 :root {
   --ion-background-color: #ffffff;
@@ -20,7 +20,7 @@
   --trim-nav-height: clamp(5rem, 9vw, 7rem);
 }
 
-/* Full-page black shell behind the auth guard's loading branch. */
+/* Black shell behind the auth guard's loading branch. */
 .trim-guard {
   min-height: 100%;
   background-color: var(--trim-black);

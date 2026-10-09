@@ -1,4 +1,4 @@
-/* Backdrop layer: sits behind the footer copy, never intercepts the pointer. */
+/* Backdrop layer. Never intercepts the pointer. */
 .trim-keychain {
   position: absolute;
   inset: 0;

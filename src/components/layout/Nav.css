@@ -1,4 +1,4 @@
-/* Always fixed to the top of the viewport: never hides on scroll. */
+/* Fixed to the top of the viewport. Never hides on scroll. */
 .trim-nav {
   position: fixed;
   top: 0;
@@ -25,7 +25,7 @@
   color: var(--trim-white);
 }
 
-/* Brand and links share the black wipe on hover. */
+/* Brand and links share the black wipe. */
 .trim-nav__brand,
 .trim-nav__link {
   position: relative;
@@ -61,8 +61,7 @@
   transform: scaleY(1);
 }
 
-/* On a black page the wipe is invisible against the background, so it inverts:
-   orange fill with white text. */
+/* On black the wipe is invisible, so it inverts to an orange fill. */
 .trim-nav--light .trim-nav__brand::before,
 .trim-nav--light .trim-nav__link::before {
   background-color: var(--trim-orange);
@@ -115,7 +114,7 @@
   outline-offset: 2px;
 }
 
-/* Login is a real button, so it needs the UA chrome stripped. */
+/* A real button, so strip the UA chrome. */
 .trim-nav__link--button {
   padding: 0.12em 0.28em;
   border: 0;
@@ -133,7 +132,7 @@
   outline-offset: 2px;
 }
 
-/* Signed-in account marker, in place of the login word. */
+/* Account marker, in place of the login word. */
 .trim-nav__avatar {
   display: grid;
   place-items: center;
@@ -238,8 +237,7 @@
     font-size: 1.75rem;
   }
 
-  /* Hamburger icon only, no background block. Colour follows the tone: black over
-     the orange hero, white over the black about page. */
+  /* Icon only, no background block. Colour follows the tone. */
   .trim-nav--dark .trim-nav__toggle {
     background: none;
     color: var(--trim-black);
@@ -250,7 +248,7 @@
     color: var(--trim-white);
   }
 
-  /* Orange wipe would disappear into the black panel, so it stays black-on-white. */
+  /* An orange wipe would vanish into the black panel. */
   .trim-nav--light .trim-nav__menu .trim-nav__brand::before,
   .trim-nav--light .trim-nav__menu .trim-nav__link::before {
     background-color: var(--trim-white);

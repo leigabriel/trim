@@ -10,8 +10,8 @@ const ANIMATION_NAME = 'Mocha_Spin_360';
 const NARROW = 768;
 
 /**
- * Decorative keychain backdrop for the footer. Plays the authored
- * Mocha_Spin_360 clip and adds a slow pointer-driven turn on top.
+ * Decorative footer backdrop. Plays the authored Mocha_Spin_360 clip and
+ * adds a slow pointer-driven turn on top.
  */
 const Keychain: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -27,8 +27,7 @@ const Keychain: React.FC = () => {
 
     const pointer = new THREE.Vector2();
 
-    // Deferred: the footer sits below three full sections, so nothing is gained
-    // by paying the renderer setup cost during the initial mount.
+    // Deferred: the footer sits below three sections, so setup can wait.
     const cancelBuild = afterPaint(() => {
       if (!isAlive) return;
 
@@ -47,8 +46,7 @@ const Keychain: React.FC = () => {
 
       const fit = () => {
         if (size.lengthSq() === 0) return;
-        // On wide screens the copy sits in the left half, so shift the chain
-        // into the empty right side instead of letting it run through the labels.
+        // On wide screens the copy is in the left half, so shift right.
         pivot.position.x = mount.clientWidth < NARROW ? 0 : size.x * 0.22;
 
         const isNarrow = mount.clientWidth < NARROW;
@@ -79,8 +77,7 @@ const Keychain: React.FC = () => {
         const root = gltf.scene;
         pivot.add(root);
 
-        // Centre on the bounding box. Scaling the model instead would break the
-        // normals on the thin acrylic tags.
+        // Centre on the bounding box; scaling would break the tag normals.
         root.updateWorldMatrix(true, true);
         box.setFromObject(root);
         box.getSize(size);
@@ -100,7 +97,7 @@ const Keychain: React.FC = () => {
 
         mixer.update(clock.getDelta());
 
-        // Slow drift on top of the authored spin, not a replacement for it.
+        // Slow drift layered on the authored spin.
         pivot.rotation.y = pointer.x * 0.35 + clock.elapsedTime * 0.02;
         pivot.rotation.x = -pointer.x * 0.06;
 

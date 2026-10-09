@@ -12,7 +12,7 @@
   height: auto;
 }
 
-/* Bottom left load counter. */
+/* Bottom left counter. */
 .trim-intro__number {
   position: absolute;
   bottom: clamp(1rem, 3.5vw, 2.5rem);

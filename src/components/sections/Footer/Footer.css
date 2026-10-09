@@ -1,12 +1,10 @@
-/* Sits in normal flow after the styles grid: no pinning, no overlap. Sticking
-   it behind the styles section left it without enough scroll travel to ever
-   settle, so its top stayed above the viewport and the nav links were cut off. */
+/* Normal flow after the styles grid. A pinned layer left too little scroll
+   travel to settle, so its top stayed above the viewport. */
 .trim-footer {
   position: relative;
   z-index: 1;
   display: flex;
-  /* One full screen, and it grows rather than clipping if the content needs
-     more room on a short or narrow viewport. */
+  /* One screen, growing rather than clipping on a short viewport. */
   min-height: 100vh;
   min-height: 100svh;
   overflow: hidden;
@@ -25,13 +23,11 @@
   padding: var(--trim-gutter);
 }
 
-/* No monospace face ships with the project, so the wide-tracked Inter stands in
-   for the design's mono labels. */
+/* No monospace face in the project, so tracked Inter stands in. */
 .trim-footer__nav {
   display: flex;
   flex: 1 1 auto;
-  /* min-height:0 lets the nav shrink instead of pushing the wordmark off the
-     bottom of a short viewport. */
+  /* min-height:0 lets the nav shrink instead of pushing the wordmark off. */
   min-height: 0;
   flex-direction: column;
   justify-content: center;
@@ -86,12 +82,10 @@
 }
 
 .trim-footer__label {
-  /* min-width:0 lets the flex item shrink so long labels wrap rather than
-     pushing the row wider than the viewport. */
+  /* min-width:0 lets the item shrink so long labels wrap. */
   min-width: 0;
   font-family: var(--trim-font-display);
-  /* Sized against the viewport height as well as width: on a short landscape
-     phone the width term alone would overflow the screen. */
+  /* Sized against height too: the width term alone overflows a landscape phone. */
   font-size: min(clamp(1.5rem, 5.2vw, 3.5rem), 9svh);
   font-weight: 400;
   line-height: 1.1;
@@ -103,6 +97,32 @@
   display: flex;
   flex-direction: column;
   gap: clamp(0.375rem, 1.5vh, 1rem);
+}
+
+/* Bottom band. The map sits hard against the right edge. */
+.trim-footer__foot {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: clamp(2rem, 5vh, 4rem);
+}
+
+.trim-footer__foot .trim-location {
+  width: min(26rem, 42vw);
+}
+
+/* Location was built for a light page; on black the frame must turn white. */
+.trim-footer__foot .trim-location__frame {
+  border-color: var(--trim-white);
+}
+
+/* Tighter gap: the section default is sized for a full page column. */
+.trim-footer__foot .trim-location {
+  gap: clamp(0.75rem, 1.6vw, 1.25rem);
+}
+
+.trim-footer__foot .trim-location__title {
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
 }
 
 .trim-footer__socials {
@@ -129,9 +149,8 @@
   outline: none;
 }
 
-/* The inspo sized its wordmark to fill the width with an 18-character string.
-   "trim" is four characters, so it needs a far larger face to reach the same
-   edge-to-edge span. The vh term keeps it inside short landscape viewports. */
+/* The inspo filled the width with 18 characters; "trim" is four, so it needs a
+   far larger face for the same span. The vh term keeps it inside landscape. */
 .trim-footer__wordmark {
   display: block;
   width: 100%;
@@ -155,8 +174,7 @@
   transform: translateY(-0.06em);
 }
 
-/* Tablet: the wordmark still spans the full width, but the labels and socials
-   come down so three nav rows plus the wordmark fit one screen. */
+/* Tablet: labels and socials step down so one screen still fits. */
 @media (max-width: 64rem) {
   .trim-footer__label {
     font-size: min(clamp(1.375rem, 4.4vw, 2.5rem), 8svh);
@@ -181,8 +199,7 @@
   }
 }
 
-/* Short landscape phones: the viewport is the constraint, not the width, so
-   vertical padding collapses and every type size drops another step. */
+/* Short landscape: height is the constraint, so sizes drop a step. */
 @media (max-height: 34rem) and (orientation: landscape) {
   .trim-footer__nav {
     padding-block: 0.25rem;

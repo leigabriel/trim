@@ -27,10 +27,66 @@
 
 .trim-callback__back {
   padding: 0.75rem 1.5rem;
+  border: 1px solid var(--trim-white);
+  background: none;
+  color: var(--trim-white);
+  font-family: var(--trim-font-display);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.trim-callback__back:hover,
+.trim-callback__back:focus-visible {
+  background-color: var(--trim-white);
+  color: var(--trim-black);
+  outline: none;
+}
+
+/* Shown once the code has been exchanged. */
+.trim-callback__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trim-callback__title {
+  margin: 0;
+  font-family: var(--trim-font-display);
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1;
+  color: var(--trim-orange);
+}
+
+.trim-callback__note {
+  margin: 0 0 0.75rem;
+  font-family: var(--trim-font-sans);
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.trim-callback__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.trim-callback__primary {
+  padding: 0.75rem 1.5rem;
   border: 0;
   background-color: var(--trim-orange);
   color: var(--trim-white);
   font-family: var(--trim-font-display);
   font-size: 1.5rem;
   cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.trim-callback__primary:hover,
+.trim-callback__primary:focus-visible {
+  background-color: var(--trim-white);
+  color: var(--trim-black);
+  outline: none;
 }

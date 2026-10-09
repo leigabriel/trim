@@ -2,7 +2,7 @@ interface GoogleIconProps {
   className?: string;
 }
 
-/** Google "G" mark, decorative only. Labelled by the button text. */
+/** Google "G" mark. Decorative; the button text labels it. */
 const GoogleIcon: React.FC<GoogleIconProps> = ({ className }) => (
   <svg
     className={className}

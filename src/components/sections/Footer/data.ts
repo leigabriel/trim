@@ -5,9 +5,8 @@ export interface FooterLink {
 }
 
 export const FOOTER_LINKS: FooterLink[] = [
-  { index: '01', label: 'About', href: '/about' },
-//   { index: '02', label: 'Styles', href: '#styles' },
-  { index: '02', label: 'Download App', href: '/download' },
+//   { index: '01', label: 'Styles', href: '#styles' },
+  { index: '01', label: 'Download App', href: '/download' },
 ];
 
 export interface SocialLink {

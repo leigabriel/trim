@@ -2,19 +2,16 @@ import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 /**
- * Shared plumbing for the three.js mounts.
- *
- * Creating a renderer, generating a PMREM environment and compiling materials
- * all block the main thread for seconds. Doing that inside the React commit
- * froze the page for 3-5s on every navigation, so mounts here build their stage
- * after the first paint and stop rendering whenever they are off screen.
+ * Shared plumbing for the three.js mounts. Building a renderer, an environment
+ * and compiled materials blocks for seconds, which froze the page on every
+ * navigation, so stages are built after the first paint and pause off screen.
  */
 
-/** Defers work until after the browser has painted the new frame. */
+/** Defers work until after the new frame paints. */
 export const afterPaint = (fn: () => void) => {
   let cancelled = false;
   const id = window.requestAnimationFrame(() => {
-    // A second frame guarantees the paint has actually happened.
+    // A second frame guarantees the paint landed.
     window.requestAnimationFrame(() => {
       if (!cancelled) fn();
     });
@@ -33,8 +30,8 @@ export interface Stage {
 }
 
 /**
- * Builds the renderer, lights and environment. Returns null when the mount has
- * no box yet, which is a normal transient during route transitions.
+ * Builds the renderer, lights and environment. Null when the mount has no box
+ * yet, which is normal during route transitions.
  */
 export const createStage = (mount: HTMLElement, fov = 35): Stage | null => {
   if (!mount.clientWidth || !mount.clientHeight) return null;
@@ -55,7 +52,7 @@ export const createStage = (mount: HTMLElement, fov = 35): Stage | null => {
   rimLight.position.set(-3, -1, -3);
   scene.add(rimLight);
 
-  // Metals and acrylic need an environment or they render as flat colour.
+  // Without an environment, metal and acrylic render flat.
   const pmrem = new THREE.PMREMGenerator(renderer);
   const envMap = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environment = envMap;
@@ -75,8 +72,8 @@ export const createStage = (mount: HTMLElement, fov = 35): Stage | null => {
 };
 
 /**
- * Reports whether an element is on screen. Ionic keeps previous pages in the
- * DOM, so without this their render loops keep burning CPU in the background.
+ * Whether an element is on screen. Ionic keeps previous pages mounted, so
+ * without this their loops keep burning CPU.
  */
 export const watchVisibility = (element: HTMLElement, onChange: (visible: boolean) => void) => {
   const observer = new IntersectionObserver(
@@ -87,7 +84,7 @@ export const watchVisibility = (element: HTMLElement, onChange: (visible: boolea
   return () => observer.disconnect();
 };
 
-/** Disposes the GPU resources under a node, including any textures. */
+/** Disposes GPU resources under a node, textures included. */
 export const disposeNode = (node: THREE.Object3D) => {
   node.traverse((child) => {
     const mesh = child as THREE.Mesh;

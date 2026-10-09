@@ -5,21 +5,20 @@ import { IonReactRouter } from '@ionic/react-router';
 import { AuthProvider } from './auth/AuthProvider';
 import { RequireAuth } from './auth/RequireAuth';
 import IntroOverlay from './components/layout/IntroOverlay';
-import About from './pages/About';
 import AuthCallback from './pages/AuthCallback';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/dashboard/Dashboard';
 import Home from './pages/Home';
 import Welcome from './pages/Welcome';
 
-/* Core CSS required for Ionic components to work properly */
+/* Required by Ionic components */
 import '@ionic/react/css/core.css';
 
-/* Basic CSS for apps built with Ionic */
+/* Ionic base styles */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 
-/* Optional CSS utils that can be commented out */
+/* Optional Ionic utils */
 import '@ionic/react/css/padding.css';
 import '@ionic/react/css/float-elements.css';
 import '@ionic/react/css/text-alignment.css';
@@ -27,25 +26,16 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Ionic dark palette: always, or class-based. */
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
 import '@ionic/react/css/palettes/dark.system.css';
 
-/* Theme variables */
+/* Theme */
 import './theme/variables.css';
 
 setupIonicReact();
-
-// The model assets exceed the localStorage quota, so this only records that
-// they have been fetched once. The HTTP cache handles the bytes.
-const MODEL_CACHE_KEY = 'trim.models.ready';
 
 const HomeRoute: React.FC<{
   isEntered: boolean;
@@ -55,38 +45,18 @@ const HomeRoute: React.FC<{
   <Home isEntered={isEntered} onProgress={onProgress} onModelsReady={onModelsReady} />
 );
 
-/** Owns the loading state, which only the home page has anything to load. */
+/**
+ * Owns the intro. A fixed three second animation, so it no longer waits on the
+ * hero models; the hero fades in when the intro clears.
+ */
 const HomeWithLoader: React.FC = () => {
   const [isEntered, setIsEntered] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [isModelReady, setIsModelReady] = useState(false);
-  const [isWarm] = useState(() => {
-    try {
-      return window.localStorage.getItem(MODEL_CACHE_KEY) !== null;
-    } catch {
-      return false;
-    }
-  });
-
-  const handleReady = () => {
-    setProgress(1);
-    setIsModelReady(true);
-  };
 
   return (
     <>
-      <IntroOverlay
-        progress={progress}
-        isModelReady={isModelReady}
-        isWarm={isWarm}
-        onDone={() => setIsEntered(true)}
-      />
+      <IntroOverlay onDone={() => setIsEntered(true)} />
 
-      <HomeRoute
-        isEntered={isEntered}
-        onProgress={setProgress}
-        onModelsReady={handleReady}
-      />
+      <HomeRoute isEntered={isEntered} onProgress={() => {}} onModelsReady={() => {}} />
     </>
   );
 };
@@ -94,19 +64,14 @@ const HomeWithLoader: React.FC = () => {
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      {/* Inside IonReactRouter, not outside: AuthProvider calls useNavigate,
-          which needs a Router ancestor. */}
+      {/* Inside IonReactRouter: AuthProvider calls useNavigate. */}
       <AuthProvider>
         <IonRouterOutlet>
-          {/* The intro overlay lives inside the home route: it waits on the hero
-              models, and on any other page nothing would ever flip them, so it
-              sat over the content until its own timeout fired. */}
+          {/* The intro lives inside the home route. */}
           <Route path="/home" element={<HomeWithLoader />} />
-          <Route path="/about" element={<About />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/welcome" element={<Welcome />} />
-          {/* Dashboard is an IonPage and RequireAuth is not, so the guard sits
-              outside it here rather than wrapping it inside its IonContent. */}
+          {/* The guard wraps the IonPage rather than sitting inside its content. */}
           <Route
             path="/dashboard"
             element={

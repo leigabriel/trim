@@ -9,13 +9,12 @@
   min-height: 100svh;
   padding: var(--trim-gutter);
   overflow: hidden;
-  /* Black sits behind the video as the colour to decode into and the fallback
-     if the clip never loads. */
+  /* Black is both the decode target and the pre-clip fallback. */
   background-color: var(--trim-black);
   color: var(--trim-white);
 }
 
-/* Cover fills the pinned area; object-fit keeps the framing on tall viewports. */
+/* Cover fills the pinned area on tall viewports. */
 .trim-about__video {
   position: absolute;
   inset: 0;
@@ -26,8 +25,7 @@
   pointer-events: none;
 }
 
-/* Light enough to keep the clip readable, dark enough for the copy to sit on.
-   Heavier in the middle band where the text lands. */
+/* Scrim: readable over highlights, heavier where the text lands. */
 .trim-about::after {
   content: '';
   position: absolute;
@@ -43,8 +41,7 @@
 }
 
 .trim-about__copy {
-  /* Positioned so it stacks above the scrim pseudo-element, which otherwise
-     paints over unpositioned content. */
+  /* Above the scrim pseudo-element, which would paint over it. */
   position: relative;
   z-index: 2;
   justify-self: center;
@@ -61,8 +58,8 @@
 }
 
 @media (max-width: 48rem) {
-  /* A full-height backdrop crops the clip to a sliver on a portrait phone, so
-     the section takes the video's own 16:9 shape instead of the viewport's. */
+  /* A full-height backdrop crops the clip to a sliver on a portrait phone.
+     Uncomment to give the section the video's own 16:9 shape. */
   /* .trim-about {
     min-height: 0;
     aspect-ratio: 16 / 9;

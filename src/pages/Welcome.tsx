@@ -12,8 +12,8 @@ const Welcome: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Wait for the session read before redirecting, or a hard refresh here sends a
-  // signed-in customer back to /home before their session is known.
+  // Wait for the session read: a hard refresh would otherwise send a signed-in
+  // customer back to /home.
   if (!isLoading && !session) return <Navigate to="/home" replace />;
 
   const handleSubmit = async (event: React.FormEvent) => {

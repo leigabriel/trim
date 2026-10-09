@@ -1,4 +1,4 @@
-/* Full screen black sheet, matching the login reference. */
+/* Full screen black sheet. */
 .trim-login {
   --width: 100%;
   --height: 100%;
@@ -35,7 +35,7 @@
   border: 0;
   background: none;
   color: var(--trim-white);
-  /* font-family: var(--trim-font-display); */
+
   font-size: clamp(1.75rem, 3vw, 2.75rem);
   line-height: 1;
   cursor: pointer;
@@ -94,7 +94,7 @@
   transition: background-color 200ms ease, color 200ms ease;
 }
 
-/* Icon scales with the display font so it stays optically matched. */
+/* Icon scales with the display font. */
 .trim-login__google-icon {
   flex: 0 0 auto;
   width: 1.15em;
@@ -111,7 +111,7 @@
   outline-offset: 3px;
 }
 
-/* Now inside .trim-login__consent, which supplies the top margin. */
+/* The consent block supplies the top margin. */
 .trim-login__legal {
   margin: 0;
   font-family: var(--trim-font-sans);
@@ -126,7 +126,7 @@
   font-weight: 700;
 }
 
-/* The legal copy became the label of a real checkbox. */
+/* The legal copy is now a checkbox label. */
 .trim-login__consent {
   display: flex;
   align-items: flex-start;
@@ -147,6 +147,24 @@
 .trim-login__checkbox:focus-visible {
   outline: 2px solid var(--trim-white);
   outline-offset: 2px;
+}
+
+.trim-login__legal-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.trim-login__legal-link:hover,
+.trim-login__legal-link:focus-visible {
+  color: var(--trim-orange);
+  outline: none;
 }
 
 .trim-login__notice {

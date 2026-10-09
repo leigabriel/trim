@@ -3,54 +3,60 @@ import { useEffect, useRef, useState } from 'react';
 import './IntroOverlay.css';
 
 interface IntroOverlayProps {
-  progress: number;
-  isModelReady: boolean;
-  isWarm: boolean;
   onDone: () => void;
 }
 
-// The assets are far larger than the localStorage quota, so only a readiness
-// marker is cached. Repeat visits rely on the HTTP cache for the bytes.
-const CACHE_KEY = 'trim.models.ready';
-const MIN_MS = 900;
-const MAX_MS = 30000;
+// Fixed length. Not tied to model loading: the hero assets are tens of
+// megabytes, so the wait would be unpredictable on a cold cache.
+const DURATION_MS = 3000;
 
-const IntroOverlay: React.FC<IntroOverlayProps> = ({ progress, isModelReady, isWarm, onDone }) => {
+/** Eased ramp, so the counter settles rather than ticking linearly. */
+const ease = (t: number) => 1 - (1 - t) ** 3;
+
+const IntroOverlay: React.FC<IntroOverlayProps> = ({ onDone }) => {
+  const [display, setDisplay] = useState(0);
+  // The overlay is fixed and covers the app, so it must unmount itself.
+  // Firing onDone is not enough: the parent only flips the hero's flag, and
+  // the overlay keeps painting over everything.
   const [isDone, setIsDone] = useState(false);
-  // Held in a ref so the timers do not restart when the parent re-renders.
+
+  // Refs, so a parent re-render does not restart the animation.
   const onDoneRef = useRef(onDone);
   onDoneRef.current = onDone;
 
-  useEffect(() => {
-    if (!isModelReady && !isWarm) return;
+  const finishRef = useRef<() => void>(() => {});
+  finishRef.current = () => {
+    setIsDone(true);
+    onDoneRef.current();
+  };
 
-    try {
-      window.localStorage.setItem(CACHE_KEY, new Date().toISOString());
-    } catch {
-      // Private mode or quota exceeded; the intro still works without it.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setDisplay(100);
+      finishRef.current();
+      return;
     }
 
-    const done = () => {
-      setIsDone(true);
-      onDoneRef.current();
-    };
-    const id = window.setTimeout(done, MIN_MS);
-    return () => window.clearTimeout(id);
-  }, [isModelReady, isWarm]);
+    const start = performance.now();
+    let frame = 0;
 
-  // Never trap the user behind a stalled download.
-  useEffect(() => {
-    const id = window.setTimeout(() => {
-      setIsDone(true);
-      onDoneRef.current();
-    }, MAX_MS);
-    return () => window.clearTimeout(id);
+    const tick = () => {
+      const elapsed = performance.now() - start;
+      const ratio = Math.min(1, elapsed / DURATION_MS);
+      setDisplay(Math.round(ease(ratio) * 100));
+
+      if (ratio < 1) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+      finishRef.current();
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   if (isDone) return null;
-
-  // Warm start jumps straight to full; otherwise show real load progress.
-  const display = isWarm ? 100 : Math.min(100, Math.round(progress * 100));
 
   return (
     <div className="trim-intro">

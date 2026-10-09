@@ -8,7 +8,7 @@ interface HeroProps {
   onReady: () => void;
 }
 
-// Flat brand field, lede centred, wordmark bottom left, tagline bottom right.
+// Lede centred, wordmark bottom left, tagline bottom right.
 const Hero: React.FC<HeroProps> = ({ isEntered, onProgress, onReady }) => (
   <section className={`trim-hero${isEntered ? ' trim-hero--entered' : ''}`} aria-labelledby="trim-hero-title">
     <ToolModel isEntered={isEntered} onProgress={onProgress} onReady={onReady} />

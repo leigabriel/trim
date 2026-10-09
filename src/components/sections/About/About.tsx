@@ -2,12 +2,12 @@ import { useEffect, useRef } from 'react';
 
 import './About.css';
 
-// Pinned behind the hero, so it never enters the viewport on its own.
+// Pinned behind the hero, so it never enters the viewport alone.
 const About: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // The background clip is decorative, so it only decodes while it is on screen.
+  // Decorative clip, so it only decodes while on screen.
   useEffect(() => {
     const section = sectionRef.current;
     const video = videoRef.current;

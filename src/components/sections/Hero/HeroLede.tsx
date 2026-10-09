@@ -19,7 +19,7 @@ const WORDS = [
   'styles',
 ];
 
-// Builds the word markup once; the reveal is a separate effect.
+// Word markup built once; the reveal is a separate effect.
 const useLedeMarkup = (ref: React.RefObject<HTMLParagraphElement | null>) => {
   useEffect(() => {
     const node = ref.current;
@@ -27,7 +27,7 @@ const useLedeMarkup = (ref: React.RefObject<HTMLParagraphElement | null>) => {
 
     const frag = document.createDocumentFragment();
     WORDS.forEach((word, index) => {
-      // Mask wraps only the word; the space sits outside it so it is never clipped.
+      // Mask wraps the word only; the space sits outside it.
       const mask = document.createElement('span');
       mask.className = 'trim-hero__lede-mask';
       const inner = document.createElement('span');
@@ -41,7 +41,7 @@ const useLedeMarkup = (ref: React.RefObject<HTMLParagraphElement | null>) => {
   }, [ref]);
 };
 
-// Word-by-word reveal for the centred lede.
+// Word by word.
 const HeroLede: React.FC<HeroLedeProps> = ({ isEntered }) => {
   const ref = useRef<HTMLParagraphElement>(null);
 
@@ -55,8 +55,7 @@ const HeroLede: React.FC<HeroLedeProps> = ({ isEntered }) => {
     const words = node.querySelectorAll<HTMLElement>('.trim-hero__lede-word');
     if (words.length === 0) return;
 
-    // force3D keeps every word on its own compositor layer, so the animation
-    // never triggers layout or paint on the surrounding hero.
+    // force3D keeps each word on its own layer, so no layout or paint on the hero.
     const context = gsap.context(() => {
       gsap.fromTo(
         words,

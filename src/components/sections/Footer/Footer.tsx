@@ -1,12 +1,12 @@
+import Location from '../Location/Location';
 import Keychain from './Keychain';
 import { FOOTER_LINKS, SOCIAL_LINKS } from './data';
 import './Footer.css';
 
 const WORDMARK = 'Trim';
 
-// Sits after the styles grid in normal flow. Deliberately not a pinned back
-// layer: sticking it behind styles left it with too little scroll travel to
-// settle, so it clipped its own nav links.
+// Normal flow after the styles grid. A pinned back layer left it too little
+// scroll travel to settle, which clipped the nav links.
 const Footer: React.FC = () => (
   <section className="trim-footer" aria-labelledby="trim-footer-title">
     <Keychain />
@@ -48,6 +48,11 @@ const Footer: React.FC = () => (
             </span>
           ))}
         </h2>
+      </div>
+
+      {/* Bottom right of the footer, below the wordmark. */}
+      <div className="trim-footer__foot">
+        <Location />
       </div>
     </div>
   </section>

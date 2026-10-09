@@ -1,29 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useAuth } from '../../auth/AuthProvider';
 import LoginModal from './LoginModal';
 import './Nav.css';
 
-/** `tone` adapts the nav to the page behind it: the orange hero needs dark
- *  text, the black about page needs light text. */
+/** `tone` matches the page behind the nav: dark text on the hero, light on black. */
 interface NavProps {
   tone?: 'dark' | 'light';
 }
 
 /**
- * Site nav. Always fixed to the top of the viewport across every page, and no
- * longer hides on scroll. The single page link is derived from the current
- * route, so it always points at the other page rather than at itself.
+ * Site nav. Fixed to the top of the viewport and never hides on scroll. There
+ * is no second page to link to, so the menu carries the account entry only.
  */
 const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
   const { session, profile } = useAuth();
-  const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
-  // Escape closes the panel and returns focus to the toggle.
+  // Escape closes the panel and restores focus to the toggle.
   useEffect(() => {
     if (!isMenuOpen) return;
 
@@ -43,10 +40,6 @@ const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
     closeMenu();
     setIsLoginOpen(true);
   };
-
-  // One link only, pointing at the page you are not already on.
-  const isAbout = pathname.startsWith('/about');
-  const pageLink = isAbout ? { to: '/home', label: 'home' } : { to: '/about', label: 'about' };
 
   return (
     <>
@@ -75,11 +68,6 @@ const Nav: React.FC<NavProps> = ({ tone = 'dark' }) => {
 
         <nav className="trim-nav__menu" id="trim-nav-menu" aria-label="Main">
           <ul className="trim-nav__links">
-            <li>
-              <Link className="trim-nav__link" to={pageLink.to} onClick={closeMenu}>
-                {pageLink.label}
-              </Link>
-            </li>
             {session ? (
               <li>
                 <Link

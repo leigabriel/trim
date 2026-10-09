@@ -14,7 +14,7 @@
     width: 100%;
     height: 100%;
     background: transparent;
-    /* Re-enabled so the grab cursor shows over the model, while the container
+    /* Re-enabled for the grab cursor; the container
        stays transparent to hit testing. */
     pointer-events: auto;
 }

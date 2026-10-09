@@ -5,22 +5,21 @@ import { IonContent, IonPage } from '@ionic/react';
 import { supabase } from '../lib/supabase';
 import './AuthCallback.css';
 
-// Shared by the rejected exchange and the AuthError exchange: the customer only
-// needs to know it did not work, never which Supabase error caused it.
+// Shared by both failure paths: the customer only needs to know it failed.
 const EXCHANGE_FAILED = 'Could not complete sign in. Try again.';
 
 const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const providerError = params.get('error');
 
     if (providerError) {
-      // `||`, not `??`: a provider can send error_description with an empty
-      // value, and '' is falsy, so `??` would store an empty string and the
-      // render ternary would fall through to the pending state.
+      // `||`, not `??`: an empty error_description is falsy, so `??` would store
+      // '' and the ternary would fall through to the pending state.
       setError(
         params.get('error_description') ||
           'Sign in was cancelled. You can try again whenever you like.',
@@ -43,11 +42,11 @@ const AuthCallback: React.FC = () => {
           setError(EXCHANGE_FAILED);
           return;
         }
-        navigate('/home', { replace: true });
+        // Held here rather than redirected, so the customer chooses where to land.
+        setIsSignedIn(true);
       })
-      // exchangeCodeForSession rejects on non-AuthError failures: blocked or
-      // full localStorage, a failed client init. Unhandled, that strands the
-      // customer on "Signing you in" with no way forward.
+      // exchangeCodeForSession rejects on non-AuthError failures too: blocked or
+      // full localStorage, failed client init.
       .catch(() => {
         if (active) setError(EXCHANGE_FAILED);
       });
@@ -58,26 +57,61 @@ const AuthCallback: React.FC = () => {
   }, [navigate]);
 
   return (
-    <IonPage>
-      <IonContent>
-        <main className="trim-callback">
-          {error ? (
-            <>
-              <p className="trim-callback__error">{error}</p>
-              <button
-                className="trim-callback__back"
-                type="button"
-                onClick={() => navigate('/home')}
-              >
-                Back to Trim
-              </button>
-            </>
-          ) : (
-            <p className="trim-callback__pending">Signing you in</p>
-          )}
-        </main>
-      </IonContent>
-    </IonPage>
+      <IonPage>
+          <IonContent>
+              <main className="trim-callback">
+                  {error && (
+                      <>
+                          <p className="trim-callback__error">{error}</p>
+                          <button
+                              className="trim-callback__back"
+                              type="button"
+                              onClick={() => navigate("/home")}
+                          >
+                              Back to Trim
+                          </button>
+                      </>
+                  )}
+
+                  {!error && isSignedIn && (
+                      <div className="trim-callback__panel">
+                          <h1 className="trim-callback__title">
+                              You are signed in.
+                          </h1>
+                          {/* <p className="trim-callback__note">
+                              You are signed in.
+                          </p> */}
+
+                          <div className="trim-callback__actions">
+                              <button
+                                  className="trim-callback__primary"
+                                  type="button"
+                                  onClick={() =>
+                                      navigate("/dashboard", { replace: true })
+                                  }
+                              >
+                                  Go to Dashboard
+                              </button>
+
+                              <button
+                                  className="trim-callback__back"
+                                  type="button"
+                                  onClick={() =>
+                                      navigate("/home", { replace: true })
+                                  }
+                              >
+                                  Back to Trim
+                              </button>
+                          </div>
+                      </div>
+                  )}
+
+                  {!error && !isSignedIn && (
+                      <p className="trim-callback__pending">Signing you in</p>
+                  )}
+              </main>
+          </IonContent>
+      </IonPage>
   );
 };
 

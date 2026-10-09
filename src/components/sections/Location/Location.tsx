@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 
 import './Location.css';
 
-// Leaflet 2.0.0-alpha.1 is vendored in public/assets/leaflet. It is pulled in by
-// injecting a script tag and reading the global it defines, because Vite refuses
-// module imports out of the public directory. The global build attaches to
-// globalThis.leaflet and exports ES classes, so each one is constructed with new.
+// Leaflet is vendored in public/assets/leaflet and loaded via a script tag,
+// because Vite refuses module imports out of public/. The global build attaches
+// to globalThis.leaflet, so each class is constructed with new.
 const LEAFLET_JS = '/assets/leaflet/dist/leaflet-global.js';
 const LEAFLET_CSS = '/assets/leaflet/dist/leaflet.css';
 
-// Barbershop location. Calapan, Oriental Mindoro, Philippines.
+// Calapan, Oriental Mindoro.
 const COORDS: [number, number] = [13.320023, 121.256381];
+
+// Card clearance from the frame edge and the marker dot.
+const GAP = 12;
+// Below this the card docks to the frame bottom.
+const NARROW = 768;
 
 const SHOP = {
   name: 'Trim',
@@ -20,7 +24,7 @@ const SHOP = {
   phone: '+63 917 000 0000',
 };
 
-// Only the surface used here. The vendored build ships no declarations.
+// Only the surface used here; the build ships no declarations.
 interface LeafletPoint {
   x: number;
   y: number;
@@ -55,7 +59,7 @@ declare global {
   }
 }
 
-/** Loads the vendored bundle once and resolves with its global. */
+/** Loads the bundle once and resolves with its global. */
 const loadLeaflet = () =>
   new Promise<LeafletGlobal>((resolve, reject) => {
     if (window.leaflet) {
@@ -99,7 +103,7 @@ const Location: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  // Latched by click so the card stays put while the pointer moves away.
+  // Latched by click, so the card stays put when the pointer leaves.
   const [isPinned, setIsPinned] = useState(false);
   const isHoveredRef = useRef(false);
   const pinnedRef = useRef(false);
@@ -122,8 +126,7 @@ const Location: React.FC = () => {
         const map = new L.Map(mount, {
           center: COORDS,
           zoom: 14,
-          // Page scrolling must win over map zooming, otherwise the map swallows
-          // the scroll while the user is trying to read the section.
+          // Page scroll must win over map zoom, or the map swallows the scroll.
           scrollWheelZoom: false,
           zoomControl: true,
           attributionControl: true,
@@ -135,8 +138,7 @@ const Location: React.FC = () => {
         }).addTo(map);
 
         const marker = new L.Marker(COORDS, {
-          // A div icon rather than the default pin, so nothing depends on the
-          // vendored marker PNGs resolving at the right relative path.
+          // Div icon, so nothing depends on the marker PNGs resolving.
           icon: new L.DivIcon({
             className: 'trim-location__pin',
             html: '<span aria-hidden="true"></span>',
@@ -147,13 +149,27 @@ const Location: React.FC = () => {
           alt: `${SHOP.name} barbershop in ${SHOP.branch}`,
         }).addTo(map);
 
-        // The card is pinned to the marker's screen position, so it has to be
-        // re-placed whenever the map moves or zooms underneath it.
+        // The card tracks the marker, so re-place it on every move and zoom.
+        // Clamped in script rather than CSS: the marker sits mid-map, so a fixed
+        // offset runs off the edge on a narrow phone.
         const place = () => {
           const card = cardRef.current;
           if (!card) return;
+
           const point = map.latLngToContainerPoint(COORDS);
-          card.style.left = `${point.x}px`;
+
+          if (mount.clientWidth <= NARROW) {
+            // Phone: a card floating above the marker is too wide, so it docks to
+            // the frame bottom. Set here because the inline styles would win.
+            card.style.left = `${GAP}px`;
+            card.style.top = `${Math.max(GAP, mount.clientHeight - card.offsetHeight - GAP)}px`;
+            return;
+          }
+
+          const width = card.offsetWidth;
+          const maxLeft = Math.max(GAP, mount.clientWidth - width - GAP);
+
+          card.style.left = `${Math.min(Math.max(point.x, GAP), maxLeft)}px`;
           card.style.top = `${point.y}px`;
         };
 
@@ -167,8 +183,7 @@ const Location: React.FC = () => {
         map.on('zoom', place);
         teardown.push(() => map.off('move', place), () => map.off('zoom', place));
 
-        // On touch the card only closes via the marker, so tapping the map
-        // itself dismisses it too.
+        // On touch the card only closes via the marker, so the map dismisses it.
         const dismiss = (event: MouseEvent) => {
           if (!event.target || mount.contains(event.target as Node)) return;
           isHoveredRef.current = false;
@@ -177,11 +192,11 @@ const Location: React.FC = () => {
         mount.addEventListener('click', dismiss);
         teardown.push(() => mount.removeEventListener('click', dismiss));
 
-        // The marker element exists only once added, so the listeners go on
-        // after addTo rather than through the marker's own event API.
+        // The marker element only exists after addTo, so the listeners go on
+        // here rather than through the marker's event API.
         //
-        // Hover only opens on fine pointers. On touch there is no hover, so a
-        // mouseenter fired by a tap would leave the card stuck open.
+        // Hover is gated on a fine pointer: an emulated mouseenter followed by a
+        // synthetic mouseleave would leave the card stuck half-open on touch.
         const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
         const element = marker.getElement();
         if (element) {
@@ -193,9 +208,12 @@ const Location: React.FC = () => {
             isHoveredRef.current = false;
             sync();
           };
-          const toggle = () => {
+          // On touch, stop the tap reaching the drag handlers.
+          const toggle = (event: MouseEvent) => {
+            if (!canHover) event.stopPropagation();
             setIsPinned((pinned) => !pinned);
           };
+
           if (canHover) {
             element.addEventListener('mouseenter', enter);
             element.addEventListener('mouseleave', leave);
@@ -211,8 +229,7 @@ const Location: React.FC = () => {
         }
 
         mapRef.current = map;
-        // The container is measured once on attach; without this the tiles come
-        // out clipped when the section was still settling at that moment.
+        // Measures on attach; without this the tiles clip while settling.
         map.invalidateSize();
         place();
       })
@@ -248,8 +265,10 @@ const Location: React.FC = () => {
         />
 
         {/* Anchored to the marker, so it is positioned in script rather than
-            laid out in flow. */}
-        <div ref={cardRef} className="trim-location__card" role="dialog" aria-label={`${SHOP.name} details`}>
+            laid out in flow. Not a dialog: it takes no focus, cannot be
+            dismissed with Escape, and is hidden from assistive tech while
+            closed, which is the opposite of what role="dialog" promises. */}
+        <div ref={cardRef} className="trim-location__card">
           <p className="trim-location__card-name">{SHOP.name}</p>
           <p className="trim-location__card-branch">{SHOP.branch}</p>
 

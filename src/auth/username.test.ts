@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { USERNAME_PATTERN, normaliseUsername, validateUsername } from './username';
 
 describe('USERNAME_PATTERN', () => {
-  // Pinned because normaliseUsername lowercases first, so a widened class or an
-  // `i` flag is invisible through validateUsername alone.
+  // Pinned: normaliseUsername lowercases first, so a widened class is invisible
+  // through validateUsername alone.
   it('is exactly ^[a-z0-9_]{3,24}$ with no flags', () => {
     expect(USERNAME_PATTERN.source).toBe('^[a-z0-9_]{3,24}$');
     expect(USERNAME_PATTERN.flags).toBe('');
@@ -35,7 +35,7 @@ describe('validateUsername', () => {
     expect(validateUsername('a'.repeat(24)).ok).toBe(true);
   });
 
-  // Guards a character class that drops `_` or `0-9`; the other cases are pure letters.
+  // Guards a class dropping `_` or `0-9`; the rest are pure letters.
   it('accepts underscores and digits and returns them as the value', () => {
     expect(validateUsername('ab_c9')).toEqual({ ok: true, value: 'ab_c9' });
   });

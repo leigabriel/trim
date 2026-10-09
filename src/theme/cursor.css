@@ -1,8 +1,6 @@
-/* Cursors from assets/cursor (64x64 each).
-   Hotspots measured from the actual ink of every sprite rather than guessed:
-   the arrow and pointing hand use the first inked pixel at the top of the
-   glyph, the I-beam uses the centre of its beam, and the two open-hand
-   sprites use the middle finger tip which sits at the very top of each. */
+/* Cursors from assets/cursor (64x64). Hotspots measured from each sprite's
+   ink: top pixel for the arrow and hand, beam centre for the I-beam, middle
+   fingertip for the open hands. */
 
 :root {
   --cursor-default: url('/assets/cursor/default.png') 20 15, default;
@@ -34,8 +32,7 @@ select,
   cursor: var(--cursor-text);
 }
 
-/* Explicit opt-out for the Leaflet control chrome, whose own stylesheet sets
-   cursor:auto with a higher specificity than the bare element selectors. */
+/* Leaflet's own stylesheet sets cursor:auto at a higher specificity. */
 .leaflet-control a,
 .leaflet-control button {
   cursor: var(--cursor-pointer);
@@ -45,9 +42,8 @@ select,
   cursor: var(--cursor-pointer);
 }
 
-/* The map pane is genuinely draggable, so it carries the grab pair. Leaflet
-   ships .leaflet-grab { cursor: grab }, which would otherwise replace the
-   sprite with the native one. */
+/* The map pane drags, so it takes the grab pair. Leaflet ships
+   .leaflet-grab { cursor: grab }, which would replace the sprite. */
 .leaflet-container,
 .leaflet-grab {
   cursor: var(--cursor-grab);
@@ -58,8 +54,7 @@ select,
   cursor: var(--cursor-grabbing);
 }
 
-/* The 3D tool mount is decorative and does not pan, so it keeps the arrow
-   rather than claiming to be grabbable. */
+/* Decorative 3D mounts do not pan, so they keep the arrow. */
 .trim-tools,
 .trim-keychain,
 .trim-about-chain {
@@ -71,15 +66,14 @@ select,
   cursor: var(--cursor-grabbing);
 }
 
-/* The marker dot opens the details card, so it needs the pointing hand even
-   though it is a div rather than a button. */
+/* The marker opens the details card, so it needs the hand despite being a div. */
 .trim-location__pin,
 .trim-location__pin span {
   cursor: var(--cursor-pointer);
 }
 
-/* Coarse pointers get no cursor sprite at all: the OS shows its own, and
-   forcing ours leaves a stale hand trailing every tap. */
+/* Coarse pointers get no sprite: forcing one leaves a stale hand trailing
+   every tap. */
 @media (pointer: coarse) {
   html,
   body,

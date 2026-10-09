@@ -25,7 +25,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Single subscription for the whole app.
+  // One subscription for the whole app.
   useEffect(() => {
     let active = true;
 
@@ -47,8 +47,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   }, []);
 
-  // Profile fetch lives outside onAuthStateChange: calling Supabase from inside
-  // that callback deadlocks.
+  // Outside onAuthStateChange: calling Supabase inside it deadlocks.
   const userId = session?.user.id ?? null;
   useEffect(() => {
     if (!userId) {
@@ -91,13 +90,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (!userId) return { ok: false, error: 'You are not signed in.' };
 
       // Upsert, not update: the insert trigger is the only guarantee the row
-      // exists, so an update could silently affect zero rows and strand the user.
+      // exists, so an update could hit zero rows and strand the user.
       const { error } = await supabase
         .from('profiles')
         .upsert({ id: userId, username: result.value }, { onConflict: 'id' });
 
       if (error) {
-        // Postgres 23505 is the unique violation on the username index.
+        // 23505 is the unique violation on the username index.
         if (error.code === '23505') return { ok: false, error: 'That name is taken.' };
         return { ok: false, error: 'Could not save your username. Try again.' };
       }

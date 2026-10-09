@@ -6,17 +6,15 @@ import { useAuth } from './AuthProvider';
 
 interface RequireAuthProps {
   children: ReactNode;
-  /** Route to /welcome when the profile has no username yet. */
+  /** Route to /welcome while the profile has no username. */
   requireUsername?: boolean;
 }
 
 export const RequireAuth: React.FC<RequireAuthProps> = ({ children, requireUsername }) => {
   const { session, profile, isLoading } = useAuth();
 
-  // Must not redirect while loading, or a hard refresh on a protected route
-  // bounces a signed-in customer to /home before the session is read.
-  // Renders an ion-page shell because this guard is a route element and
-  // IonRouterOutlet expects one.
+  // No redirect while loading, or a hard refresh bounces a signed-in customer
+  // to /home. The ion-page shell is required: IonRouterOutlet expects one.
   if (isLoading) {
     return (
       <IonPage>

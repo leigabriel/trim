@@ -7,7 +7,7 @@ export interface Profile {
   avatarUrl: string | null;
 }
 
-/** Row shape as it comes back from the profiles table. */
+/** Row shape from the profiles table. */
 export interface ProfileRow {
   id: string;
   username: string | null;

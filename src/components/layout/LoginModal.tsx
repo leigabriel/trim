@@ -3,6 +3,8 @@ import { IonModal } from '@ionic/react';
 
 import { useAuth } from '../../auth/AuthProvider';
 import GoogleIcon from './GoogleIcon';
+import LegalModal from './LegalModal';
+import type { LegalDoc } from './LegalModal';
 import './LoginModal.css';
 
 interface LoginModalProps {
@@ -15,6 +17,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onDismiss }) => {
   const [isAgreed, setIsAgreed] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<LegalDoc | null>(null);
 
   const handleGoogle = async () => {
     if (!isAgreed) {
@@ -27,8 +30,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onDismiss }) => {
     try {
       await signInWithGoogle();
     } catch {
-      // The redirect has already happened on success, so reaching here is a
-      // failure worth showing rather than swallowing.
+      // The redirect already happened on success, so reaching here is a real
+      // failure worth showing.
       setIsRedirecting(false);
       setNotice('Could not start Google sign in. Check your connection and try again.');
     }
@@ -86,7 +89,23 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onDismiss }) => {
               }}
             />
             <span className="trim-login__legal">
-              By continuing, you agree to our <strong>Terms of Service</strong>. Read our <strong>Privacy Policy</strong>.
+              By continuing, you agree to our{' '}
+              <button
+                className="trim-login__legal-link"
+                type="button"
+                onClick={() => setLegalDoc('terms')}
+              >
+                Terms of Service
+              </button>
+              . Read our{' '}
+              <button
+                className="trim-login__legal-link"
+                type="button"
+                onClick={() => setLegalDoc('privacy')}
+              >
+                Privacy Policy
+              </button>
+              .
             </span>
           </label>
 
@@ -97,6 +116,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onDismiss }) => {
           )}
         </div>
       </div>
+
+      <LegalModal doc={legalDoc} onDismiss={() => setLegalDoc(null)} />
     </IonModal>
   );
 };

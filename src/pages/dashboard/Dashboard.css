@@ -1,0 +1,1208 @@
+/* App shell. The rail and header share one grey plane, so the white main
+   column reads as the working area. */
+
+.trim-dash {
+  --dash-rail: 16rem;
+  --dash-feed: 24rem;
+  --dash-pad: clamp(1.25rem, 2.2vw, 2rem);
+  --dash-grey: #ebebeb;
+  --dash-line: rgb(0 0 0 / 12%);
+  --dash-label: 0.75rem;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--trim-white);
+  color: var(--trim-black);
+  font-family: var(--trim-font-sans);
+  /* Nothing in this file goes below 0.75rem. */
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Header */
+
+.trim-dash__bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  flex: 0 0 auto;
+  min-height: 3.5rem;
+  padding: 0 clamp(1rem, 2vw, 1.5rem);
+  border-bottom: 1px solid var(--dash-line);
+  background-color: var(--dash-grey);
+}
+
+.trim-dash__logo {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--trim-black);
+  text-decoration: none;
+}
+
+.trim-dash__crumb {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--dash-label);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.55;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trim-dash__home {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.trim-dash__home:hover,
+.trim-dash__home:focus-visible {
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+  outline: none;
+}
+
+.trim-dash__rail-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-left: -0.35rem;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  cursor: pointer;
+}
+
+.trim-dash__rail-toggle:hover,
+.trim-dash__rail-toggle:focus-visible {
+  background-color: rgb(0 0 0 / 8%);
+  outline: none;
+}
+
+/* Grid */
+
+.trim-dash__grid {
+  position: relative;
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Rail */
+
+.trim-dash__rail {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0.75rem 0.75rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--dash-line);
+  background-color: var(--dash-grey);
+}
+
+.trim-dash__nav {
+  flex: 1;
+}
+
+.trim-dash__sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Nav link. Icon on the left, so the label carries the meaning. */
+.trim-dash__link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--trim-black);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.trim-dash__link:hover {
+  background-color: rgb(0 0 0 / 6%);
+}
+
+.trim-dash__link:focus-visible {
+  outline: 2px solid var(--trim-orange);
+  outline-offset: -2px;
+}
+
+.trim-dash__link--current,
+.trim-dash__link--current:hover {
+  background-color: var(--trim-white);
+}
+
+.trim-dash__link-icon {
+  flex: 0 0 auto;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--trim-black);
+  opacity: 0.5;
+}
+
+.trim-dash__link--current .trim-dash__link-icon {
+  color: var(--trim-orange);
+  opacity: 1;
+}
+
+.trim-dash__link-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.trim-dash__link-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--trim-black);
+}
+
+/* Identity at the foot of the rail. Doubles as the Account link. */
+.trim-dash__identity {
+  flex: 0 0 auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--dash-line);
+}
+
+.trim-dash__identity-open {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.5rem;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.trim-dash__identity-open:hover {
+  background-color: rgb(0 0 0 / 6%);
+}
+
+.trim-dash__identity-open:focus-visible {
+  outline: 2px solid var(--trim-orange);
+  outline-offset: -2px;
+}
+
+.trim-dash__identity--current .trim-dash__identity-open,
+.trim-dash__identity--current .trim-dash__identity-open:hover {
+  background-color: var(--trim-white);
+}
+
+.trim-dash__identity-avatar,
+.trim-dash__identity-initial {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--trim-orange);
+  color: var(--trim-white);
+  font-size: 0.875rem;
+  font-weight: 700;
+  object-fit: cover;
+}
+
+.trim-dash__identity-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.trim-dash__identity-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--trim-black);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Addresses have no break opportunities, and truncating identified nobody. */
+.trim-dash__identity-email {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--trim-black);
+  opacity: 0.55;
+  overflow-wrap: anywhere;
+}
+
+.trim-dash__identity-out {
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.5rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.trim-dash__identity-out:hover,
+.trim-dash__identity-out:focus-visible {
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+  outline: none;
+}
+
+/* Middle feed */
+
+.trim-dash__feed {
+  min-width: 0;
+  overflow-y: auto;
+  border-right: 1px solid var(--dash-line);
+}
+
+.trim-dash__feed[hidden] {
+  display: none;
+}
+
+.trim-dash__feed-title {
+  margin: 0;
+  padding: 1rem 1.1rem 0.6rem;
+  font-size: var(--dash-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.5;
+}
+
+.trim-dash__feed ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trim-dash__entry {
+  padding: 0.9rem 1.1rem;
+  border-top: 1px solid var(--dash-line);
+}
+
+.trim-dash__entry-meta {
+  margin: 0 0 0.3rem;
+  font-size: var(--dash-label);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--trim-orange);
+}
+
+.trim-dash__entry-title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--trim-black);
+}
+
+.trim-dash__entry-body {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--trim-black);
+  opacity: 0.7;
+}
+
+/* Main column */
+
+.trim-dash__main {
+  min-width: 0;
+  overflow-y: auto;
+  background-color: var(--trim-white);
+}
+
+.trim-section {
+  max-width: 60rem;
+  padding: var(--dash-pad) var(--dash-pad) 4rem;
+}
+
+.trim-section__head {
+  margin-bottom: clamp(1.5rem, 2.5vw, 2.25rem);
+}
+
+.trim-section__title {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--trim-black);
+}
+
+.trim-section__lede {
+  max-width: 62ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--trim-black);
+  opacity: 0.7;
+}
+
+/* Cards */
+
+.trim-card {
+  padding: 1.15rem 1.25rem 1.35rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 4px;
+}
+
+.trim-card__title {
+  margin: 0 0 0.9rem;
+  font-size: var(--dash-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.5;
+}
+
+.trim-card__text {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--trim-black);
+}
+
+/* Metric row */
+
+.trim-metrics {
+  display: grid;
+  gap: 1px;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  background-color: var(--dash-line);
+  border: 1px solid var(--dash-line);
+  border-radius: 4px;
+  overflow: hidden;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+}
+
+.trim-metric {
+  padding: 1.1rem 1.15rem 1.2rem;
+  background-color: var(--trim-white);
+}
+
+.trim-metric__label {
+  margin: 0 0 0.4rem;
+  /* Two lines reserved, so a wrapped label cannot push its value out of line. */
+  min-height: 2.6em;
+  display: flex;
+  align-items: flex-start;
+  font-size: var(--dash-label);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.5;
+}
+
+.trim-metric__value {
+  margin: 0 0 0.3rem;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--trim-black);
+}
+
+.trim-metric__delta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--trim-orange);
+}
+
+.trim-metric__delta--down {
+  color: var(--trim-black);
+  opacity: 0.6;
+}
+
+/* Chart */
+
+.trim-chart-block {
+  padding: 1.15rem 1.25rem 0.75rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 4px;
+}
+
+.trim-chart-block__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.trim-chart-block__note {
+  margin: 0;
+  font-size: var(--dash-label);
+  color: var(--trim-black);
+  opacity: 0.5;
+}
+
+.trim-chart {
+  margin-top: 0.5rem;
+}
+
+.trim-chart__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.trim-chart__grid {
+  stroke: rgb(0 0 0 / 10%);
+  stroke-width: 1;
+}
+
+.trim-chart__axis {
+  font-family: var(--trim-font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  fill: rgb(0 0 0 / 45%);
+}
+
+.trim-chart__area {
+  fill: var(--trim-orange);
+  opacity: 0.12;
+}
+
+.trim-chart__line {
+  fill: none;
+  stroke: var(--trim-orange);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trim-chart__dot {
+  fill: var(--trim-orange);
+  stroke: var(--trim-white);
+  stroke-width: 2;
+}
+
+.trim-chart__label {
+  font-family: var(--trim-font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  fill: rgb(0 0 0 / 50%);
+}
+
+.trim-chart__value {
+  font-family: var(--trim-font-sans);
+  font-size: 15px;
+  font-weight: 800;
+  fill: var(--trim-orange);
+}
+
+/* Two cards side by side; single column left the pane half empty. */
+.trim-overview__bottom {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+
+.trim-overview__bottom .trim-card {
+  margin-bottom: 0;
+}
+
+/* Saved style rows */
+
+.trim-saved {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trim-saved__row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--dash-line);
+}
+
+.trim-saved__row:first-child {
+  padding-top: 0;
+}
+
+.trim-saved__row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.trim-saved__thumb {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 3px;
+  background-color: var(--trim-white);
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.trim-saved__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.trim-saved__name {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--trim-black);
+}
+
+.trim-saved__meta {
+  font-size: 0.75rem;
+  color: var(--trim-black);
+  opacity: 0.55;
+}
+
+.trim-saved__match {
+  flex: 0 0 auto;
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--trim-orange);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Next booking */
+
+.trim-card--next {
+  border-left: 3px solid var(--trim-orange);
+}
+
+.trim-next__when {
+  margin: 0 0 0.3rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--trim-black);
+}
+
+.trim-next__what {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--trim-black);
+}
+
+.trim-next__note {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--trim-black);
+  opacity: 0.7;
+}
+
+/* Style cards */
+
+.trim-style-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+}
+
+.trim-style {
+  border: 1px solid var(--dash-line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.trim-style__frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  /* White, not the grey chrome: the PNGs are white cutouts, and blending
+     them into grey turned every portrait muddy beige. */
+  background-color: var(--trim-white);
+  overflow: hidden;
+}
+
+.trim-style__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.trim-style__match {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 3px;
+  background-color: var(--trim-orange);
+  color: var(--trim-white);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.trim-style__body {
+  padding: 0.8rem 0.9rem 1rem;
+}
+
+.trim-style__name {
+  margin: 0 0 0.55rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--trim-black);
+}
+
+.trim-style__specs {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0;
+}
+
+.trim-style__specs dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.45;
+}
+
+.trim-style__specs dd {
+  margin: 0.15rem 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--trim-black);
+}
+
+/* Scale note. The mark is on the same scale as the bars. */
+.trim-card__scale {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: -0.35rem 0 1.15rem;
+  font-size: 0.8125rem;
+  color: var(--trim-black);
+  opacity: 0.55;
+}
+
+.trim-card__scale-mark {
+  flex: 0 0 auto;
+  width: 2px;
+  height: 0.75rem;
+  margin-left: auto;
+  background-color: var(--trim-black);
+  opacity: 0.5;
+}
+
+/* Landmarks */
+
+.trim-landmarks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trim-landmark__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.trim-landmark__label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--trim-black);
+}
+
+.trim-landmark__value {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  color: var(--trim-black);
+  font-variant-numeric: tabular-nums;
+}
+
+.trim-landmark__track {
+  position: relative;
+  height: 0.5rem;
+  background-color: var(--dash-grey);
+  border-radius: 999px;
+}
+
+.trim-landmark__fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: var(--trim-orange);
+}
+
+/* Above the bar: inside the track it would be clipped by the fill. */
+.trim-landmark__reference {
+  position: absolute;
+  top: -0.25rem;
+  bottom: -0.25rem;
+  width: 2px;
+  transform: translateX(-1px);
+  background-color: var(--trim-black);
+  opacity: 0.45;
+}
+
+.trim-landmark__reading {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--trim-black);
+  opacity: 0.6;
+}
+
+/* Findings */
+
+.trim-findings {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+.trim-finding {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--trim-orange);
+}
+
+.trim-finding__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.trim-finding__label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--trim-black);
+}
+
+.trim-finding__value {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--trim-orange);
+  white-space: nowrap;
+}
+
+.trim-finding__body {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--trim-black);
+  opacity: 0.7;
+}
+
+/* AI answers */
+
+.trim-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trim-answer {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--dash-line);
+}
+
+.trim-answer:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.trim-answer__q {
+  margin: 0 0 0.35rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--trim-black);
+}
+
+.trim-answer__a {
+  margin: 0;
+  max-width: 68ch;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--trim-black);
+  opacity: 0.75;
+}
+
+.trim-result {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+}
+
+.trim-result strong {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--trim-black);
+}
+
+.trim-result__confidence {
+  font-size: var(--dash-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--trim-orange);
+}
+
+/* Facts list */
+
+.trim-facts {
+  display: grid;
+  gap: 0.85rem 1.5rem;
+  margin: 0;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+.trim-facts dt {
+  font-size: var(--dash-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.45;
+}
+
+.trim-facts dd {
+  margin: 0.2rem 0 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--trim-black);
+  overflow-wrap: anywhere;
+}
+
+/* An email has no break opportunities; the full row stops a mid-word split. */
+.trim-facts__wide {
+  grid-column: 1 / -1;
+}
+
+/* Account has no feed, so its cards lay out in two columns. */
+.trim-account {
+  display: grid;
+  gap: 1.25rem;
+  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+}
+
+.trim-account .trim-card {
+  margin-bottom: 0;
+}
+
+.trim-card__action {
+  margin-top: 1.15rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.trim-card__action:hover,
+.trim-card__action:focus-visible {
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+  outline: none;
+}
+
+/* Prompts */
+
+.trim-prompts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trim-prompt {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.trim-prompt:hover,
+.trim-prompt:focus-visible {
+  background-color: var(--trim-black);
+  color: var(--trim-white);
+  outline: none;
+}
+
+/* Table */
+
+.trim-table-wrap {
+  border: 1px solid var(--dash-line);
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.trim-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.trim-table th,
+.trim-table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--dash-line);
+}
+
+.trim-table thead th {
+  font-size: var(--dash-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--trim-black);
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+.trim-table tbody tr:last-child th,
+.trim-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.trim-table__primary {
+  display: block;
+  font-weight: 700;
+  color: var(--trim-black);
+}
+
+.trim-table__secondary {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8125rem;
+  color: var(--trim-black);
+  opacity: 0.55;
+}
+
+.trim-table__num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.trim-status {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.trim-status--confirmed {
+  border-color: var(--trim-orange);
+  color: var(--trim-orange);
+}
+
+.trim-status--requested {
+  border-color: var(--trim-black);
+  color: var(--trim-black);
+  opacity: 0.7;
+}
+
+.trim-status--completed {
+  border-color: var(--dash-line);
+  color: var(--trim-black);
+  opacity: 0.5;
+}
+
+/* Breakpoints */
+
+/* Tablet: the rail becomes permanent. The feed waits for more width. */
+@media (min-width: 48rem) {
+  .trim-dash__rail-toggle {
+    display: none;
+  }
+
+  .trim-dash__grid {
+    grid-template-columns: var(--dash-rail) minmax(0, 1fr);
+  }
+
+  .trim-dash__grid--no-feed {
+    grid-template-columns: var(--dash-rail) minmax(0, 1fr);
+  }
+
+  .trim-dash__rail {
+    display: flex;
+  }
+}
+
+@media (min-width: 68rem) {
+  .trim-dash__grid {
+    grid-template-columns: var(--dash-rail) var(--dash-feed) minmax(0, 1fr);
+  }
+
+  /* The feed track is removed outright. Left in the template while hidden, it
+     collapsed the main pane. */
+  .trim-dash__grid--no-feed {
+    grid-template-columns: var(--dash-rail) minmax(0, 1fr);
+  }
+
+  .trim-dash__feed {
+    display: block;
+  }
+}
+
+/* Phone: the rail is a dropdown, closed until toggled. */
+@media (max-width: 47.99rem) {
+  .trim-dash__grid {
+    position: relative;
+  }
+
+  .trim-dash__rail {
+    display: none;
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 20;
+    max-height: 100%;
+    border-right: 0;
+    border-bottom: 1px solid var(--dash-line);
+    box-shadow: 0 12px 28px rgb(0 0 0 / 10%);
+  }
+
+  .trim-dash__rail--open {
+    display: flex;
+  }
+
+  .trim-dash__crumb {
+    text-align: left;
+  }
+}
+
+/* Phones: the table stacks into rows. Five columns at 375px is unreadable. */
+@media (max-width: 40rem) {
+  .trim-table thead {
+    display: none;
+  }
+
+  .trim-table,
+  .trim-table tbody,
+  .trim-table tr,
+  .trim-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .trim-table tr {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--dash-line);
+  }
+
+  .trim-table td {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.3rem 1rem;
+    border-bottom: 0;
+  }
+
+  .trim-table td::before {
+    content: attr(data-label);
+    flex: 0 0 6rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--trim-black);
+    opacity: 0.45;
+  }
+
+  .trim-table__num {
+    text-align: left;
+  }
+}

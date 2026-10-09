@@ -11,9 +11,8 @@ interface HomeProps {
   onModelsReady: () => void;
 }
 
-// About is a pinned back layer that the hero overlaps with a negative margin so
-// it reads as sitting in front while scrolling. Styles and the footer follow in
-// normal flow. The nav here stays on the dark tone for the orange hero.
+// About is a pinned back layer the hero overlaps. Styles and the footer
+// follow in normal flow. The nav stays dark over the orange hero.
 const Home: React.FC<HomeProps> = ({ isEntered, onProgress, onModelsReady }) => (
   <IonPage>
     <IonContent>

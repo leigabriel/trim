@@ -27,7 +27,7 @@
   list-style: none;
 }
 
-/* Border only: no background, no rounded corners. */
+/* Border only, no background. */
 .trim-styles__cell {
   display: flex;
   flex-direction: column;
@@ -55,8 +55,7 @@
   text-align: left;
 }
 
-/* Tablet and phone keep three columns: the design calls for a 3x3 grid, so the
-   cells scale down rather than dropping to a single column. */
+/* Phones keep three columns: the design is a 3x3 grid. */
 @media (max-width: 64rem) {
   .trim-styles__title {
     font-size: clamp(1.75rem, 4.5vw, 3rem);
