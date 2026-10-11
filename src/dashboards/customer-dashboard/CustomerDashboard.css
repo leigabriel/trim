@@ -635,85 +635,6 @@
   opacity: 0.6;
 }
 
-/* Chart */
-
-.trim-chart-block {
-  padding: 1.15rem 1.25rem 0.75rem;
-  margin-bottom: 1.25rem;
-  border: 1px solid var(--dash-line);
-  border-radius: 4px;
-}
-
-.trim-chart-block__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.trim-chart-block__note {
-  margin: 0;
-  font-size: var(--dash-label);
-  color: var(--trim-black);
-  opacity: 0.5;
-}
-
-.trim-chart {
-  margin-top: 0.5rem;
-}
-
-.trim-chart__svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.trim-chart__grid {
-  stroke: rgb(0 0 0 / 10%);
-  stroke-width: 1;
-}
-
-.trim-chart__axis {
-  font-family: var(--trim-font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  fill: rgb(0 0 0 / 45%);
-}
-
-.trim-chart__area {
-  fill: var(--trim-blue);
-  opacity: 0.12;
-}
-
-.trim-chart__line {
-  fill: none;
-  stroke: var(--trim-blue);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.trim-chart__dot {
-  fill: var(--trim-blue);
-  stroke: var(--trim-white);
-  stroke-width: 2;
-}
-
-.trim-chart__label {
-  font-family: var(--trim-font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  fill: rgb(0 0 0 / 50%);
-}
-
-.trim-chart__value {
-  font-family: var(--trim-font-sans);
-  font-size: 15px;
-  font-weight: 800;
-  fill: var(--trim-blue);
-}
-
 /* Two cards side by side; single column left the pane half empty. */
 
 .trim-overview__bottom {
@@ -864,6 +785,191 @@
   color: var(--trim-white);
   font-size: 0.75rem;
   font-weight: 700;
+}
+
+/* A trending cut that does not suit the customer's shape. Says so rather than
+   hiding it, because trending and suiting you are different claims. */
+.trim-style__match--none {
+  background-color: var(--trim-black);
+  font-weight: 400;
+}
+
+.trim-style__note {
+  margin: 0.6rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: rgb(0 0 0 / 62%);
+}
+
+.trim-recos {
+  margin-bottom: 1.25rem;
+}
+
+.trim-recos > .trim-card__text {
+  margin-top: 0.4rem;
+}
+
+/* Shape gallery. Square cells: the source art is 1:1 and a grid of mixed
+   aspect ratios reads as broken rather than varied. */
+.trim-gallery-block {
+  margin-bottom: 1.25rem;
+}
+
+.trim-gallery-block__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.trim-gallery-block__note {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgb(0 0 0 / 62%);
+}
+
+.trim-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trim-gallery__item {
+  overflow: hidden;
+  border: 1px solid var(--dash-line);
+}
+
+.trim-gallery__image {
+  display: block;
+  width: 100%;
+  /* Locked to the cell width, so a 1:1 source stays 1:1 regardless of how
+     many columns the grid resolved to. */
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Face shape picker */
+
+.trim-shape__current {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--dash-line);
+}
+
+.trim-shape__current strong {
+  font-family: var(--trim-font-display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.trim-shape__source {
+  font-size: 0.8125rem;
+  color: rgb(0 0 0 / 55%);
+}
+
+.trim-shape__picker {
+  margin: 0 0 0.75rem;
+  padding: 0;
+  border: 0;
+}
+
+.trim-shape__legend {
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  color: rgb(0 0 0 / 55%);
+}
+
+.trim-shape__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.trim-shape__option {
+  cursor: pointer;
+}
+
+.trim-shape__option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.trim-shape__option span {
+  display: inline-block;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--dash-line);
+  border-radius: 3px;
+  font-size: 0.8125rem;
+  transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+}
+
+.trim-shape__option:hover span {
+  border-color: var(--trim-blue);
+}
+
+/* Focus ring sits on the label rather than the visually hidden input, so it
+   follows the thing the customer actually clicks. */
+.trim-shape__option input:focus-visible + span {
+  outline: 2px solid var(--trim-blue);
+  outline-offset: 2px;
+}
+
+.trim-shape__option--current span {
+  border-color: var(--trim-blue);
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
+}
+
+.trim-shape__hint {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgb(0 0 0 / 62%);
+}
+
+.trim-shape__privacy {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgb(0 0 0 / 55%);
+}
+
+.trim-account__analyze {
+  align-self: flex-start;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--trim-black);
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.trim-account__analyze:hover,
+.trim-account__analyze:focus-visible {
+  background: var(--trim-black);
+  color: var(--trim-white);
+  outline: none;
 }
 
 .trim-style__body {
@@ -1435,7 +1541,7 @@
 
 .trim-bubble__role {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.5rem;
   margin: 0 0 0.35rem;
   font-size: var(--dash-label);
@@ -1444,6 +1550,22 @@
   text-transform: uppercase;
   color: var(--trim-black);
   opacity: 0.5;
+}
+
+/* Trimo's mark beside the name on its own replies. */
+.trim-bubble__avatar {
+  width: 1.4rem;
+  height: 1.4rem;
+  object-fit: contain;
+  opacity: 1;
+}
+
+/* Welcome state: the character is what the section is introducing, so it gets
+   the size rather than being a logo in a corner. */
+.trim-chat__mark {
+  width: clamp(4.5rem, 12vw, 7.5rem);
+  height: auto;
+  margin-bottom: 0.75rem;
 }
 
 .trim-bubble--user .trim-bubble__role {

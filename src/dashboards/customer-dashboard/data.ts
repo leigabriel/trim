@@ -65,15 +65,6 @@ export interface Metric {
   isGood: boolean;
 }
 
-export interface StyleCard {
-  id: string;
-  name: string;
-  shape: string;
-  upkeep: string;
-  match: number;
-  image: string;
-}
-
 export interface BookingRow {
   id: string;
   barber: string;
@@ -83,42 +74,6 @@ export interface BookingRow {
   status: 'Confirmed' | 'Requested' | 'Completed';
   price: string;
 }
-
-export interface FaceMetric {
-  label: string;
-  /** Landmark width as a percentage of cheekbone width. */
-  value: number;
-  reading: string;
-}
-
-/** The baseline the other landmarks are read against. */
-export const CHEEKBONE_REFERENCE = 78;
-
-export const FACE_METRICS: FaceMetric[] = [
-  { label: 'Forehead width', value: 92, reading: 'Wider than cheekbones' },
-  { label: 'Cheekbone width', value: CHEEKBONE_REFERENCE, reading: 'The reference' },
-  { label: 'Jaw width', value: 71, reading: 'Tapered' },
-  { label: 'Face length', value: 88, reading: 'Slightly long' },
-];
-
-/** What each landmark's offset from the baseline means. */
-export const FACE_FINDINGS = [
-  {
-    label: 'Forehead wider',
-    value: '+14%',
-    body: 'The brow is the widest part of your face, and that is what carries the Oval reading.',
-  },
-  {
-    label: 'Jaw narrower',
-    value: '-9%',
-    body: 'A jaw that pulls in below the cheekbone is what keeps the longer styles from reading heavy.',
-  },
-  {
-    label: 'Length above average',
-    value: '88%',
-    body: 'Enough length to keep the sides shorter than the top without losing the shape.',
-  },
-];
 
 export const BOOKING_METRICS: Metric[] = [
   { label: 'Upcoming', value: '2', delta: '1 awaiting reply', isGood: false },
@@ -152,51 +107,6 @@ export const AI_ANSWERS = [
   },
 ];
 
-export const OVERVIEW_METRICS: Metric[] = [
-  { label: 'Styles saved', value: '12', delta: '+3 this month', isGood: true },
-  { label: 'Face shape', value: 'Oval', delta: '92% confidence', isGood: true },
-  { label: 'Next booking', value: 'Fri 14', delta: 'in 2 days', isGood: true },
-  { label: 'Barbers followed', value: '4', delta: '1 new nearby', isGood: true },
-];
-
-/** Match score by month. In data so the chart stays presentational. */
-export const MATCH_TREND = [
-  { month: 'May', score: 58 },
-  { month: 'Jun', score: 64 },
-  { month: 'Jul', score: 61 },
-  { month: 'Aug', score: 72 },
-  { month: 'Sep', score: 78 },
-  { month: 'Oct', score: 86 },
-];
-
-/** Rows for the Overview's saved list. */
-export const SAVED_STYLES = [
-  {
-    name: 'Textured Crop',
-    meta: 'Saved Tue · Oval',
-    match: 94,
-    image: '/assets/styles/high-fade.png',
-  },
-  {
-    name: 'Low Taper',
-    meta: 'Saved Tue · Round',
-    match: 88,
-    image: '/assets/styles/low-fade.png',
-  },
-  {
-    name: 'Mid Fade',
-    meta: 'Saved last week · Square',
-    match: 81,
-    image: '/assets/styles/mid-fade.png',
-  },
-  {
-    name: 'Crew Cut',
-    meta: 'Saved 3 Aug · Oval',
-    match: 76,
-    image: '/assets/styles/crew-cut.png',
-  },
-];
-
 export const OVERVIEW_FEED: FeedItem[] = [
   {
     id: 'f1',
@@ -225,57 +135,6 @@ export const OVERVIEW_FEED: FeedItem[] = [
     meta: 'AI · Mon',
     body:
       'Your hair grows about 1.4cm a month on average. That puts the next length check at roughly six weeks, which lines up with your booking cadence.',
-  },
-];
-
-export const STYLE_CARDS: StyleCard[] = [
-  {
-    id: 's1',
-    name: 'Textured Crop',
-    shape: 'Oval',
-    upkeep: '2 weeks',
-    match: 94,
-    image: '/assets/styles/high-fade.png',
-  },
-  {
-    id: 's2',
-    name: 'Low Taper',
-    shape: 'Round',
-    upkeep: '3 weeks',
-    match: 88,
-    image: '/assets/styles/low-fade.png',
-  },
-  {
-    id: 's3',
-    name: 'Mid Fade',
-    shape: 'Square',
-    upkeep: '2 weeks',
-    match: 81,
-    image: '/assets/styles/mid-fade.png',
-  },
-  {
-    id: 's4',
-    name: 'Crew Cut',
-    shape: 'Oval',
-    upkeep: '4 weeks',
-    match: 76,
-    image: '/assets/styles/crew-cut.png',
-  },
-  {
-    id: 's5',
-    name: 'Buzz Cut',
-    shape: 'Diamond',
-    upkeep: '1 week',
-    match: 64,
-    image: '/assets/styles/buzz-cut.png',
-  },
-  {
-    id: 's6',
-    name: 'Semikal',
-    shape: 'Heart',
-    upkeep: '3 weeks',
-    match: 59,
-    image: '/assets/styles/semikal.png',
   },
 ];
 

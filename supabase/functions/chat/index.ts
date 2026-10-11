@@ -114,15 +114,32 @@ Deno.serve(async (req) => {
   // The customer's own profile, for the prompt's context block.
   const { data: profile } = await admin
     .from('profiles')
-    .select('username, face_shape, created_at')
+    .select('username, created_at')
     .eq('id', callerId)
+    .maybeSingle();
+
+  // The face reading lives in its own table, not on profiles. Read it here so
+  // Trimo can answer from the customer's actual shape.
+  const { data: face } = await admin
+    .from('face_profiles')
+    .select('shape, source, confidence, forehead_ratio, jaw_ratio, length_ratio')
+    .eq('user_id', callerId)
     .maybeSingle();
 
   let systemPrompt: string;
   try {
     systemPrompt = await buildSystemPrompt({
       username: profile?.username ?? null,
-      faceShape: profile?.face_shape ?? null,
+      faceShape: face?.shape ?? null,
+      faceShapeSource: face?.source ?? null,
+      faceShapeConfidence: face?.confidence ?? null,
+      faceMeasurements: face
+        ? {
+            forehead: face.forehead_ratio === null ? null : Math.round(face.forehead_ratio * 100),
+            jaw: face.jaw_ratio === null ? null : Math.round(face.jaw_ratio * 100),
+            length: face.length_ratio === null ? null : Math.round(face.length_ratio * 100),
+          }
+        : null,
       createdAt: profile?.created_at ?? null,
     });
   } catch (error) {
@@ -155,6 +172,12 @@ Deno.serve(async (req) => {
       url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
       apiKey: geminiKey,
       model: Deno.env.get('GEMINI_MODEL') ?? 'gemini-3.8-flash',
+      // Stated explicitly as well as defaulted in buildRequestBody, because the
+      // reason is not obvious and the next reader needs it. Gemini 3.x defaults
+      // to a medium thinking level and thinking tokens count against
+      // max_tokens; lowering the level is the fix Google documents, rather
+      // than shrinking the ceiling.
+      reasoningEffort: 'low',
     });
   }
 

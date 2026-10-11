@@ -4,6 +4,12 @@ import type { UseConversations } from './useConversations';
 
 interface ChatViewProps {
   chat: UseConversations;
+  /**
+   * A question carried in from elsewhere, such as the Face Shape section's
+   * "Ask Trimo about this". Prefilled into the composer rather than sent, so
+   * the customer can read it, change it, or add to it before it goes.
+   */
+  pendingPrompt?: string | null;
 }
 
 const STARTERS = [
@@ -13,9 +19,22 @@ const STARTERS = [
 ];
 
 /** Main viewport for the AI view: the thread, then the composer. */
-const ChatView: React.FC<ChatViewProps> = ({ chat }) => {
+const ChatView: React.FC<ChatViewProps> = ({ chat, pendingPrompt }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Only fills an empty composer. Sending the same prompt twice would otherwise
+  // be impossible once the customer had started typing.
+  const handledPrompt = useRef<string | null>(null);
+  useEffect(() => {
+    if (!pendingPrompt || handledPrompt.current === pendingPrompt) return;
+
+    handledPrompt.current = pendingPrompt;
+    if (chat.draft.trim().length === 0) {
+      chat.setDraft(pendingPrompt);
+      inputRef.current?.focus();
+    }
+  }, [pendingPrompt, chat]);
 
   // Follow the thread as it grows, the way every chat does.
   useEffect(() => {
@@ -37,6 +56,13 @@ const ChatView: React.FC<ChatViewProps> = ({ chat }) => {
       <div className="trim-chat__thread" ref={scrollRef} aria-live="polite">
         {isEmpty ? (
           <div className="trim-chat__welcome">
+            <img
+              className="trim-chat__mark"
+              src="/assets/ui/trimo.png"
+              alt="Trimo"
+              width={394}
+              height={394}
+            />
             <h1 className="trim-chat__welcome-title">Ask Trimo</h1>
             <p className="trim-chat__welcome-lede">
               Trimo knows your face shape, your hair and how often you get cut. Ask what
@@ -69,7 +95,17 @@ const ChatView: React.FC<ChatViewProps> = ({ chat }) => {
               {/* Provider is stored but not shown: which model answered is
                   diagnostics, not something a customer needs to read. */}
               <p className="trim-bubble__role">
-                {message.role === 'user' ? 'You' : 'Trimo'}
+                {/* Decorative: the label beside it already names the speaker. */}
+                {message.role === 'assistant' ? (
+                  <img
+                    className="trim-bubble__avatar"
+                    src="/assets/ui/trimo.png"
+                    alt=""
+                    width={394}
+                    height={394}
+                  />
+                ) : null}
+                <span>{message.role === 'user' ? 'You' : 'Trimo'}</span>
               </p>
               <p className="trim-bubble__text">{message.content}</p>
             </article>

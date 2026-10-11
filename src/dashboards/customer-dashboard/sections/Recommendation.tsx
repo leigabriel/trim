@@ -1,38 +1,85 @@
-import { STYLE_CARDS } from '../data';
+import { shapeAdvice } from '../face/advice';
+import { galleryFor } from '../face/gallery';
+import StyleRecommendations from '../face/StyleRecommendations';
+import type { FaceProfileState } from '../face/useFaceProfile';
+import { faceShapeLabel } from '../face/shapes';
 import SectionHead from './SectionHead';
 
-const Recommendation: React.FC = () => (
-  <>
-    <SectionHead
-      title="Recommendation"
-      lede="Scored against your face shape, hair type and how often you can get it cut. Higher match means less correction later."
-    />
+interface RecommendationProps {
+  face: FaceProfileState;
+  onSetFace: () => void;
+}
 
-    <ul className="trim-style-grid">
-      {STYLE_CARDS.map((style) => (
-        <li className="trim-style" key={style.id}>
-          <div className="trim-style__frame">
-            <img src={style.image} alt="" loading="lazy" />
-            <span className="trim-style__match">{style.match}%</span>
+/**
+ * Cuts matched to the customer's shape, then what is trending.
+ *
+ * Trending renders whether or not a shape is set, so this section is never
+ * empty. Without a shape it says plainly that nothing here is matched yet,
+ * rather than showing a full grid of percentages that mean nothing.
+ */
+const Recommendation: React.FC<RecommendationProps> = ({ face, onSetFace }) => {
+  const shape = face.shape;
+  const label = shape ? faceShapeLabel(shape) : null;
+
+  return (
+    <>
+      <SectionHead
+        title="Recommendation"
+        lede={
+          label
+            ? `Matched to your ${label.toLowerCase()} face, then what is trending regardless.`
+            : 'What is trending now. Set your face shape and the first list gets ranked against your proportions.'
+        }
+      />
+
+      {!face.isLoading && !shape ? (
+        <div className="trim-card">
+          <h2 className="trim-card__title">Nothing matched to you yet</h2>
+          <p className="trim-card__text">
+            Trim cannot score a cut against a face it has not measured. Set your
+            shape by hand if you know it, or let the camera work it out.
+          </p>
+          <button className="trim-account__analyze" type="button" onClick={onSetFace}>
+            Set my face shape
+          </button>
+        </div>
+      ) : null}
+
+      {face.error ? (
+        <p className="trim-account__error" role="alert">
+          {face.error}
+        </p>
+      ) : null}
+
+      {/* The shape gallery. Only meaningful once a shape exists, so it is not
+          rendered against a guess. */}
+      {shape && label ? (
+        <section className="trim-gallery-block">
+          <div className="trim-gallery-block__head">
+            <h2 className="trim-card__title">{label} gallery</h2>
+            <p className="trim-gallery-block__note">{shapeAdvice(shape).headline}</p>
           </div>
 
-          <div className="trim-style__body">
-            <h3 className="trim-style__name">{style.name}</h3>
-            <dl className="trim-style__specs">
-              <div>
-                <dt>Shape</dt>
-                <dd>{style.shape}</dd>
-              </div>
-              <div>
-                <dt>Upkeep</dt>
-                <dd>{style.upkeep}</dd>
-              </div>
-            </dl>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </>
-);
+          <ul className="trim-gallery">
+            {galleryFor(shape).map((src, index) => (
+              <li className="trim-gallery__item" key={src}>
+                <img
+                  className="trim-gallery__image"
+                  src={src}
+                  alt={`${label} reference ${index + 1}`}
+                  loading="lazy"
+                  width={800}
+                  height={800}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      <StyleRecommendations shape={shape} />
+    </>
+  );
+};
 
 export default Recommendation;

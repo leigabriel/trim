@@ -6,11 +6,15 @@ exist yet, and saying it does is worse than saying you are unsure.
 ## What it does
 
 - **Faceshape Analyzer.** Reads four landmarks from a photo — forehead width,
-  cheekbone width, jaw width, face length — and classifies the face as oval,
-  round, square, heart, or oblong, with a confidence percentage.
-- **Recommendation.** Scores hairstyles against the customer's face shape, hair
-  type, length, and how often they can realistically get it cut. Each style
-  carries a match percentage, the shape it suits, and a refresh interval.
+  cheekbone width, jaw width, face length — and classifies the face as one of
+  seven shapes: oval, round, square, heart, diamond, long or triangle. It reports
+  a confidence percentage, and says so plainly when the reading is too close to
+  call between two shapes. A customer can also set their shape by hand instead of
+  measuring it, in which case there are no measurements and no confidence.
+- **Recommendation.** Scores hairstyles against the customer's face shape. Each
+  style carries a match percentage and a refresh interval, plus a gallery of
+  reference images for their shape. Trending cuts are shown separately, because
+  trending and suiting a particular face are different claims.
 - **Booking.** Appointments with barbers, each with a service, a date, and a
   status. Customers see their own booking history.
 - **Account.** A username, the name and email from their Google sign-in, and

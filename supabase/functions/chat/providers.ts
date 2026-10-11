@@ -22,6 +22,11 @@ export interface ProviderConfig {
   url: string;
   apiKey: string;
   model: string;
+  /**
+   * OpenAI-compatible reasoning effort, sent only when set. Gemini maps this
+   * onto its thinking level.
+   */
+  reasoningEffort?: 'minimal' | 'low' | 'medium' | 'high';
 }
 
 export interface ProviderResult {
@@ -37,6 +42,69 @@ export interface ProviderFailure {
 
 /** Wall clock for one provider call. Generous, because a cold start is slow. */
 export const REQUEST_TIMEOUT_MS = 60_000;
+
+/**
+ * Output token ceiling, sent as max_tokens.
+ *
+ * This is NOT the length of the reply. Gemini counts thinking tokens against
+ * the same budget, and Gemini 3.x Flash defaults to a medium thinking level
+ * when reasoning_effort is omitted. At the old 600 the thinking spent most or
+ * all of it and the visible answer was cut off mid-sentence.
+ *
+ * See https://ai.google.dev/gemini-api/docs/thinking: "max_output_tokens
+ * applies to the combined total of thinking tokens and output tokens" and
+ * "lower thinking_level instead of setting a small max_output_tokens".
+ *
+ * Sized to leave room for both while staying far under the database's 8000
+ * character ceiling on a saved message.
+ */
+export const MAX_TOKENS = 2048;
+
+/** Builds the request body, keeping provider quirks out of the fetch call. */
+export function buildRequestBody(
+  config: ProviderConfig,
+  messages: ChatMessage[],
+): Record<string, unknown> {
+  const body: Record<string, unknown> = {
+    model: config.model,
+    messages,
+    max_tokens: MAX_TOKENS,
+    temperature: 0.6,
+  };
+
+  // Defaulted here rather than only at the call site, so adding a second Gemini
+  // provider later cannot silently reintroduce the truncation bug.
+  //
+  // Never sent to OpenRouter: it routes to many models and some reject unknown
+  // parameters, which would turn a working provider into a 400 and remove the
+  // failover.
+  const effort = config.reasoningEffort ?? (config.id === 'gemini' ? 'low' : undefined);
+  if (effort) body.reasoning_effort = effort;
+
+  return body;
+}
+
+/** The reason the provider stopped generating, or null when it did not say. */
+export function readFinishReason(payload: unknown): string | null {
+  if (typeof payload !== 'object' || payload === null) return null;
+
+  const choices = (payload as { choices?: unknown }).choices;
+  if (!Array.isArray(choices) || choices.length === 0) return null;
+
+  const reason = (choices[0] as { finish_reason?: unknown } | undefined)?.finish_reason;
+  return typeof reason === 'string' ? reason : null;
+}
+
+/**
+ * Whether the reply was cut short by the token ceiling.
+ *
+ * A truncated completion still arrives as HTTP 200 with readable text, so
+ * without this the partial answer was stored and shown as if it were whole.
+ * The caller turns this into a failure so the other provider gets a turn.
+ */
+export function isTruncated(payload: unknown): boolean {
+  return readFinishReason(payload) === 'length';
+}
 
 /**
  * Whether a failure from one provider is worth retrying on the other.
@@ -88,13 +156,7 @@ export async function callProvider(
         'Content-Type': 'application/json',
         Authorization: `Bearer ${config.apiKey}`,
       },
-      body: JSON.stringify({
-        model: config.model,
-        messages,
-        // Hair advice wants short, direct answers, not essays.
-        max_tokens: 600,
-        temperature: 0.6,
-      }),
+      body: JSON.stringify(buildRequestBody(config, messages)),
       signal: controller.signal,
     });
 
@@ -115,6 +177,16 @@ export async function callProvider(
     const content = readContent(payload);
     if (content === null) {
       return { provider: config.id, status: 502, body: text.slice(0, 400) };
+    }
+
+    // 200 with a cut-off body. Returned as a failure so the other provider can
+    // try, rather than stored and shown as a finished answer.
+    if (isTruncated(payload)) {
+      return {
+        provider: config.id,
+        status: 502,
+        body: 'Reply hit the token ceiling and was cut off mid-sentence.',
+      };
     }
 
     return { provider: config.id, content };

@@ -3,6 +3,13 @@ import { useState } from 'react';
 import { useAuth } from '../../../auth/AuthProvider';
 import ConfirmModal from '../../../components/layout/modals/ConfirmModal';
 import { supabase } from '../../../lib/supabase';
+import { faceShapeLabel, FACE_SHAPE_DEFINITIONS, FACE_SHAPES } from '../face/shapes';
+import type { FaceProfileState } from '../face/useFaceProfile';
+
+interface AccountProps {
+  face: FaceProfileState;
+  onAnalyzeFace: () => void;
+}
 
 /**
  * Account. Reads the Supabase session and profile.
@@ -11,11 +18,12 @@ import { supabase } from '../../../lib/supabase';
  * page, not a dashboard, and stretching four short cards across 1000px left
  * them as a row of thin slivers.
  */
-const Account: React.FC = () => {
+const Account: React.FC<AccountProps> = ({ face, onAnalyzeFace }) => {
   const { session, profile, signOut } = useAuth();
   const [isConfirmingOut, setIsConfirmingOut] = useState(false);
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [shapeError, setShapeError] = useState<string | null>(null);
 
   const deleteAccount = async () => {
     setDeleteError(null);
@@ -90,6 +98,99 @@ const Account: React.FC = () => {
                 </div>
               ) : null}
             </dl>
+          </div>
+
+          <div className="trim-card">
+            <h2 className="trim-card__title">Face shape</h2>
+
+            {face.isLoading ? (
+              <p className="trim-card__text">Loading your reading…</p>
+            ) : (
+              <>
+                <p className="trim-shape__current">
+                  {face.shape ? (
+                    <>
+                      <strong>{faceShapeLabel(face.shape)}</strong>
+                      <span className="trim-shape__source">
+                        {face.profile?.source === 'scanned'
+                          ? `Scanned${face.profile.confidence ? ` · ${face.profile.confidence}% confidence` : ''}`
+                          : 'Set by you'}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="trim-shape__source">Not set yet</span>
+                  )}
+                </p>
+
+                {face.profile?.measurements ? (
+                  <p className="trim-card__text">
+                    Forehead {Math.round(face.profile.measurements.foreheadRatio * 100)}%,
+                    jaw {Math.round(face.profile.measurements.jawRatio * 100)}%,
+                    length {Math.round(face.profile.measurements.lengthRatio * 100)}% of
+                    your cheekbone width.
+                  </p>
+                ) : null}
+
+                {shapeError ? (
+                  <p className="trim-account__error" role="alert">
+                    {shapeError}
+                  </p>
+                ) : null}
+
+                <fieldset className="trim-shape__picker">
+                  <legend className="trim-shape__legend">
+                    Already know your shape?
+                  </legend>
+
+                  <div className="trim-shape__options">
+                    {FACE_SHAPES.map((option) => (
+                      <label
+                        className={`trim-shape__option${
+                          face.shape === option ? ' trim-shape__option--current' : ''
+                        }`}
+                        key={option}
+                      >
+                        <input
+                          type="radio"
+                          name="face-shape"
+                          value={option}
+                          checked={face.shape === option}
+                          disabled={face.isSaving}
+                          onChange={async () => {
+                            setShapeError(null);
+                            const saved = await face.setShape(option);
+                            if (!saved) setShapeError('Could not save that. Try again.');
+                          }}
+                        />
+                        <span>{faceShapeLabel(option)}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
+                <p className="trim-shape__hint">
+                  {face.shape
+                    ? FACE_SHAPE_DEFINITIONS[face.shape].summary
+                    : 'Pick one above, or let the camera work it out from four measurements.'}
+                </p>
+
+                <button
+                  className="trim-account__analyze"
+                  type="button"
+                  onClick={onAnalyzeFace}
+                >
+                  {face.profile?.source === 'scanned'
+                    ? 'Analyze again'
+                    : 'Not sure? Analyze my face'}
+                </button>
+
+                <p className="trim-shape__privacy">
+                  The analyzer uses your camera only while it is open. The image is
+                  processed on your device and never uploaded — only the four
+                  measurements are saved.
+                </p>
+              </>
+            )}
           </div>
 
           <div className="trim-card">
