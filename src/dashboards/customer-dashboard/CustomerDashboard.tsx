@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 
+import ChatView from './ai/ChatView';
+import ConversationList from './ai/ConversationList';
+import { useConversations } from './ai/useConversations';
 import { DASHBOARD_NAV, FEED_BY_VIEW } from './data';
 import type { DashboardView } from './data';
 import Account from './sections/Account';
-import AiSection from './sections/AiSection';
 import Booking from './sections/Booking';
 import FaceShape from './sections/FaceShape';
 import Overview from './sections/Overview';
@@ -26,6 +28,9 @@ const CustomerDashboard: React.FC = () => {
   const [isRailOpen, setIsRailOpen] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
+  // Mounted unconditionally so a chat in progress survives switching sections.
+  const chat = useConversations();
+
   const select = (next: DashboardView) => {
     setView(next);
     setIsRailOpen(false);
@@ -33,6 +38,7 @@ const CustomerDashboard: React.FC = () => {
 
   const current = DASHBOARD_NAV.find((item) => item.id === view);
   const isAccount = view === 'account';
+  const isAi = view === 'ai';
   const sectionLabel = isAccount ? 'Account' : (current?.label ?? '');
 
   return (
@@ -52,24 +58,35 @@ const CustomerDashboard: React.FC = () => {
           <div className={`trim-dash__grid${isAccount ? ' trim-dash__grid--wide' : ''}`}>
             <DashboardRail view={view} onSelect={select} isOpen={isRailOpen} />
 
-            {!isAccount ? (
+            {/* AI swaps the activity feed for the customer's own chat list. */}
+            {isAi ? (
+              <ConversationList chat={chat} />
+            ) : !isAccount ? (
               <ActivityFeed label={sectionLabel} items={FEED_BY_VIEW[view]} />
             ) : null}
 
             <main
-              className={`trim-dash__main${isAccount ? ' trim-dash__main--centred' : ''}`}
+              className={`trim-dash__main${
+                isAccount
+                  ? ' trim-dash__main--centred'
+                  : isAi
+                    ? ' trim-dash__main--flush'
+                    : ''
+              }`}
             >
               {/* Account owns its own centring, so it sits outside the
-                  width-capped .trim-section wrapper the data sections use. */}
+                  width-capped .trim-section wrapper the data sections use.
+                  Chat fills the pane edge to edge, for the same reason. */}
               {isAccount ? (
                 <Account />
+              ) : isAi ? (
+                <ChatView chat={chat} />
               ) : (
                 <div className="trim-section">
                   {view === 'overview' ? <Overview /> : null}
                   {view === 'recommendation' ? <Recommendation /> : null}
                   {view === 'face-shape' ? <FaceShape /> : null}
                   {view === 'booking' ? <Booking /> : null}
-                  {view === 'ai' ? <AiSection /> : null}
                 </div>
               )}
             </main>

@@ -23,6 +23,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
   const navigate = useNavigate();
 
   // One subscription for the whole app.
@@ -52,17 +53,25 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     if (!userId) {
       setProfile(null);
+      setIsProfileLoading(false);
       return;
     }
 
     let active = true;
+    // Set before the query, not after: a returning customer reaches the
+    // callback page before this resolves, and a stale false here would read
+    // as "no username" and send them through the form again.
+    setIsProfileLoading(true);
+
     supabase
       .from('profiles')
       .select('id, username, display_name, avatar_url')
       .eq('id', userId)
       .maybeSingle()
       .then(({ data }) => {
-        if (active) setProfile(mapProfile(data as ProfileRow | null));
+        if (!active) return;
+        setProfile(mapProfile(data as ProfileRow | null));
+        setIsProfileLoading(false);
       });
 
     return () => {
@@ -108,8 +117,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   );
 
   const value = useMemo<AuthContextValue>(
-    () => ({ session, profile, isLoading, signInWithGoogle, signOut, saveUsername }),
-    [session, profile, isLoading, signInWithGoogle, signOut, saveUsername],
+    () => ({
+      session,
+      profile,
+      isLoading,
+      isProfileLoading,
+      signInWithGoogle,
+      signOut,
+      saveUsername,
+    }),
+    [session, profile, isLoading, isProfileLoading, signInWithGoogle, signOut, saveUsername],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

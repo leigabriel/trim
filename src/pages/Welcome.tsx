@@ -6,15 +6,21 @@ import { useAuth } from '../auth/AuthProvider';
 import './Welcome.css';
 
 const Welcome: React.FC = () => {
-  const { session, isLoading, saveUsername } = useAuth();
+  const { session, profile, isLoading, isProfileLoading, saveUsername } = useAuth();
   const navigate = useNavigate();
   const [value, setValue] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Wait for the session read: a hard refresh would otherwise send a signed-in
-  // customer back to /home.
-  if (!isLoading && !session) return <Navigate to="/home" replace />;
+  const isSettled = !isLoading && !isProfileLoading;
+
+  // A returning customer already has a username, so the form has nothing to
+  // ask. Checked only once both reads have settled: a null profile before the
+  // query resolves looks identical to "no username yet".
+  if (isSettled && !session) return <Navigate to="/home" replace />;
+  if (isSettled && session && profile?.username) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

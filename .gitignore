@@ -32,9 +32,6 @@ yarn-error.log*
 
 # Reference files
 reference
-TRIM.md
 
 # Secrets
 .env
-
-supabase

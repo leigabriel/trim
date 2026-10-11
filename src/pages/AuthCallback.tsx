@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { IonContent, IonPage } from '@ionic/react';
 
+import { useAuth } from '../auth/AuthProvider';
 import { supabase } from '../lib/supabase';
 import './AuthCallback.css';
 
@@ -10,8 +11,12 @@ const EXCHANGE_FAILED = 'Could not complete sign in. Try again.';
 
 const AuthCallback: React.FC = () => {
   const navigate = useNavigate();
+  const { profile, isProfileLoading } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const hasUsername = Boolean(profile?.username);
+  const isSettled = isSignedIn && !isProfileLoading;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -56,6 +61,12 @@ const AuthCallback: React.FC = () => {
     };
   }, [navigate]);
 
+  // Returning customer: straight through to the dashboard, no confirmation
+  // step. Sending them to /welcome is what re-prompted for a username they had
+  // already set. Gated on isProfileLoading so a slow profiles query does not
+  // read as "no username yet".
+  if (isSettled && hasUsername) return <Navigate to="/dashboard" replace />;
+
   return (
       <IonPage>
           <IonContent>
@@ -73,7 +84,7 @@ const AuthCallback: React.FC = () => {
                       </>
                   )}
 
-                  {!error && isSignedIn && (
+                  {!error && isSettled && (
                       <div className="trim-callback__panel">
                           <span className="trim-callback__tick" aria-hidden="true">
                               <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
@@ -121,7 +132,9 @@ const AuthCallback: React.FC = () => {
                       </div>
                   )}
 
-                  {!error && !isSignedIn && (
+                  {/* Stays pending until the profile settles too, otherwise there is a blank
+                      frame between "signed in" and the redirect firing. */}
+                  {!error && !isSettled && (
                       <p className="trim-callback__pending">Signing you in</p>
                   )}
               </main>
