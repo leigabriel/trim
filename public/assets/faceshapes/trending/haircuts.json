@@ -1,0 +1,92 @@
+[
+  {
+    "slot": "01",
+    "name": "Low Taper Fade",
+    "slug": "low-taper-fade",
+    "file": "01.png",
+    "namedFile": "01-low-taper-fade.png",
+    "src": "/assets/faceshapes/trending/01.png",
+    "namedSrc": "/assets/faceshapes/trending/01-low-taper-fade.png"
+  },
+  {
+    "slot": "02",
+    "name": "Textured Modern Mullet",
+    "slug": "textured-modern-mullet",
+    "file": "02.png",
+    "namedFile": "02-textured-modern-mullet.png",
+    "src": "/assets/faceshapes/trending/02.png",
+    "namedSrc": "/assets/faceshapes/trending/02-textured-modern-mullet.png"
+  },
+  {
+    "slot": "03",
+    "name": "Fluffy Edgar Cut",
+    "slug": "fluffy-edgar-cut",
+    "file": "03.png",
+    "namedFile": "03-fluffy-edgar-cut.png",
+    "src": "/assets/faceshapes/trending/03.png",
+    "namedSrc": "/assets/faceshapes/trending/03-fluffy-edgar-cut.png"
+  },
+  {
+    "slot": "04",
+    "name": "French Crop Fade",
+    "slug": "french-crop-fade",
+    "file": "04.png",
+    "namedFile": "04-french-crop-fade.png",
+    "src": "/assets/faceshapes/trending/04.png",
+    "namedSrc": "/assets/faceshapes/trending/04-french-crop-fade.png"
+  },
+  {
+    "slot": "05",
+    "name": "Korean Two-Block Curtain",
+    "slug": "korean-two-block-curtain",
+    "file": "05.png",
+    "namedFile": "05-korean-two-block-curtain.png",
+    "src": "/assets/faceshapes/trending/05.png",
+    "namedSrc": "/assets/faceshapes/trending/05-korean-two-block-curtain.png"
+  },
+  {
+    "slot": "06",
+    "name": "Buzz Cut with Line Up",
+    "slug": "buzz-cut-line-up",
+    "file": "06.png",
+    "namedFile": "06-buzz-cut-line-up.png",
+    "src": "/assets/faceshapes/trending/06.png",
+    "namedSrc": "/assets/faceshapes/trending/06-buzz-cut-line-up.png"
+  },
+  {
+    "slot": "07",
+    "name": "Burst Fade Mohawk",
+    "slug": "burst-fade-mohawk",
+    "file": "07.png",
+    "namedFile": "07-burst-fade-mohawk.png",
+    "src": "/assets/faceshapes/trending/07.png",
+    "namedSrc": "/assets/faceshapes/trending/07-burst-fade-mohawk.png"
+  },
+  {
+    "slot": "08",
+    "name": "Modern Shag Wolf Cut",
+    "slug": "modern-shag-wolf-cut",
+    "file": "08.png",
+    "namedFile": "08-modern-shag-wolf-cut.png",
+    "src": "/assets/faceshapes/trending/08.png",
+    "namedSrc": "/assets/faceshapes/trending/08-modern-shag-wolf-cut.png"
+  },
+  {
+    "slot": "09",
+    "name": "Slicked Back Taper",
+    "slug": "slicked-back-taper",
+    "file": "09.png",
+    "namedFile": "09-slicked-back-taper.png",
+    "src": "/assets/faceshapes/trending/09.png",
+    "namedSrc": "/assets/faceshapes/trending/09-slicked-back-taper.png"
+  },
+  {
+    "slot": "10",
+    "name": "Mid Drop Fade with Waves",
+    "slug": "mid-drop-fade-waves",
+    "file": "10.png",
+    "namedFile": "10-mid-drop-fade-waves.png",
+    "src": "/assets/faceshapes/trending/10.png",
+    "namedSrc": "/assets/faceshapes/trending/10-mid-drop-fade-waves.png"
+  }
+]

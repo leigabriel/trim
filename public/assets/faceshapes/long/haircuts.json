@@ -1,0 +1,92 @@
+[
+  {
+    "slot": "01",
+    "name": "Heavy Side Swept Fringe",
+    "slug": "heavy-side-swept-fringe",
+    "file": "01.png",
+    "namedFile": "01-heavy-side-swept-fringe.png",
+    "src": "/assets/faceshapes/long/01.png",
+    "namedSrc": "/assets/faceshapes/long/01-heavy-side-swept-fringe.png"
+  },
+  {
+    "slot": "02",
+    "name": "Classic Side Parting",
+    "slug": "classic-side-parting",
+    "file": "02.png",
+    "namedFile": "02-classic-side-parting.png",
+    "src": "/assets/faceshapes/long/02.png",
+    "namedSrc": "/assets/faceshapes/long/02-classic-side-parting.png"
+  },
+  {
+    "slot": "03",
+    "name": "Scissor Cut Fuller Sides",
+    "slug": "scissor-cut-fuller-sides",
+    "file": "03.png",
+    "namedFile": "03-scissor-cut-fuller-sides.png",
+    "src": "/assets/faceshapes/long/03.png",
+    "namedSrc": "/assets/faceshapes/long/03-scissor-cut-fuller-sides.png"
+  },
+  {
+    "slot": "04",
+    "name": "Wavy Textured Bro Flow",
+    "slug": "wavy-textured-bro-flow",
+    "file": "04.png",
+    "namedFile": "04-wavy-textured-bro-flow.png",
+    "src": "/assets/faceshapes/long/04.png",
+    "namedSrc": "/assets/faceshapes/long/04-wavy-textured-bro-flow.png"
+  },
+  {
+    "slot": "05",
+    "name": "Low Taper Scissor Top",
+    "slug": "low-taper-scissor-top",
+    "file": "05.png",
+    "namedFile": "05-low-taper-scissor-top.png",
+    "src": "/assets/faceshapes/long/05.png",
+    "namedSrc": "/assets/faceshapes/long/05-low-taper-scissor-top.png"
+  },
+  {
+    "slot": "06",
+    "name": "French Crop Straight Fringe",
+    "slug": "french-crop-straight-fringe",
+    "file": "06.png",
+    "namedFile": "06-french-crop-straight-fringe.png",
+    "src": "/assets/faceshapes/long/06.png",
+    "namedSrc": "/assets/faceshapes/long/06-french-crop-straight-fringe.png"
+  },
+  {
+    "slot": "07",
+    "name": "Middle Part Curtain Hair",
+    "slug": "middle-part-curtain-hair",
+    "file": "07.png",
+    "namedFile": "07-middle-part-curtain-hair.png",
+    "src": "/assets/faceshapes/long/07.png",
+    "namedSrc": "/assets/faceshapes/long/07-middle-part-curtain-hair.png"
+  },
+  {
+    "slot": "08",
+    "name": "Crew Cut Low Fade",
+    "slug": "crew-cut-low-fade",
+    "file": "08.png",
+    "namedFile": "08-crew-cut-low-fade.png",
+    "src": "/assets/faceshapes/long/08.png",
+    "namedSrc": "/assets/faceshapes/long/08-crew-cut-low-fade.png"
+  },
+  {
+    "slot": "09",
+    "name": "Textured Scissor Crop",
+    "slug": "textured-scissor-crop",
+    "file": "09.png",
+    "namedFile": "09-textured-scissor-crop.png",
+    "src": "/assets/faceshapes/long/09.png",
+    "namedSrc": "/assets/faceshapes/long/09-textured-scissor-crop.png"
+  },
+  {
+    "slot": "10",
+    "name": "Layered Medium Waves",
+    "slug": "layered-medium-waves",
+    "file": "10.png",
+    "namedFile": "10-layered-medium-waves.png",
+    "src": "/assets/faceshapes/long/10.png",
+    "namedSrc": "/assets/faceshapes/long/10-layered-medium-waves.png"
+  }
+]

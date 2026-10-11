@@ -1,0 +1,92 @@
+[
+  {
+    "slot": "01",
+    "name": "High Volume Quiff",
+    "slug": "high-volume-quiff",
+    "file": "01.png",
+    "namedFile": "01-high-volume-quiff.png",
+    "src": "/assets/faceshapes/triangle/01.png",
+    "namedSrc": "/assets/faceshapes/triangle/01-high-volume-quiff.png"
+  },
+  {
+    "slot": "02",
+    "name": "Textured French Crop High Fade",
+    "slug": "textured-french-crop-high-fade",
+    "file": "02.png",
+    "namedFile": "02-textured-french-crop-high-fade.png",
+    "src": "/assets/faceshapes/triangle/02.png",
+    "namedSrc": "/assets/faceshapes/triangle/02-textured-french-crop-high-fade.png"
+  },
+  {
+    "slot": "03",
+    "name": "Modern Pompadour",
+    "slug": "modern-pompadour",
+    "file": "03.png",
+    "namedFile": "03-modern-pompadour.png",
+    "src": "/assets/faceshapes/triangle/03.png",
+    "namedSrc": "/assets/faceshapes/triangle/03-modern-pompadour.png"
+  },
+  {
+    "slot": "04",
+    "name": "Side Swept Angular Fringe",
+    "slug": "side-swept-angular-fringe",
+    "file": "04.png",
+    "namedFile": "04-side-swept-angular-fringe.png",
+    "src": "/assets/faceshapes/triangle/04.png",
+    "namedSrc": "/assets/faceshapes/triangle/04-side-swept-angular-fringe.png"
+  },
+  {
+    "slot": "05",
+    "name": "Messy Spiky Top Taper",
+    "slug": "messy-spiky-top-taper",
+    "file": "05.png",
+    "namedFile": "05-messy-spiky-top-taper.png",
+    "src": "/assets/faceshapes/triangle/05.png",
+    "namedSrc": "/assets/faceshapes/triangle/05-messy-spiky-top-taper.png"
+  },
+  {
+    "slot": "06",
+    "name": "Scissor Over Comb Volume Top",
+    "slug": "scissor-over-comb-volume",
+    "file": "06.png",
+    "namedFile": "06-scissor-over-comb-volume.png",
+    "src": "/assets/faceshapes/triangle/06.png",
+    "namedSrc": "/assets/faceshapes/triangle/06-scissor-over-comb-volume.png"
+  },
+  {
+    "slot": "07",
+    "name": "High Skin Fade Wavy Top",
+    "slug": "high-skin-fade-wavy-top",
+    "file": "07.png",
+    "namedFile": "07-high-skin-fade-wavy-top.png",
+    "src": "/assets/faceshapes/triangle/07.png",
+    "namedSrc": "/assets/faceshapes/triangle/07-high-skin-fade-wavy-top.png"
+  },
+  {
+    "slot": "08",
+    "name": "Undercut Quiff",
+    "slug": "undercut-quiff",
+    "file": "08.png",
+    "namedFile": "08-undercut-quiff.png",
+    "src": "/assets/faceshapes/triangle/08.png",
+    "namedSrc": "/assets/faceshapes/triangle/08-undercut-quiff.png"
+  },
+  {
+    "slot": "09",
+    "name": "Faux Hawk Fade",
+    "slug": "faux-hawk-fade",
+    "file": "09.png",
+    "namedFile": "09-faux-hawk-fade.png",
+    "src": "/assets/faceshapes/triangle/09.png",
+    "namedSrc": "/assets/faceshapes/triangle/09-faux-hawk-fade.png"
+  },
+  {
+    "slot": "10",
+    "name": "Brushed Back Fade",
+    "slug": "brushed-back-fade",
+    "file": "10.png",
+    "namedFile": "10-brushed-back-fade.png",
+    "src": "/assets/faceshapes/triangle/10.png",
+    "namedSrc": "/assets/faceshapes/triangle/10-brushed-back-fade.png"
+  }
+]

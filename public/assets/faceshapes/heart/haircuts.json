@@ -1,0 +1,92 @@
+[
+  {
+    "slot": "01",
+    "name": "Mid-Length Bro Flow",
+    "slug": "mid-length-bro-flow",
+    "file": "01.png",
+    "namedFile": "01-mid-length-bro-flow.png",
+    "src": "/assets/faceshapes/heart/01.png",
+    "namedSrc": "/assets/faceshapes/heart/01-mid-length-bro-flow.png"
+  },
+  {
+    "slot": "02",
+    "name": "Side-Swept Fringe",
+    "slug": "side-swept-fringe",
+    "file": "02.png",
+    "namedFile": "02-side-swept-fringe.png",
+    "src": "/assets/faceshapes/heart/02.png",
+    "namedSrc": "/assets/faceshapes/heart/02-side-swept-fringe.png"
+  },
+  {
+    "slot": "03",
+    "name": "Textured Fringe Low Taper",
+    "slug": "textured-fringe-low-taper",
+    "file": "03.png",
+    "namedFile": "03-textured-fringe-low-taper.png",
+    "src": "/assets/faceshapes/heart/03.png",
+    "namedSrc": "/assets/faceshapes/heart/03-textured-fringe-low-taper.png"
+  },
+  {
+    "slot": "04",
+    "name": "Classic Scissor Taper",
+    "slug": "classic-scissor-taper",
+    "file": "04.png",
+    "namedFile": "04-classic-scissor-taper.png",
+    "src": "/assets/faceshapes/heart/04.png",
+    "namedSrc": "/assets/faceshapes/heart/04-classic-scissor-taper.png"
+  },
+  {
+    "slot": "05",
+    "name": "Curtain Bangs Middle Part",
+    "slug": "curtain-bangs-middle-part",
+    "file": "05.png",
+    "namedFile": "05-curtain-bangs-middle-part.png",
+    "src": "/assets/faceshapes/heart/05.png",
+    "namedSrc": "/assets/faceshapes/heart/05-curtain-bangs-middle-part.png"
+  },
+  {
+    "slot": "06",
+    "name": "Messy Wavy Shag",
+    "slug": "messy-wavy-shag",
+    "file": "06.png",
+    "namedFile": "06-messy-wavy-shag.png",
+    "src": "/assets/faceshapes/heart/06.png",
+    "namedSrc": "/assets/faceshapes/heart/06-messy-wavy-shag.png"
+  },
+  {
+    "slot": "07",
+    "name": "Low Taper Side Sweep",
+    "slug": "low-taper-side-sweep",
+    "file": "07.png",
+    "namedFile": "07-low-taper-side-sweep.png",
+    "src": "/assets/faceshapes/heart/07.png",
+    "namedSrc": "/assets/faceshapes/heart/07-low-taper-side-sweep.png"
+  },
+  {
+    "slot": "08",
+    "name": "Layered Scissor Cut",
+    "slug": "layered-scissor-cut",
+    "file": "08.png",
+    "namedFile": "08-layered-scissor-cut.png",
+    "src": "/assets/faceshapes/heart/08.png",
+    "namedSrc": "/assets/faceshapes/heart/08-layered-scissor-cut.png"
+  },
+  {
+    "slot": "09",
+    "name": "Soft Textured Quiff",
+    "slug": "soft-textured-quiff",
+    "file": "09.png",
+    "namedFile": "09-soft-textured-quiff.png",
+    "src": "/assets/faceshapes/heart/09.png",
+    "namedSrc": "/assets/faceshapes/heart/09-soft-textured-quiff.png"
+  },
+  {
+    "slot": "10",
+    "name": "Chin-Length Wavy Hair",
+    "slug": "chin-length-wavy-hair",
+    "file": "10.png",
+    "namedFile": "10-chin-length-wavy-hair.png",
+    "src": "/assets/faceshapes/heart/10.png",
+    "namedSrc": "/assets/faceshapes/heart/10-chin-length-wavy-hair.png"
+  }
+]

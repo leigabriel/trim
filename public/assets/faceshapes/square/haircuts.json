@@ -1,0 +1,92 @@
+[
+  {
+    "slot": "01",
+    "name": "Textured Crop Fade",
+    "slug": "textured-crop-fade",
+    "file": "01.png",
+    "namedFile": "01-textured-crop-fade.png",
+    "src": "/assets/faceshapes/square/01.png",
+    "namedSrc": "/assets/faceshapes/square/01-textured-crop-fade.png"
+  },
+  {
+    "slot": "02",
+    "name": "Mid Fade Messy Top",
+    "slug": "mid-fade-messy-top",
+    "file": "02.png",
+    "namedFile": "02-mid-fade-messy-top.png",
+    "src": "/assets/faceshapes/square/02.png",
+    "namedSrc": "/assets/faceshapes/square/02-mid-fade-messy-top.png"
+  },
+  {
+    "slot": "03",
+    "name": "Classic Side Part",
+    "slug": "classic-side-part",
+    "file": "03.png",
+    "namedFile": "03-classic-side-part.png",
+    "src": "/assets/faceshapes/square/03.png",
+    "namedSrc": "/assets/faceshapes/square/03-classic-side-part.png"
+  },
+  {
+    "slot": "04",
+    "name": "Soft Undercut",
+    "slug": "soft-undercut",
+    "file": "04.png",
+    "namedFile": "04-soft-undercut.png",
+    "src": "/assets/faceshapes/square/04.png",
+    "namedSrc": "/assets/faceshapes/square/04-soft-undercut.png"
+  },
+  {
+    "slot": "05",
+    "name": "Crew Cut with Taper",
+    "slug": "crew-cut-taper",
+    "file": "05.png",
+    "namedFile": "05-crew-cut-taper.png",
+    "src": "/assets/faceshapes/square/05.png",
+    "namedSrc": "/assets/faceshapes/square/05-crew-cut-taper.png"
+  },
+  {
+    "slot": "06",
+    "name": "Brushed Back Taper",
+    "slug": "brushed-back-taper",
+    "file": "06.png",
+    "namedFile": "06-brushed-back-taper.png",
+    "src": "/assets/faceshapes/square/06.png",
+    "namedSrc": "/assets/faceshapes/square/06-brushed-back-taper.png"
+  },
+  {
+    "slot": "07",
+    "name": "Messy Wavy Quiff",
+    "slug": "messy-wavy-quiff",
+    "file": "07.png",
+    "namedFile": "07-messy-wavy-quiff.png",
+    "src": "/assets/faceshapes/square/07.png",
+    "namedSrc": "/assets/faceshapes/square/07-messy-wavy-quiff.png"
+  },
+  {
+    "slot": "08",
+    "name": "Side Swept Fringe",
+    "slug": "side-swept-fringe",
+    "file": "08.png",
+    "namedFile": "08-side-swept-fringe.png",
+    "src": "/assets/faceshapes/square/08.png",
+    "namedSrc": "/assets/faceshapes/square/08-side-swept-fringe.png"
+  },
+  {
+    "slot": "09",
+    "name": "Buzz Cut Line Up",
+    "slug": "buzz-cut-line-up",
+    "file": "09.png",
+    "namedFile": "09-buzz-cut-line-up.png",
+    "src": "/assets/faceshapes/square/09.png",
+    "namedSrc": "/assets/faceshapes/square/09-buzz-cut-line-up.png"
+  },
+  {
+    "slot": "10",
+    "name": "Layered Comb Over",
+    "slug": "layered-comb-over",
+    "file": "10.png",
+    "namedFile": "10-layered-comb-over.png",
+    "src": "/assets/faceshapes/square/10.png",
+    "namedSrc": "/assets/faceshapes/square/10-layered-comb-over.png"
+  }
+]

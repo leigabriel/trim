@@ -1,0 +1,92 @@
+[
+  {
+    "slot": "01",
+    "name": "High Fade Pompadour",
+    "slug": "high-fade-pompadour",
+    "file": "01.png",
+    "namedFile": "01-high-fade-pompadour.png",
+    "src": "/assets/faceshapes/round/01.png",
+    "namedSrc": "/assets/faceshapes/round/01-high-fade-pompadour.png"
+  },
+  {
+    "slot": "02",
+    "name": "Textured Undercut",
+    "slug": "textured-undercut",
+    "file": "02.png",
+    "namedFile": "02-textured-undercut.png",
+    "src": "/assets/faceshapes/round/02.png",
+    "namedSrc": "/assets/faceshapes/round/02-textured-undercut.png"
+  },
+  {
+    "slot": "03",
+    "name": "Angular Fringe",
+    "slug": "angular-fringe",
+    "file": "03.png",
+    "namedFile": "03-angular-fringe.png",
+    "src": "/assets/faceshapes/round/03.png",
+    "namedSrc": "/assets/faceshapes/round/03-angular-fringe.png"
+  },
+  {
+    "slot": "04",
+    "name": "Spiky Textured Top",
+    "slug": "spiky-textured-top",
+    "file": "04.png",
+    "namedFile": "04-spiky-textured-top.png",
+    "src": "/assets/faceshapes/round/04.png",
+    "namedSrc": "/assets/faceshapes/round/04-spiky-textured-top.png"
+  },
+  {
+    "slot": "05",
+    "name": "Faux Hawk Fade",
+    "slug": "faux-hawk-fade",
+    "file": "05.png",
+    "namedFile": "05-faux-hawk-fade.png",
+    "src": "/assets/faceshapes/round/05.png",
+    "namedSrc": "/assets/faceshapes/round/05-faux-hawk-fade.png"
+  },
+  {
+    "slot": "06",
+    "name": "Side Part Hard Line",
+    "slug": "side-part-hard-line",
+    "file": "06.png",
+    "namedFile": "06-side-part-hard-line.png",
+    "src": "/assets/faceshapes/round/06.png",
+    "namedSrc": "/assets/faceshapes/round/06-side-part-hard-line.png"
+  },
+  {
+    "slot": "07",
+    "name": "High and Tight",
+    "slug": "high-and-tight",
+    "file": "07.png",
+    "namedFile": "07-high-and-tight.png",
+    "src": "/assets/faceshapes/round/07.png",
+    "namedSrc": "/assets/faceshapes/round/07-high-and-tight.png"
+  },
+  {
+    "slot": "08",
+    "name": "Drop Fade Comb Over",
+    "slug": "drop-fade-comb-over",
+    "file": "08.png",
+    "namedFile": "08-drop-fade-comb-over.png",
+    "src": "/assets/faceshapes/round/08.png",
+    "namedSrc": "/assets/faceshapes/round/08-drop-fade-comb-over.png"
+  },
+  {
+    "slot": "09",
+    "name": "Skin Fade French Crop",
+    "slug": "skin-fade-french-crop",
+    "file": "09.png",
+    "namedFile": "09-skin-fade-french-crop.png",
+    "src": "/assets/faceshapes/round/09.png",
+    "namedSrc": "/assets/faceshapes/round/09-skin-fade-french-crop.png"
+  },
+  {
+    "slot": "10",
+    "name": "Modern Quiff Skin Fade",
+    "slug": "modern-quiff-skin-fade",
+    "file": "10.png",
+    "namedFile": "10-modern-quiff-skin-fade.png",
+    "src": "/assets/faceshapes/round/10.png",
+    "namedSrc": "/assets/faceshapes/round/10-modern-quiff-skin-fade.png"
+  }
+]
