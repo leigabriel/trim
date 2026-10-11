@@ -12,8 +12,8 @@
   padding: var(--trim-gutter);
   padding-bottom: calc(var(--trim-gutter) + env(safe-area-inset-bottom, 0px));
   padding-top: calc(var(--trim-nav-height) + var(--trim-gutter));
-  background-color: var(--trim-orange);
-  color: var(--trim-black);
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
   opacity: 0;
   transform: translateY(14px);
   transition: opacity 700ms ease, transform 700ms ease;

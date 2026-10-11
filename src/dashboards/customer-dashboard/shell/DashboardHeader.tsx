@@ -9,7 +9,7 @@ interface DashboardHeaderProps {
 }
 
 /**
- * Header. The brand mark is the Tritopani script T in brand orange, echoing the
+ * Header. The brand mark is the Tritopani script T in brand blue, echoing the
  * public nav. Right side carries the notification bell and the back-to-site
  * control, both icon-only.
  */

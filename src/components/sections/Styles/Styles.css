@@ -6,8 +6,8 @@
      before styles takes over the front plane. */
   margin-top: 100svh;
   padding: var(--trim-gutter);
-  background-color: var(--trim-orange);
-  color: var(--trim-black);
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
 }
 
 .trim-styles__title {

@@ -1,13 +1,13 @@
-/* Full screen black sheet. */
+/* Full screen white sheet. */
 .trim-login {
   --width: 100%;
   --height: 100%;
   --border-radius: 0;
-  --background: var(--trim-black);
+  --background: var(--trim-white);
 }
 
 .trim-login::part(content) {
-  background-color: var(--trim-black);
+  background-color: var(--trim-white);
 }
 
 .trim-login__panel {
@@ -17,8 +17,8 @@
   height: 100%;
   padding: clamp(1.25rem, 4vw, 3rem);
   overflow-y: auto;
-  background-color: var(--trim-black);
-  color: var(--trim-white);
+  background-color: var(--trim-white);
+  color: var(--trim-black);
 }
 
 .trim-login__mark {
@@ -31,25 +31,28 @@
   position: absolute;
   top: clamp(1.25rem, 4vw, 3rem);
   right: clamp(1.25rem, 4vw, 3rem);
-  padding: 0.25rem;
-  border: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 50%;
   background: none;
-  color: var(--trim-white);
-
-  font-size: clamp(1.75rem, 3vw, 2.75rem);
-  line-height: 1;
+  color: var(--trim-black);
   cursor: pointer;
-  transition: color 200ms ease, transform 200ms ease;
+  transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease;
 }
 
 .trim-login__close:hover {
-  color: var(--trim-orange);
-  transform: scale(1.08);
+  border-color: var(--trim-blue);
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
 }
 
 .trim-login__close:focus-visible {
   outline: 2px solid currentColor;
-  outline-offset: 4px;
+  outline-offset: 2px;
 }
 
 .trim-login__body {
@@ -62,7 +65,7 @@
   font-size: clamp(1.25rem, 2.4vw, 2.25rem);
   font-weight: 400;
   line-height: 1;
-  color: var(--trim-white);
+  color: var(--trim-black);
 }
 
 .trim-login__title {
@@ -71,7 +74,7 @@
   font-size: clamp(2.25rem, 7.5vw, 6.5rem);
   font-weight: 400;
   line-height: 0.95;
-  color: var(--trim-white);
+  color: var(--trim-black);
 }
 
 .trim-login__google {
@@ -83,8 +86,10 @@
   padding: clamp(0.75rem, 1.8vw, 1.25rem);
   border: 0;
   border-radius: 0;
-  background-color: var(--trim-white);
-  color: var(--trim-black);
+  /* Filled blue: a white button was for the old black sheet and would vanish
+     on a white one. */
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
   font-family: var(--trim-font-display);
   font-size: clamp(1.25rem, 3vw, 2.75rem);
   font-weight: 400;
@@ -102,12 +107,12 @@
 }
 
 .trim-login__google:hover {
-  background-color: var(--trim-orange);
-  color: var(--trim-black);
+  background-color: var(--trim-black);
+  color: var(--trim-white);
 }
 
 .trim-login__google:focus-visible {
-  outline: 2px solid var(--trim-white);
+  outline: 2px solid var(--trim-black);
   outline-offset: 3px;
 }
 
@@ -119,7 +124,7 @@
   font-weight: 400;
   line-height: 1.5;
   text-align: center;
-  color: var(--trim-white);
+  color: var(--trim-black);
 }
 
 .trim-login__legal strong {
@@ -140,12 +145,12 @@
   width: 1.125rem;
   height: 1.125rem;
   margin: 0;
-  accent-color: var(--trim-orange);
+  accent-color: var(--trim-blue);
   cursor: pointer;
 }
 
 .trim-login__checkbox:focus-visible {
-  outline: 2px solid var(--trim-white);
+  outline: 2px solid var(--trim-black);
   outline-offset: 2px;
 }
 
@@ -163,7 +168,7 @@
 
 .trim-login__legal-link:hover,
 .trim-login__legal-link:focus-visible {
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   outline: none;
 }
 
@@ -172,7 +177,7 @@
   font-family: var(--trim-font-sans);
   font-size: 0.875rem;
   line-height: 1.4;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 .trim-login__google:disabled {

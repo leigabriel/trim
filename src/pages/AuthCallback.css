@@ -59,7 +59,7 @@
   height: 4rem;
   margin-bottom: 0.75rem;
   border-radius: 50%;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
   color: var(--trim-black);
 }
 
@@ -68,7 +68,7 @@
   font-family: var(--trim-font-display);
   font-size: clamp(2rem, 6vw, 4rem);
   line-height: 1.05;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   text-wrap: balance;
 }
 
@@ -92,7 +92,7 @@
 .trim-callback__primary {
   padding: 0.75rem 1.5rem;
   border: 0;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
   color: var(--trim-white);
   font-family: var(--trim-font-display);
   font-size: 1.5rem;

@@ -30,6 +30,13 @@ describe('shouldFailover', () => {
     expect(shouldFailover(403)).toBe(true);
   });
 
+  it('retries a timeout or network failure', () => {
+    // 0 is the sentinel from the catch block: abort, DNS failure, reset. A
+    // timeout is the clearest case for trying the other provider, so it must
+    // not be classified as terminal.
+    expect(shouldFailover(0)).toBe(true);
+  });
+
   it('does not retry a request that would fail identically on the other provider', () => {
     // The whole point of the classifier: retrying a 400 only doubles the wait
     // before the same error.
@@ -37,7 +44,6 @@ describe('shouldFailover', () => {
     expect(shouldFailover(404)).toBe(false);
     expect(shouldFailover(422)).toBe(false);
     expect(shouldFailover(200)).toBe(false);
-    expect(shouldFailover(0)).toBe(false);
   });
 });
 

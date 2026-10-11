@@ -33,12 +33,12 @@
   background-color: var(--dash-grey);
 }
 
-/* Tritopani script T in brand orange, echoing the public nav mark. */
+/* Tritopani script T in brand blue, echoing the public nav mark. */
 .trim-dash__logo {
   font-family: var(--trim-font-brand);
   font-size: 1.75rem;
   line-height: 1;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   user-select: none;
 }
 
@@ -101,7 +101,7 @@
   height: 1rem;
   padding: 0 0.2rem;
   border-radius: 999px;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
   color: var(--trim-white);
   font-size: 0.625rem;
   font-weight: 700;
@@ -189,7 +189,7 @@
 }
 
 .trim-dash__link:focus-visible {
-  outline: 2px solid var(--trim-orange);
+  outline: 2px solid var(--trim-blue);
   outline-offset: -2px;
 }
 
@@ -207,7 +207,7 @@
 }
 
 .trim-dash__link--current .trim-dash__link-icon {
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   opacity: 1;
 }
 
@@ -248,7 +248,7 @@
 }
 
 .trim-dash__identity-open:focus-visible {
-  outline: 2px solid var(--trim-orange);
+  outline: 2px solid var(--trim-blue);
   outline-offset: -2px;
 }
 
@@ -265,7 +265,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
   color: var(--trim-white);
   font-size: 0.875rem;
   font-weight: 700;
@@ -362,7 +362,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 .trim-dash__entry-title {
@@ -549,7 +549,7 @@
 
 /* Unread marker: a left bar plus the bold title, not colour alone. */
 .trim-notify__item--unread {
-  border-left: 3px solid var(--trim-orange);
+  border-left: 3px solid var(--trim-blue);
   padding-left: calc(1.1rem - 3px);
 }
 
@@ -627,7 +627,7 @@
 .trim-metric__delta {
   margin: 0;
   font-size: 0.8125rem;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 .trim-metric__delta--down {
@@ -682,20 +682,20 @@
 }
 
 .trim-chart__area {
-  fill: var(--trim-orange);
+  fill: var(--trim-blue);
   opacity: 0.12;
 }
 
 .trim-chart__line {
   fill: none;
-  stroke: var(--trim-orange);
+  stroke: var(--trim-blue);
   stroke-width: 2.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .trim-chart__dot {
-  fill: var(--trim-orange);
+  fill: var(--trim-blue);
   stroke: var(--trim-white);
   stroke-width: 2;
 }
@@ -711,7 +711,7 @@
   font-family: var(--trim-font-sans);
   font-size: 15px;
   font-weight: 800;
-  fill: var(--trim-orange);
+  fill: var(--trim-blue);
 }
 
 /* Two cards side by side; single column left the pane half empty. */
@@ -787,14 +787,14 @@
   flex: 0 0 auto;
   font-size: 0.9375rem;
   font-weight: 800;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   font-variant-numeric: tabular-nums;
 }
 
 /* Next booking */
 
 .trim-card--next {
-  border-left: 3px solid var(--trim-orange);
+  border-left: 3px solid var(--trim-blue);
 }
 
 .trim-next__when {
@@ -860,7 +860,7 @@
   right: 0.5rem;
   padding: 0.2rem 0.45rem;
   border-radius: 3px;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
   color: var(--trim-white);
   font-size: 0.75rem;
   font-weight: 700;
@@ -963,7 +963,7 @@
 .trim-landmark__fill {
   height: 100%;
   border-radius: 999px;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
 }
 
 /* Above the bar: inside the track it would be clipped by the fill. */
@@ -1000,7 +1000,7 @@
   flex-direction: column;
   gap: 0.35rem;
   padding-left: 0.85rem;
-  border-left: 2px solid var(--trim-orange);
+  border-left: 2px solid var(--trim-blue);
 }
 
 .trim-finding__head {
@@ -1019,7 +1019,7 @@
 .trim-finding__value {
   font-size: 0.8125rem;
   font-weight: 700;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   white-space: nowrap;
 }
 
@@ -1051,7 +1051,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 /* AI answers */
@@ -1132,17 +1132,70 @@
   padding: clamp(1.5rem, 4vh, 3rem) clamp(1.25rem, 2.2vw, 2rem);
 }
 
+/* One column. Three short cards side by side became a row of slivers, and
+   the danger card ended up the same width as a list of three facts. */
 .trim-account {
   display: grid;
   gap: 1.25rem;
+  /* stretch, not start: equal-height cards so their borders line up down the
+     column instead of stepping in and out with content length. */
   align-items: stretch;
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
+/* Cards fill their row and push their action to the foot, so the three
+   actions line up rather than following their own content lengths. */
 .trim-account .trim-card {
   display: flex;
   flex-direction: column;
   margin-bottom: 0;
+}
+
+.trim-account .trim-card__title {
+  margin-bottom: 1rem;
+}
+
+.trim-account .trim-facts {
+  flex: 1;
+}
+
+/* Danger card. Blue is the only accent in the palette, so the delete action
+   is distinguished by weight and a solid rule rather than by colour. */
+.trim-card--danger {
+  border-left: 3px solid var(--trim-blue);
+}
+
+.trim-account__delete {
+  align-self: flex-start;
+  margin-top: 1rem;
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--trim-black);
+  border-radius: 3px;
+  background: none;
+  color: var(--trim-black);
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.trim-account__delete:hover,
+.trim-account__delete:focus-visible {
+  background: var(--trim-black);
+  color: var(--trim-white);
+  outline: none;
+}
+
+.trim-account__error {
+  margin: 0 0 1.25rem;
+  padding: 0.7rem 1rem;
+  border-left: 3px solid var(--trim-blue);
+  background: #f2f4ff;
+  font-size: 0.875rem;
+  color: var(--trim-black);
 }
 
 .trim-account__signout {
@@ -1268,8 +1321,8 @@
 }
 
 .trim-status--confirmed {
-  border-color: var(--trim-orange);
-  color: var(--trim-orange);
+  border-color: var(--trim-blue);
+  color: var(--trim-blue);
 }
 
 .trim-status--requested {
@@ -1376,8 +1429,8 @@
 
 .trim-bubble--user {
   margin-left: auto;
-  border-color: var(--trim-orange);
-  background-color: var(--trim-orange);
+  border-color: var(--trim-blue);
+  background-color: var(--trim-blue);
 }
 
 .trim-bubble__role {
@@ -1396,12 +1449,6 @@
 .trim-bubble--user .trim-bubble__role {
   color: var(--trim-black);
   opacity: 0.75;
-}
-
-.trim-bubble__provider {
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  opacity: 0.6;
 }
 
 .trim-bubble__text {
@@ -1438,7 +1485,7 @@
 .trim-chat__error {
   margin: 0;
   padding: 0.7rem 1rem;
-  border-left: 3px solid var(--trim-orange);
+  border-left: 3px solid var(--trim-blue);
   background-color: #fff6f2;
   font-size: 0.875rem;
   color: var(--trim-black);
@@ -1485,7 +1532,7 @@
   padding: 0.65rem 1.25rem;
   border: 0;
   border-radius: 4px;
-  background-color: var(--trim-orange);
+  background-color: var(--trim-blue);
   color: var(--trim-white);
   font-family: inherit;
   font-size: 0.8125rem;
@@ -1592,7 +1639,7 @@
 }
 
 .trim-chat-list__open:focus-visible {
-  outline: 2px solid var(--trim-orange);
+  outline: 2px solid var(--trim-blue);
   outline-offset: -2px;
 }
 
@@ -1629,7 +1676,7 @@
 .trim-chat-list__delete:hover,
 .trim-chat-list__delete:focus-visible {
   opacity: 1;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
   outline: none;
 }
 

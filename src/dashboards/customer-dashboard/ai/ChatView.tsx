@@ -66,9 +66,10 @@ const ChatView: React.FC<ChatViewProps> = ({ chat }) => {
               className={`trim-bubble trim-bubble--${message.role}`}
               key={message.id}
             >
+              {/* Provider is stored but not shown: which model answered is
+                  diagnostics, not something a customer needs to read. */}
               <p className="trim-bubble__role">
                 {message.role === 'user' ? 'You' : 'Trimo'}
-                {message.provider ? <span className="trim-bubble__provider">{message.provider}</span> : null}
               </p>
               <p className="trim-bubble__text">{message.content}</p>
             </article>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { COORDS, SHOP } from './shop';
 import './Location.css';
@@ -102,14 +102,6 @@ const LocationMap: React.FC<LocationMapProps> = ({ className }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  // Latched by click, so the card stays put when the pointer leaves.
-  const [isPinned, setIsPinned] = useState(false);
-  const isHoveredRef = useRef(false);
-  const pinnedRef = useRef(false);
-
-  useEffect(() => {
-    pinnedRef.current = isPinned;
-  }, [isPinned]);
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -136,7 +128,7 @@ const LocationMap: React.FC<LocationMapProps> = ({ className }) => {
           attribution: '&copy; OpenStreetMap contributors',
         }).addTo(map);
 
-        const marker = new L.Marker(COORDS, {
+        new L.Marker(COORDS, {
           // Div icon, so nothing depends on the marker PNGs resolving.
           icon: new L.DivIcon({
             className: 'trim-location__pin',
@@ -146,6 +138,10 @@ const LocationMap: React.FC<LocationMapProps> = ({ className }) => {
           }),
           title: `${SHOP.name}, ${SHOP.branch}`,
           alt: `${SHOP.name} barbershop in ${SHOP.branch}`,
+          // The card is always open, so the marker is a position marker rather
+          // than a control. Nothing to click.
+          interactive: false,
+          keyboard: false,
         }).addTo(map);
 
         // The card tracks the marker, so re-place it on every move and zoom.
@@ -172,59 +168,12 @@ const LocationMap: React.FC<LocationMapProps> = ({ className }) => {
           card.style.top = `${point.y}px`;
         };
 
-        const sync = () => {
-          const shouldShow = isHoveredRef.current || pinnedRef.current;
-          cardRef.current?.classList.toggle('trim-location__card--open', shouldShow);
-          if (shouldShow) place();
-        };
-
+        // The card is always open, so it only needs placing. No hover, click or
+        // pin state: the shop details are the point of the map, not a reward
+        // for finding the marker.
         map.on('move', place);
         map.on('zoom', place);
         teardown.push(() => map.off('move', place), () => map.off('zoom', place));
-
-        // On touch the card only closes via the marker, so the map dismisses it.
-        const dismiss = (event: MouseEvent) => {
-          if (!event.target || mount.contains(event.target as Node)) return;
-          isHoveredRef.current = false;
-          setIsPinned(false);
-        };
-        mount.addEventListener('click', dismiss);
-        teardown.push(() => mount.removeEventListener('click', dismiss));
-
-        // The marker element only exists after addTo, so the listeners go on
-        // here rather than through the marker's event API.
-        //
-        // Hover is gated on a fine pointer: an emulated mouseenter followed by a
-        // synthetic mouseleave would leave the card stuck half-open on touch.
-        const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-        const element = marker.getElement();
-        if (element) {
-          const enter = () => {
-            isHoveredRef.current = true;
-            sync();
-          };
-          const leave = () => {
-            isHoveredRef.current = false;
-            sync();
-          };
-          const toggle = (event: MouseEvent) => {
-            if (!canHover) event.stopPropagation();
-            setIsPinned((pinned) => !pinned);
-          };
-
-          if (canHover) {
-            element.addEventListener('mouseenter', enter);
-            element.addEventListener('mouseleave', leave);
-          }
-          element.addEventListener('click', toggle);
-          teardown.push(() => {
-            if (canHover) {
-              element.removeEventListener('mouseenter', enter);
-              element.removeEventListener('mouseleave', leave);
-            }
-            element.removeEventListener('click', toggle);
-          });
-        }
 
         mapRef.current = map;
         // Measures on attach; without this the tiles clip while settling.

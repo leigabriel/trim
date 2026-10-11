@@ -32,7 +32,7 @@
   font-size: clamp(1.75rem, 4vw, 3rem);
   font-weight: 400;
   line-height: 1;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 .trim-location-modal__address {
@@ -60,8 +60,8 @@
 
 .trim-location-modal__close:hover,
 .trim-location-modal__close:focus-visible {
-  background-color: var(--trim-orange);
-  border-color: var(--trim-orange);
+  background-color: var(--trim-blue);
+  border-color: var(--trim-blue);
   color: var(--trim-black);
   outline: none;
 }

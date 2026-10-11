@@ -55,8 +55,7 @@ select,
 }
 
 /* Decorative 3D mounts do not pan, so they keep the arrow. */
-.trim-tools,
-.trim-keychain {
+.trim-tools {
   cursor: var(--cursor-default);
 }
 

@@ -83,7 +83,14 @@ const LegalModal: React.FC<LegalModalProps> = ({ doc, onDismiss }) => {
             onClick={onDismiss}
             aria-label={`Close ${copy.title}`}
           >
-            <span aria-hidden="true">X</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
 
           <div className="trim-legal__body">

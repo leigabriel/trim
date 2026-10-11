@@ -6,7 +6,7 @@
   z-index: 9999;
   display: grid;
   place-items: center;
-  background-color: #000;
+  background-color: #fff;
 }
 
 .trim-intro__mark {
@@ -27,5 +27,5 @@
   font-weight: 200;
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }

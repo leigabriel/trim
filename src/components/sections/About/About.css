@@ -54,7 +54,7 @@
   text-align: center;
   text-wrap: balance;
   text-transform: uppercase;
-  color: #ff622b;
+  color: var(--trim-white);
 }
 
 @media (max-width: 48rem) {

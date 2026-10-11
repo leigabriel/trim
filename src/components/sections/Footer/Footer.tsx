@@ -1,26 +1,45 @@
 import { useState } from 'react';
 
+import DownloadModal from '../../layout/modals/DownloadModal';
 import LocationModal from '../../layout/modals/LocationModal';
 import { SHOP } from '../Location/shop';
-import Keychain from './Keychain';
+import Scissors from './Scissors';
 import { FOOTER_LINKS, SOCIAL_LINKS } from './data';
 import './Footer.css';
 
 const WORDMARK = 'Trim';
+const YEAR = String(new Date().getFullYear());
 
 // Normal flow after the styles grid. A pinned back layer left it too little
 // scroll travel to settle, which clipped the nav links.
 const Footer: React.FC = () => {
   const [isMapOpen, setIsMapOpen] = useState(false);
+  const [isDownloadOpen, setIsDownloadOpen] = useState(false);
 
   return (
     <section className="trim-footer" aria-labelledby="trim-footer-title">
-      <Keychain />
+      {/* Backdrop layer. Sits behind every piece of copy and bleeds off the
+          bottom, so it reads as a graphic rather than a column of content. */}
+      <div className="trim-footer__stage" aria-hidden="true">
+        <Scissors fill={1.15} offsetY={0.18} />
+      </div>
 
       <div className="trim-footer__inner">
+        <div className="trim-footer__topbar">
+          <span className="trim-footer__tag">Trim</span>
+          <span className="trim-footer__tag">{YEAR}</span>
+        </div>
+
         <nav className="trim-footer__nav" aria-label="Footer">
           {FOOTER_LINKS.map((link) => (
-            <a className="trim-footer__link" href={link.href} key={link.index}>
+            <button
+              className="trim-footer__link"
+              key={link.index}
+              type="button"
+              onClick={() => {
+                if (link.action === 'download') setIsDownloadOpen(true);
+              }}
+            >
               <span className="trim-footer__index" aria-hidden="true">
                 {link.index}
               </span>
@@ -28,78 +47,60 @@ const Footer: React.FC = () => {
               <span className="trim-footer__hint" aria-hidden="true">
                 View
               </span>
-            </a>
+            </button>
           ))}
+
+          <button
+            className="trim-footer__link"
+            type="button"
+            onClick={() => setIsMapOpen(true)}
+          >
+            <span className="trim-footer__index" aria-hidden="true">
+              02
+            </span>
+            <span className="trim-footer__label">Location</span>
+            <span className="trim-footer__hint" aria-hidden="true">
+              View
+            </span>
+          </button>
         </nav>
 
-        <div className="trim-footer__base">
-          <div className="trim-footer__socials">
-            {SOCIAL_LINKS.map((link) => (
-              <a
-                className="trim-footer__social"
-                href={link.href}
-                key={link.label}
-                target={link.label === 'email' ? undefined : '_blank'}
-                rel="noopener noreferrer"
-              >
-                [{link.label}]
-              </a>
-            ))}
-          </div>
-
-          <h2 className="trim-footer__wordmark" id="trim-footer-title" aria-label="Trim">
-            {WORDMARK.split('').map((char, index) => (
-              <span className="trim-footer__char" key={index} aria-hidden="true">
-                {char}
-              </span>
-            ))}
-          </h2>
-        </div>
-
-        {/* Bottom right of the footer. Text only: the map is heavy to build, so
-            it lives behind the button and mounts when the modal opens. */}
-        <div className="trim-footer__foot">
-          <div className="trim-footer__shop">
-            <h3 className="trim-footer__shop-title">{SHOP.name}</h3>
-            <p className="trim-footer__shop-branch">{SHOP.branch}</p>
-
-            <dl className="trim-footer__shop-list">
-              <div>
-                <dt>Address</dt>
-                <dd>{SHOP.address}</dd>
-              </div>
-              <div>
-                <dt>Hours</dt>
-                <dd>{SHOP.hours}</dd>
-              </div>
-              <div>
-                <dt>Phone</dt>
-                <dd>
-                  <a href={`tel:${SHOP.phone.replace(/\s/g, '')}`}>{SHOP.phone}</a>
-                </dd>
-              </div>
-            </dl>
-
-            <button
-              className="trim-footer__shop-map"
-              type="button"
-              onClick={() => setIsMapOpen(true)}
+        <div className="trim-footer__socials">
+          {SOCIAL_LINKS.map((link) => (
+            <a
+              className="trim-footer__social"
+              href={link.href}
+              key={link.label}
+              target={link.label === 'email' ? undefined : '_blank'}
+              rel="noopener noreferrer"
             >
-              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true">
-                <path
-                  d="M9 4L3 6.5v13L9 17l6 2.5 6-2.5v-13L15 6.5 9 4zM9 4v13M15 6.5v13"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              View on map
-            </button>
-          </div>
+              [{link.label}]
+            </a>
+          ))}
         </div>
+
+        <address className="trim-footer__shop">
+          <span className="trim-footer__shop-name">{SHOP.name}</span>
+          <span className="trim-footer__shop-line">{SHOP.address}</span>
+          <span className="trim-footer__shop-line">{SHOP.hours}</span>
+          <a className="trim-footer__shop-line" href={`tel:${SHOP.phone.replace(/\s/g, '')}`}>
+            {SHOP.phone}
+          </a>
+        </address>
+
+        {/* Largest element on the page, and the last thing in it. Bleeds off
+            the bottom edge by design. */}
+        <h2 className="trim-footer__wordmark" id="trim-footer-title" aria-label="Trim">
+          {WORDMARK.split('').map((char, index) => (
+            <span className="trim-footer__char" key={index} aria-hidden="true">
+              {char}
+            </span>
+          ))}
+        </h2>
       </div>
 
       <LocationModal isOpen={isMapOpen} onDismiss={() => setIsMapOpen(false)} />
+      <DownloadModal isOpen={isDownloadOpen} onDismiss={() => setIsDownloadOpen(false)} />
     </section>
   );
 };

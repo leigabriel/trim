@@ -22,20 +22,24 @@
   position: absolute;
   top: clamp(1.25rem, 4vw, 3rem);
   right: clamp(1.25rem, 4vw, 3rem);
-  padding: 0.25rem;
-  border: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 50%;
   background: none;
   color: var(--trim-black);
-  /* font-family: var(--trim-font-display); */
-  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-  line-height: 1;
   cursor: pointer;
-  transition: color 200ms ease, transform 200ms ease;
+  transition: color 200ms ease, border-color 200ms ease, background-color 200ms ease;
 }
 
 .trim-legal__close:hover,
 .trim-legal__close:focus-visible {
-  color: var(--trim-orange);
+  border-color: var(--trim-blue);
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
   transform: scale(1.08);
   outline: none;
 }
@@ -82,7 +86,7 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 .trim-legal__text {

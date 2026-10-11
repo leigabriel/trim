@@ -12,7 +12,7 @@ interface HomeProps {
 }
 
 // About is a pinned back layer the hero overlaps. Styles and the footer
-// follow in normal flow. The nav stays dark over the orange hero.
+// follow in normal flow. The nav stays white over the blue hero.
 const Home: React.FC<HomeProps> = ({ isEntered, onProgress, onModelsReady }) => (
   <IonPage>
     <IonContent>

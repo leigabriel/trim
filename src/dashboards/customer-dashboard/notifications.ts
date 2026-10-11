@@ -3,7 +3,7 @@ export interface Notification {
   title: string;
   body: string;
   when: string;
-  /** Drives the orange dot in the rail of the notification panel. */
+  /** Drives the blue dot in the rail of the notification panel. */
   isUnread: boolean;
 }
 

@@ -15,17 +15,14 @@
   transition: color 220ms ease;
 }
 
-/* Over the orange hero. */
-.trim-nav--dark {
-  color: var(--trim-black);
-}
-
-/* Over a black page. */
+/* White over the blue hero and the black callback page. Both tones now read
+   the same, so the tone classes carry no colour difference of their own. */
+.trim-nav--dark,
 .trim-nav--light {
   color: var(--trim-white);
 }
 
-/* Brand and links share the black wipe. */
+/* Brand and links share the white wipe. */
 .trim-nav__brand,
 .trim-nav__link {
   position: relative;
@@ -41,7 +38,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: var(--trim-black);
+  background-color: var(--trim-white);
   transform: scaleY(0);
   transform-origin: bottom;
   transition: transform 260ms ease;
@@ -51,7 +48,7 @@
 .trim-nav__link:hover,
 .trim-nav__brand:focus-visible,
 .trim-nav__link:focus-visible {
-  color: var(--trim-orange);
+  color: var(--trim-blue);
 }
 
 .trim-nav__brand:hover::before,
@@ -59,19 +56,6 @@
 .trim-nav__brand:focus-visible::before,
 .trim-nav__link:focus-visible::before {
   transform: scaleY(1);
-}
-
-/* On black the wipe is invisible, so it inverts to an orange fill. */
-.trim-nav--light .trim-nav__brand::before,
-.trim-nav--light .trim-nav__link::before {
-  background-color: var(--trim-orange);
-}
-
-.trim-nav--light .trim-nav__brand:hover,
-.trim-nav--light .trim-nav__link:hover,
-.trim-nav--light .trim-nav__brand:focus-visible,
-.trim-nav--light .trim-nav__link:focus-visible {
-  color: var(--trim-white);
 }
 
 .trim-nav__brand {
@@ -140,8 +124,9 @@
   height: clamp(2.25rem, 3.5vw, 3rem);
   overflow: hidden;
   border-radius: 50%;
-  background-color: var(--trim-orange);
-  color: var(--trim-white);
+  /* White on the blue hero, not blue on blue. */
+  background-color: var(--trim-white);
+  color: var(--trim-blue);
   font-family: var(--trim-font-display);
   font-size: 1.25rem;
   line-height: 1;
