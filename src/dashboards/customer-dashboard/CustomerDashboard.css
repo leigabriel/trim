@@ -856,6 +856,24 @@
   object-fit: cover;
 }
 
+.trim-gallery__meta {
+  padding: 0.4rem 0.5rem 0.45rem;
+  background-color: var(--trim-white);
+  border-top: 1px solid var(--dash-line);
+}
+
+.trim-gallery__name {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--trim-black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 /* Face shape picker */
 
 .trim-shape__current {

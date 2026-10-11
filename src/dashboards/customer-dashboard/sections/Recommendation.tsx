@@ -1,5 +1,5 @@
 import { shapeAdvice } from '../face/advice';
-import { galleryFor } from '../face/gallery';
+import { galleryItemsFor } from '../face/gallery';
 import StyleRecommendations from '../face/StyleRecommendations';
 import type { FaceProfileState } from '../face/useFaceProfile';
 import { faceShapeLabel } from '../face/shapes';
@@ -61,16 +61,19 @@ const Recommendation: React.FC<RecommendationProps> = ({ face, onSetFace }) => {
           </div>
 
           <ul className="trim-gallery">
-            {galleryFor(shape).map((src, index) => (
-              <li className="trim-gallery__item" key={src}>
+            {galleryItemsFor(shape).map((item) => (
+              <li className="trim-gallery__item" key={item.src}>
                 <img
                   className="trim-gallery__image"
-                  src={src}
-                  alt={`${label} reference ${index + 1}`}
+                  src={item.src}
+                  alt={`${item.name} (${label})`}
                   loading="lazy"
                   width={800}
                   height={800}
                 />
+                <div className="trim-gallery__meta">
+                  <span className="trim-gallery__name">{item.name}</span>
+                </div>
               </li>
             ))}
           </ul>
