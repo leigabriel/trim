@@ -1,3 +1,5 @@
+import { BackSquare, Bell } from 'reicon-react';
+
 import { UNREAD_COUNT } from '../notifications';
 
 interface DashboardHeaderProps {
@@ -55,15 +57,8 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         aria-controls="trim-dash-notifications"
         onClick={onTogglePanel}
       >
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true">
-          <path
-            d="M18 9a6 6 0 10-12 0c0 5-2 6-2 6h16s-2-1-2-6M13.7 20a2 2 0 01-3.4 0"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        {/* Decorative: the count beside it carries the meaning. */}
+        <Bell size={19} aria-hidden="true" />
         <span className="trim-dash__badge">{UNREAD_COUNT}</span>
         <span className="trim-visually-hidden">
           Notifications, {UNREAD_COUNT} unread
@@ -71,15 +66,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       </button>
 
       <a className="trim-dash__icon-btn" href="/home" title="Back to site">
-        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" aria-hidden="true">
-          <path
-            d="M14 4h5v5M19 4l-8 8M10 5H5v14h14v-5"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <BackSquare size={19} aria-hidden="true" />
         <span className="trim-visually-hidden">Back to site</span>
       </a>
     </div>

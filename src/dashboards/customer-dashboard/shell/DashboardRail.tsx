@@ -47,20 +47,8 @@ const DashboardRail: React.FC<DashboardRailProps> = ({
                     aria-current={isCurrent ? 'page' : undefined}
                     onClick={() => onSelect(item.id)}
                   >
-                    <svg
-                      className="trim-dash__link-icon"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d={item.icon}
-                        stroke="currentColor"
-                        strokeWidth="1.75"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                    {/* Decorative: the label beside it names the section. */}
+                    <item.icon className="trim-dash__link-icon" size={20} aria-hidden="true" />
 
                     <span className="trim-dash__link-label">{item.label}</span>
                   </button>

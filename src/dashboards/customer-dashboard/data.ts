@@ -1,3 +1,12 @@
+import {
+  BookmarkSquare2,
+  FaceScanCircle,
+  Handshake,
+  HomeSmile2,
+  StarFall4,
+} from 'reicon-react';
+import type { IconComponent } from 'reicon-react/createIcon';
+
 export type DashboardView =
   | 'overview'
   | 'recommendation'
@@ -9,8 +18,8 @@ export type DashboardView =
 export interface DashboardNavItem {
   id: DashboardView;
   label: string;
-  /** Inline SVG path data, drawn at 24x24. */
-  icon: string;
+  /** Reicon component. Drawn at 20px, outline weight. */
+  icon: IconComponent;
 }
 
 /**
@@ -19,33 +28,35 @@ export interface DashboardNavItem {
  *
  * No blurbs: each restated the section's own standfirst, and two lines per item
  * made five links feel crowded.
+ *
+ * Icons are Reicon components rather than inline path data, so they are typed,
+ * share one weight, and inherit currentColor without each one restating it.
  */
 export const DASHBOARD_NAV: DashboardNavItem[] = [
   {
     id: 'overview',
     label: 'Overview',
-    icon: 'M3 12l9-8 9 8M5 10v10h14V10',
+    icon: HomeSmile2,
   },
   {
     id: 'recommendation',
     label: 'Recommendation',
-    icon: 'M12 3l2.6 5.6 6.4.8-4.7 4.3 1.3 6.3L12 17l-5.6 3 1.3-6.3L3 9.4l6.4-.8z',
+    icon: StarFall4,
   },
   {
     id: 'face-shape',
     label: 'Faceshape Analyzer',
-    // A face outline. The circle-and-hands this replaced read as a clock.
-    icon: 'M12 3c-4 0-6.5 2.6-6.5 6.2 0 2.4 1.3 4 2.5 4.8V17a4 4 0 008 0v-3c1.2-.8 2.5-2.4 2.5-4.8C18.5 5.6 16 3 12 3zM9.8 10.2h.01M14.2 10.2h.01',
+    icon: FaceScanCircle,
   },
   {
     id: 'booking',
     label: 'Booking',
-    icon: 'M4 6h16v15H4zM4 10h16M8 3v4M16 3v4',
+    icon: BookmarkSquare2,
   },
   {
     id: 'ai',
-    label: 'AI',
-    icon: 'M5 4h9l5 5v11H5zM14 4v5h5M8 13h8M8 17h5',
+    label: 'Trimo',
+    icon: Handshake,
   },
 ];
 

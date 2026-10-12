@@ -306,10 +306,10 @@
   width: 100%;
   margin-top: 0.4rem;
   padding: 0.5rem;
-  border: 1px solid var(--dash-line);
+  border: 1px solid var(--trim-danger);
   border-radius: 3px;
   background: none;
-  color: var(--trim-black);
+  color: var(--trim-danger);
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: 600;
@@ -321,7 +321,8 @@
 
 .trim-dash__identity-out:hover,
 .trim-dash__identity-out:focus-visible {
-  background-color: var(--trim-black);
+  background-color: var(--trim-danger);
+  border-color: var(--trim-danger);
   color: var(--trim-white);
   outline: none;
 }
@@ -1286,17 +1287,17 @@
 /* Danger card. Blue is the only accent in the palette, so the delete action
    is distinguished by weight and a solid rule rather than by colour. */
 .trim-card--danger {
-  border-left: 3px solid var(--trim-blue);
+  border-left: 3px solid var(--trim-danger);
 }
 
 .trim-account__delete {
   align-self: flex-start;
   margin-top: 1rem;
   padding: 0.55rem 1rem;
-  border: 1px solid var(--trim-black);
+  border: 1px solid var(--trim-danger);
   border-radius: 3px;
   background: none;
-  color: var(--trim-black);
+  color: var(--trim-danger);
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1308,7 +1309,8 @@
 
 .trim-account__delete:hover,
 .trim-account__delete:focus-visible {
-  background: var(--trim-black);
+  background: var(--trim-danger);
+  border-color: var(--trim-danger);
   color: var(--trim-white);
   outline: none;
 }
@@ -1325,10 +1327,10 @@
 .trim-account__signout {
   margin-top: 1.5rem;
   padding: 0.7rem 1.4rem;
-  border: 1px solid var(--dash-line);
+  border: 1px solid var(--trim-danger);
   border-radius: 3px;
   background: none;
-  color: var(--trim-black);
+  color: var(--trim-danger);
   font-family: inherit;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1340,7 +1342,8 @@
 
 .trim-account__signout:hover,
 .trim-account__signout:focus-visible {
-  background-color: var(--trim-black);
+  background-color: var(--trim-danger);
+  border-color: var(--trim-danger);
   color: var(--trim-white);
   outline: none;
 }
