@@ -36,4 +36,10 @@ reference
 # Secrets
 .env
 
-docs
+# Supabase CLI scratch state: project ref, org id, pooler URL. Machine-local and
+# rewritten on every `supabase link`.
+supabase/.temp
+
+# Design specs are worth keeping; generated site docs are not.
+docs/*
+!docs/superpowers/
