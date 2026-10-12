@@ -82,6 +82,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signInWithGoogle = useCallback(async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
+      // Depends on Supabase Authentication > URL Configuration. This exact URL
+      // must be in the Redirect URLs allow-list, or Supabase silently discards
+      // it and falls back to the project's Site URL — which is
+      // http://localhost:3000 until someone changes it. That failure looks like
+      // a successful login that lands on the wrong host.
+      //
+      // Required entries:
+      //   https://trim-one.vercel.app/auth/callback
+      //   http://localhost:5173/auth/callback
+      //   http://localhost:8100/auth/callback
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (error) throw error;
