@@ -61,10 +61,19 @@ jobs:
       - name: Sync the web assets into the Android project
         run: npx cap sync android
 
+      # Git records android/gradlew as 100644, so a fresh clone hands the
+      # runner a non-executable wrapper and ./gradlew fails with exit 126.
+      # chmod fixes it whatever mode the checkout has, so the build does not
+      # depend on the file mode surviving the push.
+      - name: Make the Gradle wrapper executable
+        working-directory: android
+        run: chmod +x gradlew
+
       - name: Assemble a debug APK
         # Debug-signed: no keystore, no secrets, and it installs on any device.
         # The release variant below is the one to use for sharing builds.
-        run: cd android && ./gradlew assembleDebug --no-daemon
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Assemble a release APK with a generated keystore
         working-directory: android
