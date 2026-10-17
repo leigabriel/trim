@@ -30,4 +30,24 @@ export interface AuthContextValue {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   saveUsername: (input: string) => Promise<{ ok: boolean; error?: string }>;
+
+  /**
+   * Creates an account. Does not sign the customer in: Supabase emails them a
+   * code first, and verifyEmailCode is what completes the registration.
+   */
+  register: (input: {
+    email: string;
+    username: string;
+    password: string;
+  }) => Promise<{ ok: true } | { ok: false; error: string }>;
+
+  /** Completes registration with the emailed code, establishing the session. */
+  verifyEmailCode: (email: string, token: string) => Promise<{ ok: true } | { ok: false; error: string }>;
+
+  resendEmailCode: (email: string) => Promise<{ ok: true } | { ok: false; error: string }>;
+
+  signInWithPassword: (email: string, password: string) => Promise<{ ok: true } | { ok: false; error: string }>;
+
+  /** Whether an email already has a profile row, so the username is taken. */
+  isUsernameTaken: (username: string) => Promise<boolean>;
 }

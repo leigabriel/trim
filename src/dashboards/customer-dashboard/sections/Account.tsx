@@ -33,8 +33,25 @@ const Account: React.FC<AccountProps> = ({ face, onAnalyzeFace }) => {
     });
 
     if (error) {
-      // The account may already be gone even if the response did not arrive,
-      // so say what to try rather than pretending it certainly failed.
+      // A missing edge function is a deployment gap, not a transient failure,
+      // and "try again in a moment" sends the customer in circles against it.
+      // supabase-js puts the raw Response on error.context for non-2xx.
+      const context = (error as { context?: unknown }).context;
+      const status = context instanceof Response ? context.status : null;
+
+      if (status === 404) {
+        setDeleteError(
+          'Account deletion is not available right now. Nothing has been deleted, and you can remove your account by emailing support.',
+        );
+        return;
+      }
+
+      if (status === 401) {
+        setDeleteError('Your session expired. Sign out, sign back in, then try again.');
+        return;
+      }
+
+      // The account may already be gone even if the response did not arrive.
       setDeleteError('Could not delete your account. Try again in a moment.');
       return;
     }
@@ -54,13 +71,7 @@ const Account: React.FC<AccountProps> = ({ face, onAnalyzeFace }) => {
 
   return (
     <>
-      {deleteError ? (
-          <p className="trim-account__error" role="alert">
-            {deleteError}
-          </p>
-        ) : null}
-
-        <div className="trim-account-page">
+      <div className="trim-account-page">
         <header className="trim-section__head">
           <h1 className="trim-section__title">Account</h1>
           <p className="trim-section__lede">
@@ -69,6 +80,15 @@ const Account: React.FC<AccountProps> = ({ face, onAnalyzeFace }) => {
             it updates here on your next sign in.
           </p>
         </header>
+
+        {/* Inside the centred page, not beside it. As a sibling of this div it
+            rendered in the dashboard's left grid column, which put the message
+            in a narrow strip on the far left of the window. */}
+        {deleteError ? (
+          <p className="trim-account__error" role="alert">
+            {deleteError}
+          </p>
+        ) : null}
 
         <div className="trim-account">
           <div className="trim-card">

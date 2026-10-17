@@ -116,6 +116,214 @@
   outline-offset: 3px;
 }
 
+/* Tabs */
+
+.trim-login__tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  padding: 0.2rem;
+  background-color: rgb(0 0 0 / 6%);
+  border-radius: 3px;
+}
+
+.trim-login__tab {
+  flex: 1;
+  padding: 0.55rem 0.75rem;
+  border: 0;
+  border-radius: 2px;
+  background: none;
+  color: var(--trim-black);
+  font-family: var(--trim-font-sans);
+  font-size: clamp(0.875rem, 1.4vw, 1rem);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.trim-login__tab:hover:not(.trim-login__tab--on) {
+  background-color: rgb(0 0 0 / 6%);
+}
+
+.trim-login__tab--on {
+  background-color: var(--trim-white);
+  font-weight: 700;
+}
+
+.trim-login__tab:focus-visible {
+  outline: 2px solid var(--trim-black);
+  outline-offset: -2px;
+}
+
+/* Divider between Google and the email form. */
+
+.trim-login__rule {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 1.25rem;
+  font-family: var(--trim-font-sans);
+  font-size: 0.8125rem;
+  color: rgb(0 0 0 / 55%);
+}
+
+.trim-login__rule::before,
+.trim-login__rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: rgb(0 0 0 / 15%);
+}
+
+/* Fields */
+
+.trim-login__field {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.trim-login__field-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--trim-font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(0 0 0 / 60%);
+}
+
+.trim-login__input {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgb(0 0 0 / 25%);
+  border-radius: 3px;
+  background-color: var(--trim-white);
+  color: var(--trim-black);
+  font-family: var(--trim-font-sans);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.trim-login__input:focus {
+  outline: none;
+  border-color: var(--trim-blue);
+  box-shadow: inset 0 0 0 1px var(--trim-blue);
+}
+
+.trim-login__input:focus-visible {
+  outline: 2px solid var(--trim-blue);
+  outline-offset: 1px;
+}
+
+.trim-login__input[aria-invalid='true'] {
+  border-color: var(--trim-danger);
+  box-shadow: inset 0 0 0 1px var(--trim-danger);
+}
+
+/* Wide tracking so a six digit code is readable as separate digits. */
+.trim-login__input--code {
+  font-family: var(--trim-font-sans);
+  font-size: 1.5rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+}
+
+.trim-login__field-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--trim-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--trim-danger);
+}
+
+.trim-login__field-hint {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--trim-font-sans);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: rgb(0 0 0 / 55%);
+}
+
+.trim-login__submit {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--trim-blue);
+  border-radius: 0;
+  background-color: var(--trim-blue);
+  color: var(--trim-white);
+  font-family: var(--trim-font-display);
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.trim-login__submit:hover:not(:disabled) {
+  background-color: var(--trim-black);
+  border-color: var(--trim-black);
+}
+
+.trim-login__submit:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.trim-login__submit:focus-visible {
+  outline: 2px solid var(--trim-black);
+  outline-offset: 3px;
+}
+
+/* Verify step */
+
+.trim-login__verify {
+  margin-bottom: 1rem;
+}
+
+.trim-login__lede {
+  margin: 0 0 1.25rem;
+  font-family: var(--trim-font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgb(0 0 0 / 75%);
+  overflow-wrap: anywhere;
+}
+
+.trim-login__verify-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.trim-login__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--trim-blue);
+  font-family: var(--trim-font-sans);
+  font-size: 0.875rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.trim-login__link:hover:not(:disabled) {
+  color: var(--trim-black);
+}
+
+.trim-login__link:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.trim-login__link:focus-visible {
+  outline: 2px solid var(--trim-blue);
+  outline-offset: 2px;
+}
+
 /* The consent block supplies the top margin. */
 .trim-login__legal {
   margin: 0;

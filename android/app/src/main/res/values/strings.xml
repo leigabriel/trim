@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Trim - Your Best Haircut</string>
+    <string name="title_activity_main">Trim - Your Best Haircut</string>
+    <string name="package_name">com.trim.app</string>
+    <string name="custom_url_scheme">com.trim.app</string>
+</resources>

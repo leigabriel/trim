@@ -126,6 +126,88 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     [userId],
   );
 
+  const isUsernameTaken = useCallback(async (username: string): Promise<boolean> => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('username', username)
+      .maybeSingle();
+
+    return data !== null;
+  }, []);
+
+  /**
+   * Supabase error text is not worth showing raw, but two cases are specific
+   * enough that a generic message would be useless: a username already claimed,
+   * and a confirmation that has already been used.
+   */
+  const readAuthError = useCallback((message: string): string => {
+    const lower = message.toLowerCase();
+    if (lower.includes('already registered') || lower.includes('already been registered')) {
+      return 'That email already has an account. Sign in instead.';
+    }
+    if (lower.includes('username') || lower.includes('duplicate key')) {
+      return 'That username is taken. Try another.';
+    }
+    if (lower.includes('invalid login')) {
+      return 'That email and password do not match an account.';
+    }
+    if (lower.includes('token') || lower.includes('expired')) {
+      return 'That code is wrong or has expired. Request a new one.';
+    }
+    return 'Something went wrong. Try again in a moment.';
+  }, []);
+
+  const register = useCallback(
+    async (input: { email: string; username: string; password: string }) => {
+      const { error } = await supabase.auth.signUp({
+        email: input.email,
+        password: input.password,
+        options: {
+          // Read by the handle_new_user trigger into profiles.username.
+          data: { username: input.username },
+        },
+      });
+
+      if (error) return { ok: false as const, error: readAuthError(error.message) };
+      return { ok: true as const };
+    },
+    [readAuthError],
+  );
+
+  const verifyEmailCode = useCallback(
+    async (email: string, token: string) => {
+      const { error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'email',
+      });
+
+      if (error) return { ok: false as const, error: readAuthError(error.message) };
+      return { ok: true as const };
+    },
+    [readAuthError],
+  );
+
+  const resendEmailCode = useCallback(
+    async (email: string) => {
+      const { error } = await supabase.auth.resend({ type: 'signup', email });
+      if (error) return { ok: false as const, error: readAuthError(error.message) };
+      return { ok: true as const };
+    },
+    [readAuthError],
+  );
+
+  const signInWithPassword = useCallback(
+    async (email: string, password: string) => {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+      if (error) return { ok: false as const, error: readAuthError(error.message) };
+      return { ok: true as const };
+    },
+    [readAuthError],
+  );
+
   const value = useMemo<AuthContextValue>(
     () => ({
       session,
@@ -135,8 +217,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       signInWithGoogle,
       signOut,
       saveUsername,
+      register,
+      verifyEmailCode,
+      resendEmailCode,
+      signInWithPassword,
+      isUsernameTaken,
     }),
-    [session, profile, isLoading, isProfileLoading, signInWithGoogle, signOut, saveUsername],
+    [
+      session,
+      profile,
+      isLoading,
+      isProfileLoading,
+      signInWithGoogle,
+      signOut,
+      saveUsername,
+      register,
+      verifyEmailCode,
+      resendEmailCode,
+      signInWithPassword,
+      isUsernameTaken,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

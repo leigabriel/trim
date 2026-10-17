@@ -59,9 +59,24 @@ Deno.serve(async (req) => {
     auth: { persistSession: false },
   });
 
-  // Best effort, so a half-finished cascade does not leave rows behind. The
-  // auth.users delete is the one that has to succeed; everything cascades.
-  await admin.from('chat_messages').delete().eq('conversation_id', '');
+  // Deletes the chat rows explicitly rather than leaning on the cascade alone,
+  // so a failed auth.users delete cannot leave a half-erased account behind.
+  //
+  // The conversation ids are read first because chat_messages hangs off
+  // chat_conversations: .in() needs the values, not the query that produces
+  // them. An earlier version passed that query straight through, and a further
+  // one before that matched an empty-string conversation_id, which matches
+  // nothing. Both looked like cleanup and were not.
+  const { data: conversations } = await admin
+    .from('chat_conversations')
+    .select('id')
+    .eq('user_id', callerId);
+
+  const conversationIds = (conversations ?? []).map((row) => row.id);
+  if (conversationIds.length > 0) {
+    await admin.from('chat_messages').delete().in('conversation_id', conversationIds);
+  }
+
   await admin.from('chat_conversations').delete().eq('user_id', callerId);
   await admin.from('profiles').delete().eq('id', callerId);
 

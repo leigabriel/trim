@@ -1,0 +1,98 @@
+# Builds the Android APK for the native app.
+#
+# Signing uses a throwaway keystore generated here. That is enough to install
+# and test, and it needs no repository secrets — but the key is discarded at the
+# end of the run, so every build is signed differently and an APK from this
+# workflow cannot update one already installed from Play Store. For a store
+# release, replace the signing step with repo secrets holding a key you keep.
+name: Android APK
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      # src/lib/supabase.ts throws when these are missing, so the mobile build
+      # cannot start without them. Vite inlines VITE_* at build time, which is
+      # why they have to be present here rather than injected at runtime.
+      #
+      # Only the two public Supabase values belong here. The Gemini and
+      # OpenRouter keys are Edge Function secrets set with `supabase secrets
+      # set` and must never reach the APK.
+      - name: Write the build env
+        run: |
+          printf 'VITE_SUPABASE_URL=%s\n' '${{ secrets.VITE_SUPABASE_URL }}' > .env
+          printf 'VITE_SUPABASE_PUBLISHABLE_KEY=%s\n' '${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}' >> .env
+
+      - name: Build the mobile bundle
+        # Runs tsc, stages only the assets a phone uses, and writes
+        # dist-mobile/index.html. Failing here should stop the build rather than
+        # produce an APK wrapped around yesterday's bundle.
+        run: npm run build:mobile
+
+      - name: Sync the web assets into the Android project
+        run: npx cap sync android
+
+      - name: Assemble a debug APK
+        # Debug-signed: no keystore, no secrets, and it installs on any device.
+        # The release variant below is the one to use for sharing builds.
+        run: cd android && ./gradlew assembleDebug --no-daemon
+
+      - name: Assemble a release APK with a generated keystore
+        working-directory: android
+        run: |
+          set -euo pipefail
+
+          # keytool ships with the JDK, so no extra install step.
+          keytool -genkeypair \
+            -v -keystore trim-ci.keystore \
+            -storepass trim-ci -keypass trim-ci \
+            -alias trim \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Trim CI, OU=Build, O=Trim, L=Manila, C=PH"
+
+          # Wired into app/build.gradle for this run only, via -P flags, so the
+          # committed project files stay free of throwaway credentials.
+          ./gradlew assembleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file=trim-ci.keystore \
+            -Pandroid.injected.signing.store.password=trim-ci \
+            -Pandroid.injected.signing.key.alias=trim \
+            -Pandroid.injected.signing.key.password=trim-ci
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: trim-apk
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/apk/release/*.apk
+          retention-days: 999999999
+          if-no-files-found: error

@@ -36,10 +36,18 @@ reference
 # Secrets
 .env
 
+# Staged by scripts/stage-mobile-public.mjs before the native build.
+.mobile-public
+# Build output. Both bundles are reproducible from source.
+/dist-mobile
+/ios
+# android/ is committed on purpose: it carries the camera permission and the
+# OAuth deep link, and regenerating it per build would drop both.
+/android/app/build
+/android/build
+/android/.gradle
+/android/app/src/main/assets/public
+
 # Supabase CLI scratch state: project ref, org id, pooler URL. Machine-local and
 # rewritten on every `supabase link`.
 supabase/.temp
-
-# Design specs are worth keeping; generated site docs are not.
-docs/*
-!docs/superpowers/

@@ -6,12 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "dev:mobile": "node scripts/stage-mobile-public.mjs && vite --config vite.mobile.config.ts",
+    "build:mobile": "tsc && node scripts/stage-mobile-public.mjs && vite build --config vite.mobile.config.ts",
+    "cap:sync": "npm run build:mobile && cap sync android",
+    "cap:open": "cap open android",
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "lint": "eslint",
     "prompts:sync": "node scripts/sync-prompts.mjs"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.3",
     "@capacitor/app": "8.1.2",
     "@capacitor/core": "8.5.2",
     "@capacitor/haptics": "8.0.2",

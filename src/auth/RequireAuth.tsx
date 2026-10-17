@@ -11,11 +11,16 @@ interface RequireAuthProps {
 }
 
 export const RequireAuth: React.FC<RequireAuthProps> = ({ children, requireUsername }) => {
-  const { session, profile, isLoading } = useAuth();
+  const { session, profile, isLoading, isProfileLoading } = useAuth();
 
   // No redirect while loading, or a hard refresh bounces a signed-in customer
   // to /home. The ion-page shell is required: IonRouterOutlet expects one.
-  if (isLoading) {
+  //
+  // isProfileLoading counts too. Email sign in and registration establish a
+  // session here, and the profile row is fetched just after: checking only
+  // isLoading saw a null profile mid-flight and sent a customer who already
+  // has a username back to the form to type it again.
+  if (isLoading || (session && isProfileLoading)) {
     return (
       <IonPage>
         <IonContent>
