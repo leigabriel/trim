@@ -1,17 +1,17 @@
 # Builds the Android APK for the native app.
 #
 # Signing uses a throwaway keystore generated here. That is enough to install
-# and test, and it needs no repository secrets — but the key is discarded at the
-# end of the run, so every build is signed differently and an APK from this
-# workflow cannot update one already installed from Play Store. For a store
-# release, replace the signing step with repo secrets holding a key you keep.
+# and test, and it needs no repository secrets — but the key is discarded at
+# the end of the run, so every build is signed differently and an APK from
+# this workflow cannot update one already installed from Play Store. For a
+# store release, replace the signing step with repo secrets holding a key you keep.
 name: Android APK
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, test]
   pull_request:
-    branches: [master, main]
+    branches: [master, test]
   workflow_dispatch:
 
 concurrency:
